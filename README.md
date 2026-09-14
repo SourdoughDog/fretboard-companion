@@ -4,7 +4,7 @@ An offline guitar theory companion for macOS: explore the neck, discover chords,
 
 ## Get the app
 
-Download **Guitar Fretboard for Mac.zip** from this repository’s Releases page, unzip it, and open **Guitar Fretboard.app**. You can move the app into Applications.
+[Download the latest Mac app](https://github.com/SourdoughDog/fretboard-companion/releases/latest/download/Guitar.Fretboard.for.Mac.zip), unzip it, and open **Guitar Fretboard.app**. You can move the app into Applications. See [release notes and checksums](https://github.com/SourdoughDog/fretboard-companion/releases/latest).
 
 The native release requires **macOS 13 or later on an Apple silicon Mac (M1 or newer)**. It does not require a browser, Codex, a login, or an internet connection. The app is locally signed and **not Apple-notarized**. For an unidentified-developer warning on a copy you trust, follow [Apple’s per-app opening instructions](https://support.apple.com/102445).
 
