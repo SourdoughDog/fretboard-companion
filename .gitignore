@@ -1,0 +1,10 @@
+# Local builds and temporary output
+/build/
+/.venv/
+**/__pycache__/
+/tests/*-checks.json
+.DS_Store
+*.app/
+*.zip
+.env
+.env.*
