@@ -73,3 +73,5 @@ The logic suite covers scales, chords, harmony, search, progression editing, sha
 - `legacy/`: preserved standalone HTML v1.4, with fewer features than the native app.
 
 Edit the shared CSS or SVG sources, then run the build to regenerate the embedded theme blocks. The older standalone HTML is intentionally preserved separately. This repository starts with native app version **1.20**.
+## Credits
+Built by SourdoughDog with coding and design assistance from OpenAI Codex.
