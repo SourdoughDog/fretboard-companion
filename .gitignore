@@ -8,3 +8,6 @@
 *.zip
 .env
 .env.*
+
+# Machine-specific workspace migration notes
+/SESSION_HANDOFF.md

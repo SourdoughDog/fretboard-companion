@@ -48,6 +48,60 @@ body{border-top:4px solid var(--teal)}main{padding:16px}.synth-panel{border:0;ba
 
 
 
+.sound-section{margin:16px 0;border:1px solid var(--edge);border-radius:var(--tile-radius,8px);padding:0 14px;background:var(--paper)}.sound-section summary{padding:13px 0;font-size:.88rem;color:var(--ink)}.sound-section .synth-controls{margin:4px 0 18px}.preset-description{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 16px}.preset-description p{flex:1 1 240px;font-size:.82rem;line-height:1.5;color:var(--muted);margin:0}.preset-description span{flex-basis:100%;font-size:.72rem;color:var(--muted)}.preset-description button{font-size:.75rem;min-height:34px}.synth-controls>label{min-width:0}.synth-controls label span{font-variant-numeric:tabular-nums}.synth-controls small{display:block;line-height:1.4}.synth-transport{position:sticky;top:0;z-index:3;background:var(--paper);padding:12px 0;border-bottom:1px solid var(--edge)}.sound-section+.performance-controls{margin-top:22px}
+
+
+
+
+/* Synth window layout: preset header, focused workspace and persistent transport. */
+html,body{height:100%;overflow:hidden}body{border-top:4px solid var(--teal)}
+main{height:100%;max-width:900px;padding:12px;margin:auto}
+.synth-panel{height:100%;display:flex;flex-direction:column;overflow:hidden;margin:0!important;padding:16px!important}
+.sound-header,.synth-tabs,.synth-transport{flex-shrink:0}
+.synth-panel::before{flex-shrink:0}
+.sound-header .synth-heading{margin:0 0 12px;padding:12px;gap:12px}
+.sound-header .synth-heading h3{font-size:.85rem;margin:0 0 4px}
+.sound-header .synth-heading p{font-size:.77rem}
+.sound-header .wave-preview{width:125px;height:42px}
+.synth-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 22px;margin:14px 0}
+.synth-controls>label{min-width:0;font-size:.8rem}
+.synth-controls label span{font-variant-numeric:tabular-nums}
+.synth-controls small{display:block;font-size:.7rem;line-height:1.45;margin-top:4px}
+.synth-controls input[type=range]{margin:10px 0 2px}
+.synth-controls select,.synth-controls input[type=number]{margin-top:6px}
+.preset-picker.synth-controls{grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px;margin:0}
+.preset-picker button{height:38px;font-size:.75rem;padding:6px 12px;white-space:nowrap}
+.preset-description{display:block;margin:8px 0 14px}
+.preset-description p{font-size:.76rem;line-height:1.4;margin:0}
+.preset-description span{display:block;font-size:.67rem;margin-top:4px}
+.synth-tabs{display:flex;border-bottom:1px solid var(--edge);gap:4px;padding:0 0 0;margin:0 0 4px}
+.synth-tabs button{flex:1;background:transparent;border:0;border-bottom:3px solid transparent;border-radius:6px 6px 0 0;color:var(--muted);font-size:.85rem;font-weight:650;padding:11px 12px}
+.synth-tabs button[aria-selected=true]{color:var(--teal);background:var(--teal-soft);border-bottom-color:var(--teal)}
+.synth-tabs button:focus-visible{outline-offset:-3px}
+.sound-workspace{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 4px 8px;scrollbar-gutter:stable}
+.control-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.control-heading h3{margin:0;font-size:.85rem}
+.control-heading>small{font-size:.65rem;color:var(--muted);text-align:right}
+.tone-controls{padding:0 10px 4px}
+.sound-section{margin:12px 0;padding:0 12px;border:1px solid var(--edge);border-radius:var(--tile-radius,8px);background:var(--paper)}
+.sound-section summary{display:list-item;padding:12px 0;font-size:.83rem;line-height:1.35;color:var(--ink)}
+.sound-section summary>span{display:inline-block;vertical-align:middle}
+.sound-section summary small{display:block;font-size:.69rem;font-weight:400;color:var(--muted);margin-top:3px}
+.sound-section .synth-controls{margin:4px 0 14px}
+.section-note{font-size:.7rem;line-height:1.5;color:var(--muted);margin:12px 10px}
+.performance-style.synth-controls{grid-template-columns:1fr;margin-top:18px}
+#panel-performance{padding:0 10px}
+#panel-performance .section-note{margin-left:0;margin-right:0}
+.synth-transport{position:static;display:grid;grid-template-columns:auto minmax(130px,1fr);column-gap:26px;row-gap:9px;align-items:center;border-top:1px solid var(--edge);border-bottom:0;padding:14px 0 0;margin-top:4px;background:var(--paper)}
+.transport-buttons{display:flex;gap:8px}
+.transport-buttons button{min-height:38px;padding:7px 14px;font-size:.82rem;white-space:nowrap}
+.transport-volume.synth-controls{display:block;margin:0;min-width:0}
+.transport-volume label{font-size:.74rem}
+.transport-volume input[type=range]{margin-top:6px}
+#playback-status{grid-column:1/-1;font-size:.72rem;line-height:1.35;min-width:0}
+@media(max-width:560px){main{padding:8px}.synth-panel{padding:12px!important}.sound-header .wave-preview{width:90px}.synth-controls{column-gap:14px}.synth-transport{column-gap:18px}.transport-buttons button{padding:7px 10px}.control-heading{flex-wrap:wrap;gap:4px}}
+@media(max-height:720px){.sound-header .synth-heading{padding:8px;margin-bottom:8px}.preset-description{margin-bottom:9px}.sound-workspace{padding-top:10px}}
+
 /* BEGIN STYLE THEMES */
 /* Shared, offline visual identities for the main app and wavetable window. */
 :root[data-theme="retro"]{color-scheme:light;--ink:#392419;--muted:#72533c;--teal:#9a381e;--teal-soft:#f8dfb7;--orange:#704b0d;--peach:#f4e5b5;--line:#c7ab82;--paper:#fff4dd;--back:#eddbb8;--outside:#795a44;--focus:#23565b;--control:#f9e9c9;--edge:#a37b52;--warm-edge:#b79750;--on-accent:#fff8e7;--shadow:#53341526;--display-font:"Cooper Black","American Typewriter",Georgia,serif;--panel-radius:24px;--tile-radius:16px;--button-radius:20px;--panel-shadow:4px 5px 0 #bc976e;--border-size:2px}
@@ -439,20 +493,73 @@ body{border-top:4px solid var(--teal)}main{padding:16px}.synth-panel{border:0;ba
 @media(max-width:580px){#chord-finder .map-heading{flex-wrap:wrap}.finder-leading{margin-left:0}}
 
 /* END STYLE THEMES */
-</style></head><body><main><section class="synth-panel" aria-labelledby="synth-heading"><div class="synth-heading"><div><h3 id="synth-heading">Polyphonic wavetable</h3><p>Shape the sound, then choose how the notes unfold.</p></div><svg class="wave-preview" viewBox="0 0 320 70" role="img" aria-label="Preview of the selected wavetable shape"><path d="M0 35H320"/><polyline id="wave-line" points=""/></svg></div><div class="synth-controls"><label for="synth-preset">Sound<select id="synth-preset"><option value="keys">Warm keys</option><option value="pad">Velvet pad</option><option value="glass">Glass</option><option value="pluck">Soft pluck</option></select></label><label for="synth-tempo">Tempo · BPM<input type="number" id="synth-tempo" min="40" max="220" step="1" value="100"></label><label for="synth-morph">Wave blend <span id="morph-value">35%</span><input type="range" id="synth-morph" min="0" max="100" value="35"><small>Mellow ↔ bright</small></label><label for="synth-volume">Volume <span id="volume-value">35%</span><input type="range" id="synth-volume" min="0" max="100" value="35"></label></div><section class="performance-controls"><h3>Performance</h3><div class="synth-controls"><label for="synth-style">Play as<select id="synth-style"><option value="chords">Held chords</option><option value="strum">Gentle strum</option><option value="up">Arpeggio · up</option><option value="down">Arpeggio · down</option><option value="updown">Arpeggio · up &amp; down</option><option value="fingerpick">Fingerpicked performance</option></select></label><label for="synth-rate">Note pace<select id="synth-rate"><option value="1">Quarter notes</option><option value="2" selected>Eighth notes</option><option value="4">Sixteenth notes</option></select></label><label for="synth-humanize">Humanize <span id="humanize-value">0%</span><input id="synth-humanize" type="range" min="0" max="100" value="0"><small>Small timing &amp; touch variations</small></label><label for="synth-swing">Swing <span id="swing-value">0%</span><input id="synth-swing" type="range" min="0" max="60" value="0"><small>Straight ↔ gently uneven</small></label></div></section><div class="synth-transport"><button class="action primary" id="synth-play">▶ Play progression</button><button class="action" id="synth-stop" disabled>■ Stop</button><span id="playback-status" role="status" aria-live="polite">Ready when you are.</span></div><p class="synth-help">Wave blend, sound and volume adjust live. Performance, humanization and tempo changes begin with the next chord. The fingerpicked pattern uses chord tones with bass accents. Loop is above your progression in the main window.<br>Space: play / stop when not editing a control. Escape: stop.</p></section></main><script>const $=id=>document.getElementById(id);
-let lastState=null;
+</style></head><body><main><section class="synth-panel" aria-labelledby="synth-heading">
+<header class="sound-header">
+ <div class="synth-heading"><div><h3 id="synth-heading">Wavetable synth</h3><p>Sound for your progression.</p></div><svg class="wave-preview" viewBox="0 0 320 70" role="img" aria-label="Preview of the selected wavetable shape"><path d="M0 35H320"/><polyline id="wave-line" points=""/></svg></div>
+ <div class="preset-picker synth-controls"><label for="synth-preset">Preset<select id="synth-preset"><option value="keys">Warm keys</option></select></label><button class="action" id="reset-sound" type="button" title="Restore this preset’s sound settings">Reset sound</button></div>
+ <div class="preset-description"><p id="preset-description">Rounded keys with a gentle, warm decay.</p><span id="preset-modified" role="status">Preset settings</span></div>
+</header>
+<div class="synth-tabs" role="tablist" aria-label="Synth controls">
+ <button type="button" id="tab-sound" role="tab" aria-selected="true" aria-controls="panel-sound" tabindex="0">Sound</button>
+ <button type="button" id="tab-performance" role="tab" aria-selected="false" aria-controls="panel-performance" tabindex="-1">Performance</button>
+</div>
+<div class="sound-workspace">
+ <section id="panel-sound" role="tabpanel" aria-labelledby="tab-sound">
+  <section class="tone-controls" aria-labelledby="tone-heading"><div class="control-heading"><h3 id="tone-heading">Tone</h3><small>Adjusts live</small></div><div class="synth-controls "><label for="synth-morph">Wave blend <span id="morph-value">35%</span><input type="range" id="synth-morph" min="0" max="100" value="35"><small>Mellow ↔ bright</small></label><label for="synth-cutoff">Filter cutoff <span id="cutoff-value"></span><input id="synth-cutoff" type="range" min="0" max="100" step="1" aria-describedby="cutoff-hint"><small id="cutoff-hint">Lower for warmth; higher for brightness</small></label><label for="synth-resonance">Resonance <span id="resonance-value"></span><input id="synth-resonance" type="range" min="0" max="100" step="1" aria-describedby="resonance-hint"><small id="resonance-hint">Emphasize the filter edge</small></label><label for="synth-filterEnv">Filter motion <span id="filterEnv-value"></span><input id="synth-filterEnv" type="range" min="0" max="100" step="1" aria-describedby="filterEnv-hint"><small id="filterEnv-hint">Bright attack that settles with Decay</small></label></div></section>
+  <details class="sound-section"><summary><span>Envelope<small>How each note begins and fades</small></span></summary><div class="synth-controls "><label for="synth-attack">Attack <span id="attack-value"></span><input id="synth-attack" type="range" min="0.003" max="2" step="0.001" aria-describedby="attack-hint"><small id="attack-hint">Time to reach full level</small></label><label for="synth-decay">Decay <span id="decay-value"></span><input id="synth-decay" type="range" min="0.03" max="2" step="0.01" aria-describedby="decay-hint"><small id="decay-hint">Time to settle after the attack</small></label><label for="synth-sustain">Sustain <span id="sustain-value"></span><input id="synth-sustain" type="range" min="0" max="100" step="1" aria-describedby="sustain-hint"><small id="sustain-hint">Level while the note is held</small></label><label for="synth-release">Release <span id="release-value"></span><input id="synth-release" type="range" min="0.03" max="3" step="0.01" aria-describedby="release-hint"><small id="release-hint">Time to fade after the note ends</small></label></div><p class="section-note">Changes apply to upcoming notes.</p></details>
+  <details class="sound-section"><summary><span>Space &amp; movement<small>Width, room and pitch movement</small></span></summary><div class="synth-controls "><label for="synth-width">Stereo width <span id="width-value"></span><input id="synth-width" type="range" min="0" max="100" step="1" aria-describedby="width-hint"><small id="width-hint">Center ↔ wide</small></label><label for="synth-reverb">Reverb <span id="reverb-value"></span><input id="synth-reverb" type="range" min="0" max="60" step="1" aria-describedby="reverb-hint"><small id="reverb-hint">Blend in a short stereo room</small></label><label for="synth-detune">Detune <span id="detune-value"></span><input id="synth-detune" type="range" min="0" max="18" step="0.1" aria-describedby="detune-hint"><small id="detune-hint">Spread the two voices in pitch</small></label><label for="synth-vibrato">Vibrato depth <span id="vibrato-value"></span><input id="synth-vibrato" type="range" min="0" max="30" step="0.5" aria-describedby="vibrato-hint"><small id="vibrato-hint">Gentle pitch movement; 0 turns it off</small></label><label for="synth-vibratoRate">Vibrato speed <span id="vibratoRate-value"></span><input id="synth-vibratoRate" type="range" min="0.2" max="9" step="0.1" aria-describedby="vibratoRate-hint"><small id="vibratoRate-hint">How quickly the pitch moves</small></label></div></details>
+  <p class="section-note">Your sound edits save automatically. Choosing a preset loads its sound settings.</p>
+ </section>
+ <section id="panel-performance" role="tabpanel" aria-labelledby="tab-performance" hidden>
+  <div class="control-heading"><h3>Performance</h3><small>Applies to following chords</small></div>
+  <div class="synth-controls performance-style"><label for="synth-style">Play as<select id="synth-style"><option value="chords">Held chords</option><option value="strum">Gentle strum</option><option value="up">Arpeggio · up</option><option value="down">Arpeggio · down</option><option value="updown">Arpeggio · up &amp; down</option><option value="fingerpick">Fingerpicked performance</option></select></label></div><div class="synth-controls "><label for="synth-tempo">Tempo · BPM<input type="number" id="synth-tempo" min="40" max="220" step="1" value="100"></label><label for="synth-rate">Note pace<select id="synth-rate"><option value="1">Quarter notes</option><option value="2" selected>Eighth notes</option><option value="4">Sixteenth notes</option></select></label><label for="synth-humanize">Humanize <span id="humanize-value">0%</span><input id="synth-humanize" type="range" min="0" max="100" value="0"><small>Small timing &amp; touch variations</small></label><label for="synth-swing">Swing <span id="swing-value">0%</span><input id="synth-swing" type="range" min="0" max="60" value="0"><small>Straight ↔ gently uneven</small></label></div>
+  <p class="section-note" id="performance-note">Note pace and swing are available for arpeggios and fingerpicking.</p>
+  <p class="section-note">Loop lives above your progression in the main window.</p>
+ </section>
+</div>
+<footer class="synth-transport" aria-label="Playback controls">
+ <div class="transport-buttons"><button class="action primary" id="synth-play">▶ Play</button><button class="action" id="synth-stop" disabled>■ Stop</button></div>
+ <div class="synth-controls transport-volume"><label for="synth-volume">Volume <span id="volume-value">35%</span><input type="range" id="synth-volume" min="0" max="100" value="35"></label></div>
+ <span id="playback-status" role="status" aria-live="polite">Ready when you are.</span>
+</footer>
+</section></main><script>const $=id=>document.getElementById(id);
+let lastState=null,presetSignature='',synthTab='sound';
+function setSynthTab(tab,focus=false){
+ if(!['sound','performance'].includes(tab))return;
+ synthTab=tab;
+ for(const name of ['sound','performance']){const selected=name===tab;const button=$('tab-'+name);button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;$('panel-'+name).hidden=!selected;}
+ document.querySelector('.sound-workspace').scrollTop=0;
+ if(focus)$('tab-'+tab).focus();
+}
+for(const name of ['sound','performance']){
+ $('tab-'+name).addEventListener('click',()=>setSynthTab(name));
+ $('tab-'+name).addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();setSynthTab(e.key==='Home'?'sound':e.key==='End'?'performance':synthTab==='sound'?'performance':'sound',true);}});
+}
+const soundKeys=['cutoff','resonance','filterEnv','reverb','attack','decay','sustain','release','detune','width','vibrato','vibratoRate'];
+const cutoffFromSlider=value=>Math.round(150*80**(value/100));
+const cutoffToSlider=value=>Math.log(value/150)/Math.log(80)*100;
+function formatSoundValue(key,value){
+ if(['attack','decay','release'].includes(key))return value<1?Math.round(value*1000)+' ms':value.toFixed(2)+' s';
+ if(key==='cutoff')return value>=1000?(value/1000).toFixed(2)+' kHz':Math.round(value)+' Hz';
+ if(['detune','vibrato'].includes(key))return Number(value.toFixed(1))+' ct';
+ if(key==='vibratoRate')return Number(value.toFixed(1))+' Hz';return Math.round(value)+'%';
+}
 function send(action,extra={}){window.webkit.messageHandlers.synthControl.postMessage({action,...extra});}
 function receiveSynthState(state){
  lastState=state;document.documentElement.setAttribute('data-theme',state.theme);const options=state.options;
- for(const [id,key] of [['synth-preset','preset'],['synth-tempo','tempo'],['synth-morph','morph'],['synth-volume','volume'],['synth-style','style'],['synth-rate','rate'],['synth-humanize','humanize'],['synth-swing','swing']])if(document.activeElement!==$(id))$(id).value=options[key];
- $('morph-value').textContent=options.morph+'%';$('volume-value').textContent=options.volume+'%';$('humanize-value').textContent=(options.humanize||0)+'%';$('swing-value').textContent=(options.swing||0)+'%';$('wave-line').setAttribute('points',state.wave);
- $('synth-rate').disabled=['chords','strum'].includes(options.style);$('synth-swing').disabled=['chords','strum'].includes(options.style);
- $('synth-play').disabled=!state.canPlay||state.playing||state.pending;$('synth-play').textContent=state.pending?'Starting…':state.playing?'Playing':'▶ Play progression';$('synth-stop').disabled=!state.playing&&!state.pending;$('playback-status').textContent=state.status;
+ if(state.presets&&JSON.stringify(state.presets)!==presetSignature){presetSignature=JSON.stringify(state.presets);$('synth-preset').replaceChildren();let family='',group;for(const p of state.presets){if(p.family!==family){group=document.createElement('optgroup');group.label=family=p.family;$('synth-preset').append(group);}const option=document.createElement('option');option.value=p.id;option.textContent=p.name;group.append(option);}}
+ const mapping=[['synth-preset','preset'],['synth-tempo','tempo'],['synth-morph','morph'],['synth-volume','volume'],['synth-style','style'],['synth-rate','rate'],['synth-humanize','humanize'],['synth-swing','swing'],...soundKeys.map(key=>['synth-'+key,key])];
+ for(const [id,key] of mapping)if(document.activeElement!==$(id))$(id).value=key==='cutoff'?cutoffToSlider(options[key]):options[key];
+ for(const key of ['morph','volume','humanize','swing',...soundKeys]){const text=formatSoundValue(key,options[key]??0);$(key+'-value').textContent=text;$('synth-'+key).setAttribute('aria-valuetext',text);}
+ $('preset-description').textContent=state.presets?.find(p=>p.id===options.preset)?.description||'';$('preset-modified').textContent=state.modified?'Edited · saved automatically':'Preset settings';$('reset-sound').disabled=!state.modified;
+ $('wave-line').setAttribute('points',state.wave);$('synth-rate').disabled=['chords','strum'].includes(options.style);$('synth-swing').disabled=['chords','strum'].includes(options.style);$('performance-note').textContent=['chords','strum'].includes(options.style)?'Note pace and swing are available for arpeggios and fingerpicking.':'Note pace sets the subdivision. Swing delays alternating notes for a relaxed feel.';
+ $('synth-play').disabled=!state.canPlay||state.playing||state.pending;$('synth-play').textContent=state.pending?'Starting…':state.playing?'Playing':'▶ Play';$('synth-stop').disabled=!state.playing&&!state.pending;$('playback-status').textContent=state.status;
 }
 $('synth-play').addEventListener('click',()=>send('play'));$('synth-stop').addEventListener('click',()=>send('stop'));
 $('synth-preset').addEventListener('change',e=>send('set',{key:'preset',value:e.target.value}));
+$('reset-sound').addEventListener('click',()=>{if(lastState)send('set',{key:'preset',value:lastState.options.preset});});
 $('synth-tempo').addEventListener('change',e=>{const value=Number(e.target.value);if(!Number.isFinite(value)||value<40||value>220){e.target.value=lastState?.options.tempo||100;return;}send('set',{key:'tempo',value});});
-for(const [id,key] of [['synth-morph','morph'],['synth-volume','volume'],['synth-humanize','humanize'],['synth-swing','swing']])$(id).addEventListener('input',e=>send('set',{key,value:Number(e.target.value)}));
+for(const key of ['morph','volume','humanize','swing',...soundKeys])$('synth-'+key).addEventListener('input',e=>{const value=key==='cutoff'?cutoffFromSlider(Number(e.target.value)):Number(e.target.value);$(key+'-value').textContent=formatSoundValue(key,value);send('set',{key,value});});
 $('synth-style').addEventListener('change',e=>send('set',{key:'style',value:e.target.value}));$('synth-rate').addEventListener('change',e=>send('set',{key:'rate',value:Number(e.target.value)}));
 if(typeof document.addEventListener==='function')document.addEventListener('keydown',e=>{if(e.repeat||e.defaultPrevented)return;if(e.key==='Escape'){e.preventDefault();send('stop');}else if(e.code==='Space'&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&(['synth-play','synth-stop'].includes(e.target.id)||!e.target.closest('input,select,textarea,button,summary,a,[contenteditable="true"]'))){e.preventDefault();send('toggle');}});
 send('ready');

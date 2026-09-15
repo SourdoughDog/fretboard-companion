@@ -290,34 +290,56 @@ run("progression.items=[]");assert.throws(()=>run('midiBytes()'));run("synthOpti
 console.log('PASS: six performance styles, three rates, humanization/swing bounds, deterministic MIDI, tempo, transposition, held-chord export and matched note-off events.');
 
 // Silent Web Audio harness: validates the actual synth graph and scheduling without a real audio device.
-class AudioParamStub{constructor(value=0){this.value=value;this.events=[];}event(kind,value,time){assert(Number.isFinite(value)&&Number.isFinite(time));assert(time>=0);this.events.push({kind,value,time});this.value=value;return this;}setValueAtTime(v,t){return this.event('set',v,t);}linearRampToValueAtTime(v,t){return this.event('linear',v,t);}exponentialRampToValueAtTime(v,t){assert(v>0);return this.event('exponential',v,t);}setTargetAtTime(v,t,constant){assert(constant>0);return this.event('target',v,t);}cancelScheduledValues(t){this.events=this.events.filter(e=>e.time<t);return this;}}
-class AudioNodeStub{constructor(kind,context){this.kind=kind;this.context=context;this.connections=[];this.gain=new AudioParamStub(1);this.frequency=new AudioParamStub(440);this.detune=new AudioParamStub();this.pan=new AudioParamStub();this.Q=new AudioParamStub();for(const key of ['threshold','knee','ratio','attack','release'])this[key]=new AudioParamStub();context.nodes.push(this);}connect(node){assert(node);this.connections.push(node);return node;}disconnect(){this.disconnected=true;}setPeriodicWave(wave){assert(wave.imag[1]>0);this.wave=wave;}start(t){assert(Number.isFinite(t));this.started=t;}stop(t){assert(Number.isFinite(t));this.stopped=t;}}
+class AudioParamStub{constructor(value=0){this.value=value;this.events=[];}event(kind,value,time){assert(Number.isFinite(value)&&Number.isFinite(time));assert(time>=0);this.events.push({kind,value,time});this.value=value;return this;}setValueAtTime(v,t){return this.event('set',v,t);}linearRampToValueAtTime(v,t){return this.event('linear',v,t);}exponentialRampToValueAtTime(v,t){assert(v>0);return this.event('exponential',v,t);}setTargetAtTime(v,t,constant){assert(constant>0);return this.event('target',v,t);}cancelAndHoldAtTime(t){return this.cancelScheduledValues(t);}cancelScheduledValues(t){this.events=this.events.filter(e=>e.time<t);return this;}}
+class AudioNodeStub{constructor(kind,context){this.kind=kind;this.context=context;this.connections=[];this.gain=new AudioParamStub(1);this.frequency=new AudioParamStub(440);this.detune=new AudioParamStub();this.pan=new AudioParamStub();this.Q=new AudioParamStub();for(const key of ['threshold','knee','ratio','attack','release'])this[key]=new AudioParamStub();context.nodes.push(this);}connect(node){assert(node);this.connections.push(node);return node;}disconnect(){this.disconnected=true;}setPeriodicWave(wave){assert(wave.imag[1]>0);this.wave=wave;}start(t){assert(Number.isFinite(t));this.started=t;}stop(t=this.context.currentTime){assert(Number.isFinite(t));this.stopped=t;}}
 let audioCreations=0,deferredResume=null;
-class AudioContextStub{constructor(){audioCreations++;this.currentTime=0;this.sampleRate=48000;this.state='suspended';this.nodes=[];this.destination={kind:'silent-destination'};}async resume(){if(deferredResume)await deferredResume;this.state='running';}createBuffer(channels,length,rate){const data=new Float32Array(length);return {sampleRate:rate,length,getChannelData:()=>data};}createBufferSource(){return new AudioNodeStub('buffer',this);}createGain(){return new AudioNodeStub('gain',this);}createDynamicsCompressor(){return new AudioNodeStub('compressor',this);}createBiquadFilter(){return new AudioNodeStub('filter',this);}createStereoPanner(){return new AudioNodeStub('pan',this);}createOscillator(){return new AudioNodeStub('osc',this);}createPeriodicWave(real,imag){assert.equal(real.length,imag.length);assert.equal(imag[0],0);assert([...real,...imag].every(Number.isFinite));return {real,imag};}}
+class AudioContextStub{constructor(){audioCreations++;this.currentTime=0;this.sampleRate=48000;this.state='suspended';this.nodes=[];this.destination={kind:'silent-destination'};}async resume(){if(deferredResume)await deferredResume;this.state='running';}createBuffer(channels,length,rate){const data=new Float32Array(length);return {sampleRate:rate,length,getChannelData:()=>data};}createConvolver(){return new AudioNodeStub('convolver',this);}createBufferSource(){return new AudioNodeStub('buffer',this);}createGain(){return new AudioNodeStub('gain',this);}createDynamicsCompressor(){return new AudioNodeStub('compressor',this);}createBiquadFilter(){return new AudioNodeStub('filter',this);}createStereoPanner(){return new AudioNodeStub('pan',this);}createOscillator(){return new AudioNodeStub('osc',this);}createPeriodicWave(real,imag){assert.equal(real.length,imag.length);assert.equal(imag[0],0);assert([...real,...imag].every(Number.isFinite));return {real,imag};}}
 let timerID=0;const intervals=new Map(),timeouts=new Map();
 ctx.window={AudioContext:AudioContextStub};ctx.setInterval=(fn,ms)=>{assert.equal(ms,25);intervals.set(++timerID,fn);return timerID;};ctx.clearInterval=id=>intervals.delete(id);ctx.setTimeout=(fn,ms)=>{timeouts.set(++timerID,fn);return timerID;};ctx.clearTimeout=id=>timeouts.delete(id);
 // No synth context is created by initial rendering, preference changes, or any earlier arranger action.
 assert.equal(audioCreations,0);assert.equal(run('synthContext'),null);
-for(const preset of ['keys','pad','glass','pluck']){
- for(const mix of [0,25,50,75,100]){const wave=run(`tableHarmonics('${preset}',${mix})`);assert.equal(wave.imag.length,33);assert.equal(wave.imag[0],0);assert.equal(wave.real.reduce((a,b)=>a+b,0),0);assert(wave.imag[1]>.9);assert([...wave.imag].every(Number.isFinite));}
+for(const preset of plain(run('Object.keys(SYNTH_PRESETS)'))){
+ for(const mix of [0,25,50,75,100]){const wave=run(`tableHarmonics('${preset}',${mix})`);assert.equal(wave.imag.length,65);assert.equal(wave.imag[0],0);assert.equal(wave.real.reduce((a,b)=>a+b,0),0);assert(wave.imag[1]>0);assert([...wave.imag].every(Number.isFinite));}
  assert.notDeepEqual([...run(`tableHarmonics('${preset}',0).imag`)],[...run(`tableHarmonics('${preset}',100).imag`)],'morph changes spectrum');
 }
 for(const root of roots)for(const chord of chords){const mids=plain(run(`synthNotes({degree:'1',quality:'${chord.id}'},${JSON.stringify(root)})`));assert.equal(mids.length,chord.formula.length+1);assert(mids.every(n=>Number.isInteger(n)&&n>=36&&n<=80));assert.deepEqual(mids.slice(1).map(n=>(n-pc(root)+12)%12),chordExpected[chord.id]);}
 assert.deepEqual(plain(run("synthNotes({degree:'1',quality:'major9'},'C')")),[36,48,52,55,59,62]);assert.equal(run('midiFrequency(69)'),440);
 assert.deepEqual(plain(run("playbackPlan([{beats:1},{beats:2},{beats:3}],120).map(e=>[e.offset,e.duration])")),[[0,.5],[.5,1],[1.5,1.5]]);
+// Sound controls validate persisted data, migrate old presets, and preserve performance on reset.
+const savedSound=run('JSON.stringify(synthOptions)');
+run("restoreSynthOptions({preset:'pad',morph:73,volume:24,tempo:132,style:'up'});");
+assert.equal(run('synthOptions.attack'),.28);assert.equal(run('synthOptions.morph'),73);
+for(const [key,range] of Object.entries(plain(run('SOUND_RANGES')))){
+ const old=run(`synthOptions['${key}']`);
+ for(const bad of ['NaN','Infinity',String(range[0]-1),String(range[1]+1),'null',"'20'"])run(`setSynthOption('${key}',${bad})`);
+ assert.equal(run(`synthOptions['${key}']`),old,'Reject invalid '+key);
+ run(`setSynthOption('${key}',${range[1]});saveWorkspace();synthOptions['${key}']=0;restoreWorkspace()`);
+ assert.equal(run(`synthOptions['${key}']`),range[1],'Restore '+key);
+}
+run("setSynthOption('preset','reed')");assert.equal(run('synthOptions.tempo'),132);assert.equal(run('synthOptions.volume'),24);assert.equal(run('synthOptions.style'),'up');
+assert.equal(run('synthOptions.release'),.24);run('setSynthOption("release",2);setSynthOption("preset","reed")');assert.equal(run('synthOptions.release'),.24);
+for(const style of ['chords','strum','up','down','updown','fingerpick']){
+ const events=plain(run(`performanceEvents({degree:'1',quality:'major',voicing:[64]},{...synthOptions,style:'${style}'},1)`));assert(events.length);assert(events.every(e=>e.midi===64&&Number.isFinite(e.duration)),'single-note '+style);
+}
+for(const rate of [44100,48000,96000])for(const midi of [36,72,96,120,127]){
+ const wave=run(`tableHarmonics('brass',100,midiFrequency(${midi}),${rate})`),limit=rate*.48/(440*2**((midi-69)/12)*2**(48/1200));
+ for(let n=Math.ceil(limit);n<wave.imag.length;n++)assert.equal(wave.imag[n],0,'remove above-band partials');
+}
+run(`synthOptions=JSON.parse(${JSON.stringify(savedSound)})`);
+console.log('PASS: all 12 presets, sound control migration/validation/reset, single-note performances, and high-note harmonic limits.');
 (async()=>{
  run("progression={root:'C',mode:'major',size:'triads',items:[]};useStarter('cadence');synthOptions.tempo=120");
  await run('playProgression()');assert.equal(audioCreations,1);assert.equal(run('synthPending'),false);assert.equal(intervals.size,1);
- const ac=run('synthContext');let oscillators=ac.nodes.filter(n=>n.kind==='osc');assert.equal(oscillators.length,10);assert(oscillators.every(n=>n.started===.08&&n.stopped>.08));assert.equal(run('synthSession.settings.loop'),false);
+ const ac=run('synthContext');let oscillators=ac.nodes.filter(n=>n.kind==='osc');assert.equal(oscillators.filter(n=>n.wave).length,20);assert(oscillators.filter(n=>n.wave).every(n=>n.started===.08&&n.stopped>.08));assert.equal(run('synthSession.settings.loop'),false);
  // Advance the audio clock and deliver oscillator-end callbacks, without rendering or emitting sound.
  function advance(end){for(let t=ac.currentTime+.05;t<=end+.00001;t+=.05){ac.currentTime=t;for(const n of ac.nodes)if(n.kind==='osc'&&!n.ended&&n.stopped<=t){n.ended=true;n.onended?.();}run('tickSynth()');}}
- advance(6.5);assert.equal(run('synthSession'),null);assert.equal(intervals.size,0);assert(elements.get('playback-status').textContent.startsWith('Finished'));
- oscillators=ac.nodes.filter(n=>n.kind==='osc');assert.equal(oscillators.length,30,'all 3 chords include their low root');
+ advance(8.5);assert.equal(run('synthSession===null'),true);assert.equal(intervals.size,0);assert(elements.get('playback-status').textContent.startsWith('Finished'));
+ oscillators=ac.nodes.filter(n=>n.kind==='osc'&&n.wave);assert.equal(oscillators.length,60,'all 3 chords include their low root');
  const startTimes=[...new Set(oscillators.map(o=>o.started))];assert.deepEqual(startTimes.map(n=>Math.round(n*100)/100),[.08,2.08,4.08]);
  run("synthOptions.loop=true");await run('playProgression()');advance(ac.currentTime+7);assert(run('synthSession')!==null,'loop remains active');
  const running=run('synthSession');run("setSynthOption('volume',0)");assert.equal(run('synthSession'),running,'volume does not restart playback');assert.equal(run('synthMaster.gain.value'),0);
- const stopAt=ac.currentTime;run('stopPlayback()');assert.equal(run('synthSession'),null);assert.equal(intervals.size,0);assert(running.bus.gain.events.some(e=>e.kind==='linear'&&e.value===0&&Math.abs(e.time-stopAt-.025)<.00001));
- run("synthOptions.loop=false;synthOptions.volume=35");await run('playProgression(1)');assert.equal(run('synthSession.plan[0].index'),1);assert(run('synthSession.plan[0].duration')<=2);run("changeChordType(0,'minor9')");assert.equal(run('synthSession'),null,'editing cancels preview');
+ const stopAt=ac.currentTime;run('stopPlayback()');assert.equal(run('synthSession===null'),true);assert.equal(intervals.size,0);assert(running.bus.gain.events.some(e=>e.kind==='linear'&&e.value===0&&Math.abs(e.time-stopAt-.025)<.00001));
+ run("synthOptions.loop=false;synthOptions.volume=35");await run('playProgression(1)');assert.equal(run('synthSession.plan[0].index'),1);assert(run('synthSession.plan[0].duration')<=2);run("changeChordType(0,'minor9')");assert.equal(run('synthSession===null'),true,'editing cancels preview');
  await run('playProgression()');run("setSynthOption('preset','glass')");assert(run('synthSession'),'sound changes preserve playback');assert.equal(run('synthSession.settings.preset'),'glass');run('stopPlayback()');
  const oldTempo=run('synthOptions.tempo');run("setSynthOption('tempo',0);setSynthOption('tempo',Infinity)");assert.equal(run('synthOptions.tempo'),oldTempo);
  run("setSynthOption('morph',73);saveWorkspace();synthOptions.morph=0;restoreWorkspace()");assert.equal(run('synthOptions.morph'),73);
@@ -326,7 +348,7 @@ assert.deepEqual(plain(run("playbackPlan([{beats:1},{beats:2},{beats:3}],120).ma
  const live=run('synthSession'),anchor=run('synthSession.queue[0].uid');
  for(const [key,value] of [['morph',81],['preset','pad'],['volume',22],['tempo',150],['loop',true]]){run(`setSynthOption('${key}',${JSON.stringify(value)})`);assert.equal(run('synthSession'),live,key+' keeps session');}
  assert.equal(run('synthSession.settings.tempo'),150);assert(run('synthSession.voices.size')>0);
- assert([...run('synthSession.voices')].every(o=>Math.abs(o.wave.imag[3]-run("tableHarmonics('pad',81).imag[3]"))<.00001));
+ assert([...run('synthSession.notes')].every(note=>[...note.banks].filter(b=>!b.retired).length===1),'one current bank after preset crossfade');
  run("addChord('library:D:minor9',1)");assert.equal(run('synthSession'),live);assert.equal(run('synthSession.plan[synthSession.nextIndex].chord.quality'),'minor9');
  run("editSlot('remove',0)");assert.equal(run('synthSession'),live);assert.equal(run('synthSession.plan[synthSession.nextIndex].chord.quality'),'minor9');assert.equal(run('synthSession.marked'),-1,'removed current chord is not highlighted as a different tile');
  advance(ac.currentTime+2);assert(run('synthSession'));assert.equal(run('synthSession.marked'),0);
@@ -334,7 +356,7 @@ assert.deepEqual(plain(run("playbackPlan([{beats:1},{beats:2},{beats:3}],120).ma
  run("moveChord(3,1)");assert.equal(run('synthSession'),live);assert.equal(run('synthSession.plan[synthSession.nextIndex].chord.uid'),run('progression.items[1].uid'));
  run("changeProgression(()=>progression.root='D')");assert.equal(run('synthSession.keyRoot'),'D');assert.equal(run('synthSession'),live);
  run("configureChord('Eb','minor9')");assert.equal(run('synthSession'),live,'map exploration does not interrupt');
- run("setSynthOption('loop',false)");assert.equal(run('synthSession'),live);run('changeProgression(()=>progression.items=[])');assert.equal(run('synthSession'),null,'empty list stops gracefully');
+ run("setSynthOption('loop',false)");assert.equal(run('synthSession'),live);run('changeProgression(()=>progression.items=[])');assert.equal(run('synthSession===null'),true,'empty list stops gracefully');
  // Editing just inside the scheduling lookahead cancels an obsolete future chord.
  run("progression.root='C';synthOptions.tempo=120;useStarter('pop')");await run('playProgression()');const firstStart=run('synthSession.queue[0].start');advance(firstStart+1.9);
  const future=run('synthSession.queue.find(e=>e.start>synthContext.currentTime)');assert(future,'next event is already scheduled');
@@ -344,7 +366,7 @@ assert.deepEqual(plain(run("playbackPlan([{beats:1},{beats:2},{beats:3}],120).ma
  // Appending during the final chord extends a non-looping run; loop can be enabled then disabled live.
  run("progression.items=[];addChord('library:C:major7');synthOptions.loop=false");await run('playProgression()');advance(ac.currentTime+.2);const lastSession=run('synthSession');assert.equal(run('synthSession.finishedScheduling'),true);
  run("addChord('library:G:dominant7')");assert.equal(run('synthSession'),lastSession);assert.equal(run('synthSession.finishedScheduling'),false);assert.equal(run('synthSession.nextIndex'),1);
- run("setSynthOption('loop',true)");advance(ac.currentTime+5);assert.equal(run('synthSession'),lastSession);run("setSynthOption('loop',false)");advance(ac.currentTime+5);assert.equal(run('synthSession'),null);
+ run("setSynthOption('loop',true)");advance(ac.currentTime+5);assert.equal(run('synthSession'),lastSession);run("setSynthOption('loop',false)");advance(ac.currentTime+8);assert.equal(run('synthSession===null'),true);
  // All changes while the audio device is resuming are reflected in the initial plan.
  let unlock;deferredResume=new Promise(r=>unlock=r);ac.state='suspended';const pendingEdit=run('playProgression()');run("addChord('library:F:major9');setSynthOption('preset','glass')");unlock();await pendingEdit;deferredResume=null;assert.equal(run('synthSession.plan.length'),3);assert.equal(run('synthSession.settings.preset'),'glass');run('stopPlayback()');
  console.log('PASS: live synth controls, add/remove/reorder/copy/transpose, current-card removal, future-event cancellation, append at end, loop changes, pending-resume edits, and graceful empty-list stop.');
@@ -359,16 +381,16 @@ assert.deepEqual(plain(run("playbackPlan([{beats:1},{beats:2},{beats:3}],120).ma
  const settled=plain(run('dragLiftPose({x:100,y:80,liftAt:10,releaseX:5,releaseY:0},150)'));assert.equal(settled.x,100);assert(Math.abs(settled.scale-1)<1e-9);
  // Space starts/stops, typing and control activation remain intact, Escape stops.
  let blocked=false;const typing={closest:()=>({})},canvas={closest:()=>null};
- run('showPage(true)');ctx.keyboardEvent={code:'Space',key:' ',target:typing,preventDefault(){blocked=true;}};run('appKeyboardShortcut(keyboardEvent)');assert(!blocked);assert.equal(run('synthSession'),null);
- ctx.keyboardEvent={code:'Space',key:' ',target:canvas,preventDefault(){blocked=true;}};run('appKeyboardShortcut(keyboardEvent)');await Promise.resolve();assert(blocked);assert(run('synthSession')||run('synthPending'));run('appKeyboardShortcut(keyboardEvent)');assert.equal(run('synthSession'),null);assert.equal(run('synthPending'),false);
- await run('playProgression()');ctx.keyboardEvent={key:'Escape',target:canvas,preventDefault(){}};run('appKeyboardShortcut(keyboardEvent)');assert.equal(run('synthSession'),null);
+ run('showPage(true)');ctx.keyboardEvent={code:'Space',key:' ',target:typing,preventDefault(){blocked=true;}};run('appKeyboardShortcut(keyboardEvent)');assert(!blocked);assert.equal(run('synthSession===null'),true);
+ ctx.keyboardEvent={code:'Space',key:' ',target:canvas,preventDefault(){blocked=true;}};run('appKeyboardShortcut(keyboardEvent)');await Promise.resolve();assert(blocked);assert(run('synthSession')||run('synthPending'));run('appKeyboardShortcut(keyboardEvent)');assert.equal(run('synthSession===null'),true);assert.equal(run('synthPending'),false);
+ await run('playProgression()');ctx.keyboardEvent={key:'Escape',target:canvas,preventDefault(){}};run('appKeyboardShortcut(keyboardEvent)');assert.equal(run('synthSession===null'),true);
  run("setSynthOption('style','down');setSynthOption('humanize',43);setSynthOption('rate',1);setSynthOption('swing',20);saveWorkspace();synthOptions.style='chords';synthOptions.humanize=0;restoreWorkspace()");assert.equal(run('synthOptions.style'),'down');assert.equal(run('synthOptions.humanize'),43);
  run("setSynthOption('style','invalid');setSynthOption('rate',3);setSynthOption('humanize',101);setSynthOption('swing',99)");assert.equal(run('synthOptions.style'),'down');assert.equal(run('synthOptions.rate'),1);assert.equal(run('synthOptions.humanize'),43);assert.equal(run('synthOptions.swing'),20);
  run("synthOptions.style='chords';synthOptions.humanize=0;synthOptions.rate=2;synthOptions.swing=0");
  console.log('PASS: live performance settings, immediate stronger drag cue, Space/Escape with typing protection, settings persistence and validation.');
 
 // Cancel while resume() is pending: a delayed audio permission/resume must not resurrect playback.
- let release;deferredResume=new Promise(r=>release=r);ac.state='suspended';const pending=run('playProgression()');run('stopPlayback()');release();await pending;assert.equal(run('synthSession'),null);deferredResume=null;
+ let release;deferredResume=new Promise(r=>release=r);ac.state='suspended';const pending=run('playProgression()');run('stopPlayback()');release();await pending;assert.equal(run('synthSession===null'),true);deferredResume=null;
  if(process.env.FRETBOARD_TEST_HTML){
   run("progression={root:'C',mode:'major',size:'triads',items:[]};preferences.notations.progressions='roman';synthOptions.loop=false");
   function contextChords(spec){run('progression.items='+JSON.stringify(spec.map(([degree,quality])=>({degree,quality,beats:4,origin:'Edited chord'}))));return plain(run('progression.items.map((c,i)=>analyzeChord(c,i))'));}
@@ -397,7 +419,7 @@ assert.deepEqual(plain(run("playbackPlan([{beats:1},{beats:2},{beats:3}],120).ma
   run("showDiscovery('suggested')");assert.equal(elements.get('chord-palettes').hidden,false);assert.equal(elements.get('library-content').hidden,true);
   console.log('PASS: context-aware dominant/tritone/applied-ii/borrowing analysis, loop boundaries, transposition, export labels, command-click preview without insertion, and studio panes.');
  }
- ac.state='suspended';ac.resume=async()=>{throw new Error('test unavailable')};await run('playProgression()');assert.equal(run('synthSession'),null);assert(elements.get('playback-status').textContent.includes('Could not start audio'));
+ ac.state='suspended';ac.resume=async()=>{throw new Error('test unavailable')};await run('playProgression()');assert.equal(run('synthSession===null'),true);assert(elements.get('playback-status').textContent.includes('Could not start audio'));
  console.log('PASS: silent synth graph, 408 chord voicings, spectral morphing, beat timing, voice cleanup, loop, preview, volume, stop/edit cancellation, async resume cancellation and audio-error handling. No speakers or screen used.');
- fs.writeFileSync(__dirname+'/synth-checks.json',JSON.stringify({version:'1.6',audioDeviceUsed:false,screenUsed:false,presets:4,chordVoicings:408,checks:['harmonic wave tables','morph spectra','pitches','scheduling','loop','preview','voice teardown','fade on stop','live volume','persistence','pending-resume cancellation','error recovery'],limitation:'Web Audio graph tested with a silent API harness; no live browser/audio audition.'},null,2));
+ fs.writeFileSync(__dirname+'/synth-checks.json',JSON.stringify({version:'1.21',audioDeviceUsed:false,screenUsed:false,presets:12,chordVoicings:408,checks:['harmonic wave tables','morph spectra','pitches','scheduling','loop','preview','voice teardown','fade on stop','live volume','persistence','pending-resume cancellation','error recovery'],limitation:'Web Audio graph tested with a silent API harness; no live browser/audio audition.'},null,2));
 })().catch(error=>{console.error(error);process.exitCode=1;});

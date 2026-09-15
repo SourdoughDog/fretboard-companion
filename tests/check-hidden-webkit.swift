@@ -15,15 +15,24 @@ final class HiddenCheck: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         window.contentView = view
         let url=URL(fileURLWithPath:CommandLine.arguments[1])
         view.loadFileURL(url,allowingReadAccessTo:url.deletingLastPathComponent())
-        DispatchQueue.main.asyncAfter(deadline:.now()+30){fputs("Background WebKit check timed out\n",stderr);exit(2)}
+        DispatchQueue.main.asyncAfter(deadline:.now()+60){fputs("Background WebKit check timed out\n",stderr);exit(2)}
     }
     func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!) {
         do {
             let script=try String(contentsOfFile:CommandLine.arguments[2],encoding:.utf8)
-            webView.evaluateJavaScript(script){value,error in
-                if let error=error {fputs("\(error)\n",stderr);exit(1)}
-                print(value ?? "No result")
-                exit(0)
+            if CommandLine.arguments[2].hasSuffix(".async.js") {
+                webView.callAsyncJavaScript(script, arguments: [:], in: nil, in: .page) { result in
+                    switch result {
+                    case .success(let value): print(value); exit(0)
+                    case .failure(let error): fputs("\(error)\n",stderr); exit(1)
+                    }
+                }
+            } else {
+                webView.evaluateJavaScript(script){value,error in
+                    if let error=error {fputs("\(error)\n",stderr);exit(1)}
+                    print(value ?? "No result")
+                    exit(0)
+                }
             }
         } catch {fputs("\(error)\n",stderr);exit(1)}
     }

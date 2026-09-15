@@ -139,7 +139,9 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             if action == "play" { webView.evaluateJavaScript("playProgression()", completionHandler: nil) }
             if action == "toggle" { webView.evaluateJavaScript("(synthSession||synthPending)?stopPlayback():playProgression()", completionHandler: nil) }
             if action == "stop" { webView.evaluateJavaScript("stopPlayback()", completionHandler: nil) }
-            if action == "set", let key = body["key"] as? String, ["preset", "tempo", "morph", "volume", "style", "rate", "humanize", "swing"].contains(key),
+            // The engine validates keys and ranges in validSynthOption. Forward new controls
+            // through the same path instead of maintaining a second, stale allowlist.
+            if action == "set", let key = body["key"] as? String,
                let value = body["value"], let data = try? JSONSerialization.data(withJSONObject: [key, value]), let json = String(data: data, encoding: .utf8) {
                 webView.evaluateJavaScript("setSynthOption(...\(json))", completionHandler: nil)
             }
@@ -207,7 +209,7 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             let view = WKWebView(frame: .zero, configuration: config)
             view.navigationDelegate = self
             synthWebView = view
-            let panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 580, height: 720), styleMask: [.titled, .closable, .resizable, .utilityWindow], backing: .buffered, defer: false)
+            let panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 680, height: 820), styleMask: [.titled, .closable, .resizable, .utilityWindow], backing: .buffered, defer: false)
             panel.title = "Wavetable Synth"
             panel.minSize = NSSize(width: 520, height: 640)
             panel.isReleasedWhenClosed = false
@@ -240,7 +242,7 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     @objc private func about() {
-        NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Guitar Fretboard", .applicationVersion: "1.20", .version: "21", .credits: NSAttributedString(string: "Your offline guitar scale and chord companion.\n26 scales and modes · 34 chord types · All 12 roots\nPolyphonic wavetable synth · Progression arranger")])
+        NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Guitar Fretboard", .applicationVersion: "1.23", .version: "24", .credits: NSAttributedString(string: "Your offline guitar scale and chord companion.\n26 scales and modes · 34 chord types · All 12 roots\nPolyphonic wavetable synth · Progression arranger")])
     }
     @objc private func zoomIn() { webView.pageZoom = min(2, webView.pageZoom + 0.1) }
     @objc private func zoomOut() { webView.pageZoom = max(0.7, webView.pageZoom - 0.1) }

@@ -18,7 +18,7 @@ html = html.replace('<div class="settings"', '<div class="settings" hidden')
 html = html.replace('Open this HTML file directly in your browser; no installation or connection is needed. You can also print from your browser.', 'This Mac app works offline in its own window. Choose File → Print Current View to print, or use the View menu to adjust the size.')
 html = html.replace('Everything this app needs is inside this file.', 'Everything this app needs is included in the app.')
 (resources/'index.html').write_text(html)
-info = dict(CFBundleName='Guitar Fretboard', CFBundleDisplayName='Guitar Fretboard', CFBundleExecutable='GuitarFretboard', CFBundleIdentifier='local.guitar.fretboardcompanion', CFBundlePackageType='APPL', CFBundleShortVersionString='1.20', CFBundleVersion='21', CFBundleIconFile='AppIcon', NSHighResolutionCapable=True, LSMinimumSystemVersion='13.0', NSPrincipalClass='NSApplication', NSHumanReadableCopyright='Offline guitar theory companion')
+info = dict(CFBundleName='Guitar Fretboard', CFBundleDisplayName='Guitar Fretboard', CFBundleExecutable='GuitarFretboard', CFBundleIdentifier='local.guitar.fretboardcompanion', CFBundlePackageType='APPL', CFBundleShortVersionString='1.23', CFBundleVersion='24', CFBundleIconFile='AppIcon', NSHighResolutionCapable=True, LSMinimumSystemVersion='13.0', NSPrincipalClass='NSApplication', NSHumanReadableCopyright='Offline guitar theory companion')
 with (app/'Contents/Info.plist').open('wb') as f: plistlib.dump(info,f)
 (app/'Contents/PkgInfo').write_bytes(b'APPL????')
 im=Image.new('RGBA',(1024,1024),(0,0,0,0));d=ImageDraw.Draw(im)
@@ -28,7 +28,7 @@ for y in [300,442,584,726]:d.line((180,y,844,y),fill='#95c6ca',width=12)
 d.ellipse((415,345,609,539),fill='#ffffff')
 d.ellipse((664,642,832,810),fill='#ffd6b8')
 im.save(resources/'AppIcon.icns', format='ICNS')
-readme='''GUITAR FRETBOARD — OFFLINE MAC APP · v1.20
+readme='''GUITAR FRETBOARD — OFFLINE MAC APP · v1.23
 
 Open Guitar Fretboard.app. Drag it to your Desktop or Applications if desired.
 Requires macOS 13 or later on an Apple silicon Mac. Works offline.
@@ -124,13 +124,45 @@ These are practical interpretations; melody and voicing can change analysis.
 
 WAVETABLE SYNTH
 Choose File → Wavetable Synth, or Wavetable in the arranger, to open the
-separate sound window. Choose a preset, blend its wave, and adjust tempo,
-volume and performance. Loop is now above the progression in the main window.
-Play and Stop remain in both windows.
+separate sound window. Choose from 12 synthesized presets:
+- Keys: Warm keys, Felt keys, Tine electric, Drawbar organ.
+- Pads: Velvet pad, Slow strings, Air choir.
+- Plucks & bells: Glass, Soft pluck, Wooden thumb piano.
+- Synths: Soft brass, Hollow reed.
+
+The preset selector stays at the top of the window. Choose Sound to shape
+your tone, or Performance to arrange how the notes unfold. Play, Stop and
+Volume stay at the bottom while you scroll through either tab.
+
+Sound starts with Wave blend and the filter controls together in Tone.
+Wave blend moves between two harmonic shapes. Filter cutoff adjusts brightness,
+resonance emphasizes the filter edge, and filter motion adds a bright attack
+that settles with Decay.
+Open Envelope for Attack (fade-in), Decay (settling time), Sustain (held
+level), and Release (fade-out). A short note can end before a slow attack
+reaches full volume. Longer releases also apply to arpeggios.
+Open Space & movement for Stereo width, Reverb, Detune, Vibrato depth and speed.
+Detune and vibrato depth use cents (100 cents = one semitone). Depth 0
+turns vibrato off. Width 0 centers the oscillator voices; reverb can still
+be stereo. Cutoff and vibrato speed use Hz (cycles per second).
+
+Performance groups playing style, tempo, note pace, humanize and swing.
+Use the left/right arrow keys to switch tabs when a tab has keyboard focus.
+Switching tabs does not change your sound or restart playback.
+
+Choosing a preset loads its sound settings and preserves tempo, volume,
+loop and performance. Reset sound restores the selected preset. Your current
+edited sound saves automatically; this is not a library of named user patches.
+Loop is above the progression in the main window. Play and Stop are in both
+windows and remain accessible while scrolling through the sound controls.
 Closing the synth window keeps playback running. Stop it in the arranger
 or reopen the sound window. Closing the main app window stops playback.
-Wave blend, sound and volume adjust while playing. New sound envelopes and
-tempo apply from the next chord. Add, remove, duplicate or reorder while
+Wave blend, preset timbre, filter, stereo, vibrato, reverb and volume adjust
+while playing. Envelope changes affect notes not already scheduled; performance
+and tempo changes apply to following chords. Preset changes preserve the
+current notes' amplitude envelopes. Stop fades the sound and reverb together.
+The short room tail rings out at the natural end of playback.
+Add, remove, duplicate or reorder while
 playing: the sounding chord finishes naturally, then the sequence follows
 your edits. Clearing all chords stops playback.
 No sound starts without a listening or drag gesture. Drag feedback follows
