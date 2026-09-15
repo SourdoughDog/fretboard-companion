@@ -13,8 +13,9 @@ Updated: September 14, 2026. Read this before changing the app. This is a workin
 ## Product and ownership
 
 - Public repository: https://github.com/SourdoughDog/fretboard-companion
-- Current native source/local build: **1.27**, bundle build **28**, including the v1.24–v1.27 features and fixes. Latest published downloadable release remains **v1.23**, at commit `9914985926cab95af36d7ab7c5be2c35aef68bb0`.
-- Release: https://github.com/SourdoughDog/fretboard-companion/releases/tag/v1.23
+- Current native source/local build: **1.27**, bundle build **28**, including the v1.24–v1.27 features and fixes. Latest published downloadable release: **v1.27**, at commit `471dc0ee8c5a7e8cbcb52fcd42d1d8a1325f372a`.
+- Release: https://github.com/SourdoughDog/fretboard-companion/releases/tag/v1.27
+- Published Mac ZIP SHA-256: `c6b78593ca538f8964b51afc547bca51f3822c846a5e965a05a43c8802d297c7`. GitHub asset digests and the release tag were verified. Earlier releases remain available.
 - Latest downloadable app: https://github.com/SourdoughDog/fretboard-companion/releases/latest/download/Guitar.Fretboard.for.Mac.zip
 - UI branding: **Fretboard companion**. Native bundle/window name remains **Guitar Fretboard** / `Guitar Fretboard.app`; do not silently rename the bundle or its identifier.
 - Bundle identifier: `local.guitar.fretboardcompanion`.

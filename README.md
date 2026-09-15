@@ -79,7 +79,7 @@ The logic suite covers scales, chords, harmony, search, progression editing, sha
 - `scripts/`: portable build and silent UI-check commands.
 - `legacy/`: preserved standalone HTML v1.4, with fewer features than the native app.
 
-Edit the shared CSS or SVG sources, then run the build to regenerate the embedded theme blocks. The older standalone HTML is intentionally preserved separately. The current native app source is version **1.27**. The latest published release is v1.23 until the new build is published.
+Edit the shared CSS or SVG sources, then run the build to regenerate the embedded theme blocks. The older standalone HTML is intentionally preserved separately. The current native app source and latest published release are version **1.27**.
 
 ## Credits
 
