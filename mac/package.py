@@ -18,7 +18,7 @@ html = html.replace('<div class="settings"', '<div class="settings" hidden')
 html = html.replace('Open this HTML file directly in your browser; no installation or connection is needed. You can also print from your browser.', 'This Mac app works offline in its own window. Choose File → Print Current View to print, or use the View menu to adjust the size.')
 html = html.replace('Everything this app needs is inside this file.', 'Everything this app needs is included in the app.')
 (resources/'index.html').write_text(html)
-info = dict(CFBundleName='Guitar Fretboard', CFBundleDisplayName='Guitar Fretboard', CFBundleExecutable='GuitarFretboard', CFBundleIdentifier='local.guitar.fretboardcompanion', CFBundlePackageType='APPL', CFBundleShortVersionString='1.23', CFBundleVersion='24', CFBundleIconFile='AppIcon', NSHighResolutionCapable=True, LSMinimumSystemVersion='13.0', NSPrincipalClass='NSApplication', NSHumanReadableCopyright='Offline guitar theory companion')
+info = dict(CFBundleName='Guitar Fretboard', CFBundleDisplayName='Guitar Fretboard', CFBundleExecutable='GuitarFretboard', CFBundleIdentifier='local.guitar.fretboardcompanion', CFBundlePackageType='APPL', CFBundleShortVersionString='1.27', CFBundleVersion='28', CFBundleIconFile='AppIcon', NSHighResolutionCapable=True, LSMinimumSystemVersion='13.0', NSPrincipalClass='NSApplication', NSHumanReadableCopyright='Offline guitar theory companion')
 with (app/'Contents/Info.plist').open('wb') as f: plistlib.dump(info,f)
 (app/'Contents/PkgInfo').write_bytes(b'APPL????')
 im=Image.new('RGBA',(1024,1024),(0,0,0,0));d=ImageDraw.Draw(im)
@@ -28,7 +28,7 @@ for y in [300,442,584,726]:d.line((180,y,844,y),fill='#95c6ca',width=12)
 d.ellipse((415,345,609,539),fill='#ffffff')
 d.ellipse((664,642,832,810),fill='#ffd6b8')
 im.save(resources/'AppIcon.icns', format='ICNS')
-readme='''GUITAR FRETBOARD — OFFLINE MAC APP · v1.23
+readme='''GUITAR FRETBOARD — OFFLINE MAC APP · v1.27
 
 Open Guitar Fretboard.app. Drag it to your Desktop or Applications if desired.
 Requires macOS 13 or later on an Apple silicon Mac. Works offline.
@@ -152,7 +152,7 @@ Switching tabs does not change your sound or restart playback.
 
 Choosing a preset loads its sound settings and preserves tempo, volume,
 loop and performance. Reset sound restores the selected preset. Your current
-edited sound saves automatically; this is not a library of named user patches.
+edited sound saves automatically. My sounds keeps named snapshots separately.
 Loop is above the progression in the main window. Play and Stop are in both
 windows and remain accessible while scrolling through the sound controls.
 Closing the synth window keeps playback running. Stop it in the arranger
@@ -194,6 +194,71 @@ degrees, not finger numbers. Higher-position charts show their first fret.
 Omitted tones and non-root bass notes are labeled. Hear shape auditions the
 actual string pitches, using your current performance settings.
 
+MY SOUNDS & ENVELOPE GRAPH
+In Wavetable → Sound, open My sounds. Give your sound a name and choose
+Save new. Pick a saved sound to recall it; its tempo, volume and performance
+are left as they are. Update replaces the selected sound with your current
+tone settings. Rename uses the name field. Favorite marks sounds for the
+Favorites only filter. Delete removes a snapshot; Undo library change restores
+it. You can keep up to 200 sounds. The factory presets remain available.
+
+In Envelope, drag Attack, Decay and Release horizontally, or Sustain vertically.
+The graph uses a separate scale for each stage; it is not a single time axis.
+Sliders provide exact values. Focus a graph handle and use arrow keys to edit,
+Shift for larger steps, or Home/End for minimum/maximum. Hear envelope plays
+a held chord long enough to demonstrate the attack and decay, then releases.
+
+PRACTICE & VOICING
+Above your sequence, the compact Voicing, Practice and Saved progressions
+buttons each open their own panel. One panel opens at a time. Click the active
+button again or Done to close it; your settings and playback are preserved.
+
+Open Practice and enable Practice loop to repeat
+in 4/4. Choose no count-in, one bar or two bars; the count-in clicks before
+chords start. Metronome adds clicks during the progression, accented every
+four beats. Use card beats, or override every chord to 1, 2 or 4 bars.
+Starting tempo is 40–220 BPM. Increase each loop adds 2, 5 or 10 BPM, up to
+the ceiling; a ceiling below the starting tempo never slows it down. Starting
+again returns to the starting tempo. Changing practice settings or starting
+tempo stops playback for a fresh start. Stop also cancels pending clicks.
+Ordinary card, shape and chord-finder previews skip practice count-ins.
+
+Open Voicing, independently of Practice. Voice movement offers Original (low root plus formula), Smooth transitions,
+Root position, First inversion or Second inversion. Close groups chord tones;
+Open spreads alternating voices into a higher octave. Original keeps its
+existing spacing. Register shifts the result up/down one octave. Smooth
+transitions select nearby inversions within each pass through the sequence;
+it is a synthesized voicing, not a guarantee of a playable guitar fingering.
+Chord cards list the resulting pitches and octaves. Playback, previews and
+MIDI share the choices. Exact shape and finder auditions retain their notes.
+
+SAVED PROGRESSIONS
+Open Saved progressions above your sequence. Name the progression, optionally
+name a collection (defaults to My progressions), then Save new. Each snapshot
+keeps chords, key, tempo, sound, performance, volume, practice and voicing.
+Use search and the collection filter to find it later. Load restores the
+snapshot and stops playback. Restore previous workspace brings back what
+you had immediately before that load, including its sound and practice settings.
+To rename, move to another collection or replace a saved progression, load it,
+edit the name/collection or workspace, and choose Update loaded. Delete has
+Undo library change. You can keep up to 200 progressions. Libraries are local
+to this Mac; they are separate from the continuously saved current workspace.
+
+EAR TRAINING
+Choose Ear training or press Command–5. Intervals offers a Starter set of six
+intervals and an Extended set of all twelve distances from a minor second
+through an octave. Hear them ascending, descending or together. Chord qualities
+offers four triads in Starter and ten triad/seventh/suspended types in Extended.
+Chords play together in root position with a consistent warm-key sound.
+
+Start round plays a question. Hear again repeats the same notes; choose an
+answer or Reveal answer. Feedback shows the correct interval/quality, spelled
+notes and degrees, and matching pitch classes across the fretboard. Only the
+first answer counts. Reveals and skipped unfinished rounds count as attempts.
+Next round plays a new question. Scores save separately for each game/level.
+Reset score affects the selected game/level. Space replays a question outside
+controls; Escape or Stop ends its sound. The master volume controls loudness.
+
 PERFORMANCE & MIDI
 The synth window includes held chords, gentle strums, ascending/descending
 arpeggios, up-and-down arpeggios and a fingerpicked performance. Choose
@@ -212,6 +277,7 @@ Space: play / stop the progression (typing fields and ordinary controls
 retain their normal keyboard actions). Escape: stop or cancel a drag.
 Command-F: focus the current tab's search.
 Command-1 / 2 / 3: Scales / Chords / Progressions. Command-4: Wavetable Synth.
+Command–5: Ear training.
 Command-click: preview a chord. Command-Shift-drag: copy a progression tile.
 
 APPEARANCE

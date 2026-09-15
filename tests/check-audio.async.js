@@ -7,6 +7,7 @@ return await (async()=>{
   const bus=ctx.createGain();bus.connect(ctx.outputBus);
   const session={bus,effects:createSynthEffects(ctx,bus,settings),notes:new Set(),voices:new Set(),voiceInfo:new Map(),settings,keyRoot:'C',queue:[]};synthSession=session;synthOptions={...settings};
   const chord={degree:'1',quality:'dominant13',beats:2,voicing:overrides.voicing||[36,48,52,55,58,62,65,69]};
+  if(overrides.metronome){session.practice=true;session.beat=0;practice.metronome=true;}
   if(overrides.stress){for(let i=0;i<8;i++)scheduleSynthChord(session,{chord,index:i,duration:.25},.08+i*.25);}else scheduleSynthChord(session,{chord,index:0,duration:1},.08);
   const suspensions=live?[.02,.35,.38,.41,.7].map(t=>ctx.suspend(t)):[];
   const rendered=ctx.startRendering();
@@ -26,5 +27,6 @@ return await (async()=>{
  await render('strings',96000,{morph:100,voicing:[96,103,110,117,124,127],release:.3});
  await render('organ',48000,{stress:true,morph:100,cutoff:150,resonance:100,reverb:60,sustain:100,release:3});
  await render('pad',48000,{attack:2,release:3,style:'up',rate:4});
+ await render('keys',48000,{metronome:true});
  return JSON.stringify({silentOfflineRendering:true,scenes:results});
 })();

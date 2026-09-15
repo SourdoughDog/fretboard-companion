@@ -13,6 +13,9 @@ subprocess.run(['xcrun', 'swiftc', '-sdk', sdk, '-module-cache-path', str(ROOT/'
 for width in (540, 1100):
     subprocess.run([str(runner), str(ROOT/'mac/app-source.html'), str(ROOT/'tests/check-hidden-finder.js'), str(width), '1000'], check=True)
 
+for width in (540, 1100):
+    subprocess.run([str(runner), str(ROOT/'mac/app-source.html'), str(ROOT/'tests/check-hidden-features.js'), str(width), '1000'], check=True)
+
 # Use the engine's actual preset defaults in the controller fixture.
 source=(ROOT/'mac/app-source.html').read_text()
 fixture=source[source.index('const SOUND_DEFAULTS='):source.index('const harmonicCache=')]

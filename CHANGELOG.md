@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.27
+
+- Fixed the synth preset selector showing a stale label, such as Warm keys, while another sound was playing. The confirmed preset now updates even while the dropdown has focus.
+- Added focused-selector UI and native playback regression checks; text and slider editing retain their existing focus protection.
+
+## 1.26
+
+- Replaced stacked progression disclosures with a compact Voicing, Practice and Saved progressions tool row.
+- Gave chord voicing its own panel, separate from practice controls.
+- Added current-setting summaries, one open panel at a time, bounded panel scrolling and a Done button that returns keyboard focus.
+- Preserved settings, library drafts and playback when opening or closing tools.
+
+## 1.25
+
+- Fixed a startup crash caused by adding Ear Training to the three-tab degree-label menu. Menu construction now uses the same tab list as preference updates.
+- Expanded the native integration check to install real startup menus, receive appearance messages, and verify notation actions/checkmarks. The new check detects the v1.24 regression.
+
+## 1.24
+
+- Added named sound snapshots with favorites, recall, update, rename, delete, and undo.
+- Added a draggable, keyboard-accessible envelope graph and held-chord sound preview.
+- Added practice loops with count-ins, metronome, bars per chord, and gradual tempo increases.
+- Added smooth chord voicing, inversions, close/open spacing, and octave selection shared by playback and MIDI.
+- Added named progression collections with search, workspace snapshots, update, deletion undo, and restoration of the previous workspace after loading.
+- Added interval and chord-quality ear-training games with replay, answer fretboards, and local scores.
+- Preserved existing workspace preferences and added silent regression checks for the new features and native bridge.
+
 ## 1.23
 
 - Reorganized the synth into Sound and Performance tabs, with the preset selector always at the top and Play, Stop and Volume always at the bottom.

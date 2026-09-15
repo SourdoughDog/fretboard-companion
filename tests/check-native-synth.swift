@@ -17,9 +17,19 @@
 extension FretboardApp {
     @MainActor func runBridgeChecks() async throws {
         let root=URL(fileURLWithPath:CommandLine.arguments[1])
+        // Exercise real startup menus as well as the views: appearance messages
+        // update these items immediately when the main page restores preferences.
+        installMenus()
+        guard notationItems.count == notationTabs.count * 2,
+              notationItems.map({ $0.tag }) == Array(0..<(notationTabs.count * 2)),
+              NSApp.mainMenu?.item(withTitle: "View")?.submenu?.item(withTitle: "Ear Training")?.keyEquivalent == "5" else {
+            throw NSError(domain: "StartupMenus", code: 1, userInfo: [NSLocalizedDescriptionKey: "Notation menu mapping or Ear Training shortcut is inconsistent"])
+        }
+
         let config=WKWebViewConfiguration()
         config.websiteDataStore = .nonPersistent()
         config.userContentController.add(self,name:"synthState")
+        config.userContentController.add(self,name:"appearance")
         config.userContentController.addUserScript(WKUserScript(source:"""
             // A real offline graph with a running state for the playback scheduler.
             // No AudioContext or audio device is ever created by this test.
@@ -51,6 +61,22 @@ extension FretboardApp {
             try await Task.sleep(nanoseconds:20_000_000)
         }
         _ = try await webView.evaluateJavaScript("publishSynthState(true)")
+        try await waitForBridge(webView,"document.documentElement.dataset.theme==='classic'")
+        for (tabIndex, tab) in notationTabs.enumerated() {
+            changeNotation(notationItems[tabIndex * 2 + 1])
+            try await waitForBridge(webView,"preferences.notations['\(tab)']==='roman'")
+            for _ in 0..<150 {
+                if notationItems[tabIndex * 2 + 1].state == .on && notationItems[tabIndex * 2].state == .off { break }
+                try await Task.sleep(nanoseconds:20_000_000)
+            }
+            guard notationItems[tabIndex * 2 + 1].state == .on && notationItems[tabIndex * 2].state == .off else {
+                throw NSError(domain:"StartupMenus",code:2,userInfo:[NSLocalizedDescriptionKey:"Notation checkmark did not update for \(tab)"])
+            }
+        }
+        _ = try await webView.evaluateJavaScript("$('mode-ear').click();setAppTheme('midnight')")
+        try await waitForBridge(webView,"earVisible&&preferences.theme==='midnight'")
+        _ = try await webView.evaluateJavaScript("setAppTheme('classic');showPage(true)")
+        print("PASS: real startup menus, initial appearance messages, every notation menu action/checkmark, and Ear Training theme changes.")
         let panel=synthWebView!
         try await waitForBridge(panel,"lastState!==null")
         _ = try await bridgeJS(panel,"""
@@ -99,6 +125,61 @@ extension FretboardApp {
             if(lastState.modified||lastState.options.release!==.28)throw Error('Preset reset failed');
             return true;
             """,arguments:[:])
+        _ = try await panel.evaluateJavaScript("$('sound-name').value='Bridge sound';$('sound-save').click()")
+        try await waitForBridge(panel,"lastState.savedSounds.length===1&&!!lastState.activeSoundId")
+        _ = try await panel.evaluateJavaScript("$('envelope-attack').dispatchEvent(new KeyboardEvent('keydown',{key:'End',bubbles:true}))")
+        try await waitForBridge(webView,"synthOptions.attack===2")
+        _ = try await panel.evaluateJavaScript("""
+            $('envelope-graph').closest('details').open=true;
+            const graph=$('envelope-graph'),capture=graph.setPointerCapture;
+            graph.setPointerCapture=()=>{};
+            const point=graph.createSVGPoint();point.x=324;point.y=72;
+            const client=point.matrixTransform(graph.getScreenCTM());
+            $('envelope-sustain').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:7,clientX:client.x,clientY:client.y}));
+            graph.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,pointerId:7,clientX:client.x,clientY:client.y}));
+            graph.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:7}));
+            graph.setPointerCapture=capture;true;
+            """)
+        try await waitForBridge(webView,"synthOptions.sustain===55")
+        _ = try await panel.evaluateJavaScript("$('sound-update').click()")
+        try await waitForBridge(webView,"personalLibrary.sounds[0].sound.attack===2")
+        _ = try await panel.evaluateJavaScript("$('synth-preset').value='glass';$('synth-preset').dispatchEvent(new Event('change'))")
+        try await waitForBridge(webView,"synthOptions.preset==='glass'")
+        _ = try await panel.evaluateJavaScript("$('saved-sound').dispatchEvent(new Event('change'))")
+        try await waitForBridge(webView,"synthOptions.attack===2&&synthOptions.preset==='keys'")
+        _ = try await panel.evaluateJavaScript("$('sound-favorite').click()")
+        try await waitForBridge(panel,"lastState.savedSounds[0].favorite")
+        _ = try await panel.evaluateJavaScript("$('sound-name').value='Renamed sound';$('sound-rename').click()")
+        try await waitForBridge(panel,"lastState.savedSounds[0].name==='Renamed sound'")
+        _ = try await panel.evaluateJavaScript("$('envelope-preview').click()")
+        try await waitForBridge(webView,"!!synthSession&&synthSession.settings.attack===2")
+        _ = try await panel.evaluateJavaScript("$('synth-stop').click();$('sound-delete').click()")
+        try await waitForBridge(panel,"lastState.savedSounds.length===0")
+        _ = try await panel.evaluateJavaScript("$('sound-undo').click()")
+        try await waitForBridge(panel,"lastState.savedSounds.length===1")
+        _ = try await webView.evaluateJavaScript("personalLibrary={sounds:[],songs:[],scores:{}};restorePersonalLibrary();if(personalLibrary.sounds[0].sound.attack!==2)throw Error('Saved sound persistence');publishSynthState(true)")
+        _ = try await bridgeJS(webView,"""
+            await playProgression(null,{degree:'1',quality:'major',beats:4});
+            window.presetTestSession=synthSession;
+            return true;
+            """,arguments:[:])
+        _ = try await panel.evaluateJavaScript("$('synth-preset').focus()")
+        for preset in ["glass", "pad", "brass", "keys"] {
+            // An engine update must reconcile the still-focused native selector.
+            _ = try await webView.evaluateJavaScript("setSynthOption('preset','\(preset)')")
+            try await waitForBridge(panel,"lastState.options.preset==='\(preset)'&&$('synth-preset').value==='\(preset)'")
+            _ = try await panel.evaluateJavaScript("if(document.activeElement!==$('synth-preset')||$('synth-preset').selectedOptions[0].textContent!==lastState.presets.find(p=>p.id===lastState.options.preset).name)throw Error('Focused preset caption mismatch')")
+        }
+        for preset in ["glass", "pad", "keys"] {
+            _ = try await panel.evaluateJavaScript("$('synth-preset').value='\(preset)';$('synth-preset').dispatchEvent(new Event('change'))")
+            try await waitForBridge(webView,"synthSession===window.presetTestSession&&synthSession.settings.preset==='\(preset)'")
+            try await waitForBridge(panel,"lastState.options.preset==='\(preset)'&&$('synth-preset').value==='\(preset)'")
+        }
+        _ = try await webView.evaluateJavaScript("stopPlayback();publishSynthState(true)")
+        try await waitForBridge(panel,"!lastState.playing&&$('synth-preset').value===lastState.options.preset")
+        _ = try await panel.evaluateJavaScript("$('synth-preset').blur()")
+        print("PASS: focused preset captions follow live engine updates and selector changes; playback continues and stop preserves the selection.")
+        print("PASS: sound save/update/rename/favorite/delete/undo/recall, envelope keyboard editing and audition traverse the production native bridge and persist.")
         print("PASS: all 12 new controls traverse the production Swift handler; invalid inputs rejected and preset reset works. No audio device or screen used.")
     }
 }

@@ -15,9 +15,12 @@ The native release requires **macOS 13 or later on an Apple silicon Mac (M1 or n
 - **Chord finder:** start with a blank fretboard, choose one note per string, and discover possible names, inversions, omitted fifths, and chords over a separate bass note. Hear the exact notes you selected.
 - **Progressions:** arrange chords by dragging, search the library, try 20 ideas, and explore borrowing, applied dominants, and tritone substitutions.
 - **Wavetable synth:** 12 presets with Sound and Performance tabs, editable envelopes, filters, stereo, vibrato and reverb; strumming, arpeggios, humanization, swing, and MIDI export.
+- **Practice:** count-ins, metronome, bars per chord, and gradual tempo increases; smooth voicing, inversions, spacing, and register.
+- **Personal library:** named sounds with favorites, an editable envelope graph, and saved progressions organized into collections.
+- **Ear training:** interval and chord-quality games with replay, local scores, and answer notes on the fretboard.
 - **Appearance:** 15 themes and independent number/Roman-numeral preferences for each tab, available in the File menu.
 
-Your settings and progression save locally. Finder selections remain while the app is open. No analytics, accounts, or network services are required. Music analysis suggests useful interpretations rather than a unique answer for every context. The chord finder checks the supported formulas with the root present.
+Your settings, progression, sound library, saved progression collections, and ear-training scores save locally. Finder selections remain while the app is open. No analytics, accounts, or network services are required. Music analysis suggests useful interpretations rather than a unique answer for every context. The chord finder checks the supported formulas with the root present.
 
 ## Shortcuts
 
@@ -26,6 +29,7 @@ Your settings and progression save locally. Finder selections remain while the a
 | Space | Play or stop the progression, outside text fields and controls |
 | Command–1 / 2 / 3 | Scales / Chords / Progressions |
 | Command–4 | Wavetable Synth |
+| Command–5 | Ear training |
 | Command–F | Search the current section |
 | Command-click | Preview a chord |
 | Command–Shift-drag | Copy a progression tile |
@@ -56,12 +60,13 @@ python3 scripts/build.py --sdk /path/to/MacOSX.sdk
 
 ```sh
 node tests/logic.cjs
+node tests/features.cjs
 python3 scripts/check-ui.py
 python3 scripts/check-audio.py
 python3 scripts/check-native-synth.py
 ```
 
-The logic suite covers scales, chords, harmony, search, progression editing, shapes, MIDI, playback scheduling, and persistence. Native UI checks cover the chord finder in all themes at wide and narrow sizes, including 408 chord/root combinations. The synth panel is checked across all 15 themes at two window sizes. Offline audio checks render 17 scenes into memory, including rapid preset changes, overlapping notes, long releases and 44.1/48/96 kHz sample rates. They check clipping headroom, finite samples, discontinuities, tails and voice cleanup. No screen capture or speaker playback is needed. Both native test runners accept `--sdk`.
+The logic suite covers scales, chords, harmony, search, progression editing, shapes, MIDI, playback scheduling, and persistence. Native UI checks cover the chord finder in all themes at wide and narrow sizes, including 408 chord/root combinations. The synth panel is checked across all 15 themes at two window sizes. Offline audio checks render 18 scenes into memory, including rapid preset changes, overlapping notes, long releases and 44.1/48/96 kHz sample rates. They check clipping headroom, finite samples, discontinuities, tails and voice cleanup. No screen capture or speaker playback is needed. Both native test runners accept `--sdk`.
 
 ## Source layout
 
@@ -74,7 +79,7 @@ The logic suite covers scales, chords, harmony, search, progression editing, sha
 - `scripts/`: portable build and silent UI-check commands.
 - `legacy/`: preserved standalone HTML v1.4, with fewer features than the native app.
 
-Edit the shared CSS or SVG sources, then run the build to regenerate the embedded theme blocks. The older standalone HTML is intentionally preserved separately. The current native app source is version **1.23**.
+Edit the shared CSS or SVG sources, then run the build to regenerate the embedded theme blocks. The older standalone HTML is intentionally preserved separately. The current native app source is version **1.27**. The latest published release is v1.23 until the new build is published.
 
 ## Credits
 

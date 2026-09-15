@@ -75,6 +75,12 @@
 
 
 
+
+
+
+
+
+
 /* BEGIN STYLE THEMES */
 /* Shared, offline visual identities for the main app and wavetable window. */
 :root[data-theme="retro"]{color-scheme:light;--ink:#392419;--muted:#72533c;--teal:#9a381e;--teal-soft:#f8dfb7;--orange:#704b0d;--peach:#f4e5b5;--line:#c7ab82;--paper:#fff4dd;--back:#eddbb8;--outside:#795a44;--focus:#23565b;--control:#f9e9c9;--edge:#a37b52;--warm-edge:#b79750;--on-accent:#fff8e7;--shadow:#53341526;--display-font:"Cooper Black","American Typewriter",Georgia,serif;--panel-radius:24px;--tile-radius:16px;--button-radius:20px;--panel-shadow:4px 5px 0 #bc976e;--border-size:2px}
@@ -465,6 +471,37 @@
 #finder-leading strong{display:block;margin-top:5px;font-family:var(--display-font,inherit);font-size:1.6rem;color:var(--teal);text-transform:none;letter-spacing:normal}
 @media(max-width:580px){#chord-finder .map-heading{flex-wrap:wrap}.finder-leading{margin-left:0}}
 
+/* Personal sounds, practice tools, progression collections and ear training. */
+.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+.feature-grid label,.feature-label{display:block;min-width:0;color:var(--ink);font-size:.8rem;line-height:1.5}
+.feature-grid input:not([type=checkbox]),.feature-grid select,.feature-label input:not([type=checkbox]),.feature-label select{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;height:38px;margin-top:6px;padding:6px 10px;background:var(--control,var(--paper));color:var(--ink);border:1px solid var(--edge);border-radius:var(--tile-radius,7px);font:inherit;appearance:auto}
+.feature-grid input[type=checkbox],.feature-label input[type=checkbox]{accent-color:var(--teal)}.feature-label{margin:10px 0}.feature-hint,.voicing-notes{color:var(--muted);font-size:.76rem;line-height:1.6}.voicing-notes{font-variant-numeric:tabular-nums;margin:5px 0;overflow-wrap:anywhere}
+.feature-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0}.feature-actions .action{font-size:.76rem;min-height:34px}
+.saved-list{max-height:350px;overflow:auto}.saved-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line)}.saved-item>div{min-width:0}.saved-item strong{font-size:.88rem;overflow-wrap:anywhere}.saved-item small{display:block;color:var(--muted);font-size:.72rem;line-height:1.5;margin-top:5px}.saved-item .feature-actions{flex-shrink:0}
+.ear-page{border:1px solid var(--edge);border-radius:var(--panel-radius,16px);background:var(--paper);padding:24px;margin-top:24px}.ear-score{font-size:.85rem;font-variant-numeric:tabular-nums;color:var(--teal)}.ear-stage{border:1px solid var(--edge);border-radius:var(--tile-radius,12px);padding:24px;background:var(--teal-soft);margin:20px 0}.ear-stage h3{font-size:1.4rem;margin:12px 0}.ear-stage p{font-size:.88rem;line-height:1.6}.ear-answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:20px}.ear-answers .action{min-height:44px}.ear-answers [data-correct=true]{opacity:1;background:var(--teal);color:var(--on-accent,#fff);border-color:var(--teal)}
+.ear-board{min-width:720px;table-layout:fixed}.ear-board td{height:48px;text-align:center}.ear-dot{display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:50%;background:var(--teal-soft);border:1px solid var(--teal);font-size:.7rem;color:var(--ink)}.ear-dot[data-root=true]{background:var(--teal);color:var(--on-accent,#fff)}
+.envelope-editor{padding:10px 0 16px}.envelope-editor svg{width:100%;display:block;overflow:visible;touch-action:none}.envelope-grid{stroke:var(--edge);stroke-width:1;fill:none}#envelope-line{stroke:var(--teal);stroke-width:2.5;fill:none}#envelope-fill{fill:var(--teal);opacity:.1}.envelope-editor circle{fill:var(--paper);stroke:var(--teal);stroke-width:3;cursor:ew-resize}.envelope-editor #envelope-sustain{cursor:ns-resize}.envelope-editor circle:focus{outline:none;stroke:var(--ink);stroke-width:5}.envelope-editor text{font:11px system-ui;fill:var(--muted)}
+@media(max-width:650px){.mode-picker .view-toggle{flex-wrap:wrap;height:auto}.mode-picker .view-toggle button{min-height:40px;flex:1;padding:0 12px}.ear-page,.ear-stage{padding:16px}.saved-item{align-items:start;flex-direction:column}.feature-grid{gap:12px}.ear-page .studio-heading{gap:10px}.ear-page h2{font-size:1.5rem}}
+@media print{.progression-tools,.ear-page .feature-actions,.ear-page .feature-grid{display:none!important}}
+
+/* One compact tool row, with an independent panel for each progression task. */
+.progression-tools{margin:0 0 18px;min-width:0}
+.progression-tool-bar{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:8px}
+.progression-tool-bar button{min-width:0;text-align:left;white-space:normal;background:var(--control,var(--paper));color:var(--ink);border:1px solid var(--edge);border-radius:var(--tile-radius,9px);padding:10px 12px;line-height:1.35;cursor:pointer;font:inherit;box-shadow:none}
+.progression-tool-bar strong{display:block;font-size:.8rem;font-weight:650;letter-spacing:normal;text-transform:none}
+.progression-tool-bar span{display:block;font-size:.7rem;color:var(--muted);margin-top:4px;line-height:1.4}
+.progression-tool-bar button[aria-expanded=true]{background:var(--teal-soft);border-color:var(--teal);box-shadow:inset 0 -3px 0 var(--teal)}
+.progression-tool-bar button:hover{border-color:var(--teal)}
+.progression-tool-bar button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+#tool-practice[data-enabled=true] span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);margin-right:5px;vertical-align:middle}
+.progression-tool-panel{margin-top:10px;border:1px solid var(--edge);border-radius:var(--tile-radius,12px);background:var(--paper);overflow:hidden}
+.progression-tool-panel[hidden]{display:none}
+.tool-panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--teal-soft)}
+.tool-panel-header h3{font-size:.9rem;margin:0;color:var(--ink)}.tool-panel-header p{font-size:.73rem;margin:5px 0 0;color:var(--muted);line-height:1.5}.tool-panel-header .action{flex-shrink:0;font-size:.74rem;min-height:32px}
+.tool-panel-body{padding:2px 16px 12px;max-height:420px;max-height:min(420px,55vh);overflow:auto;scrollbar-color:var(--edge) transparent;scroll-padding:12px}
+.tool-panel-body .saved-list{max-height:none;overflow:visible}.tool-panel-body .feature-hint{margin-bottom:4px}
+@media(max-width:650px){.progression-tool-bar{gap:6px}.progression-tool-bar button{padding:9px 8px}.progression-tool-bar strong{font-size:.74rem}.progression-tool-bar span{font-size:.66rem}.tool-panel-header{padding:12px}.tool-panel-body{padding:2px 12px 12px}}
+
 /* END STYLE THEMES */
 </style>
 </head>
@@ -472,7 +509,7 @@
 <main>
  <header class="masthead"><div class="brand-lockup"><h1><span class="brand-name">Fretboard</span> <span class="brand-descriptor">companion</span></h1></div></header>
  <noscript>Please enable JavaScript in your browser to use the selectors and fretboard. No internet connection is needed.</noscript>
- <div class="mode-picker"><span class="control-label" id="mode-label">Explore</span><div class="view-toggle" role="group" aria-labelledby="mode-label"><button type="button" id="mode-scales" aria-pressed="true">Scales</button><button type="button" id="mode-chords" aria-pressed="false">Chords</button><button type="button" id="mode-progressions" aria-pressed="false">Progressions</button></div></div>
+ <div class="mode-picker"><span class="control-label" id="mode-label">Explore</span><div class="view-toggle" role="group" aria-labelledby="mode-label"><button type="button" id="mode-scales" aria-pressed="true">Scales</button><button type="button" id="mode-chords" aria-pressed="false">Chords</button><button type="button" id="mode-progressions" aria-pressed="false">Progressions</button><button type="button" id="mode-ear" aria-pressed="false">Ear training</button></div></div>
  <div class="settings" aria-label="Appearance"><label for="notation"><span id="notation-label">Degree labels · Scales</span><select id="notation"><option value="numbers">Numbers · 1, ♭3, 5</option><option value="roman">Roman · I, ♭III, V</option></select></label><label for="theme">Theme<select id="theme"><option value="classic">Classic</option><option value="classic-coast">Classic · Coast</option><option value="classic-harbor">Classic · Harbor</option><option value="teal">Lagoon</option><option value="ocean">Ocean</option><option value="plum">Plum</option><option value="forest">Forest</option><option value="midnight">Midnight</option><option value="retro">Sunset Studio · retro</option><option value="pixel">Pocket Pixel</option><option value="fantasy">Moonlit Grimoire · fantasy</option><option value="orbital">Orbital Console · sci-fi</option><option value="neon">Neon Arcade</option><option value="letterpress">Letterpress</option><option value="blueprint">Blueprint</option></select></label><small>Degree labels apply to this tab; themes apply everywhere.</small></div>
  <div id="map-content">
  <p class="roman-note" id="notation-note" hidden>Fretboard Roman labels name individual intervals: ♭III = ♭3. They use uppercase throughout; chord quality is shown with uppercase/lowercase in the progression arranger. Fret and string numbers stay numeric.</p>
@@ -520,13 +557,52 @@
  <aside class="discovery-pane" aria-label="Choose chords"><h3>Choose chords</h3><div class="view-toggle discovery-tabs"><button id="discover-suggested" aria-pressed="true">Suggested</button><button id="discover-search" aria-pressed="false">Search all</button></div><p class="discovery-hint">Click to add · ⌘-click to hear · drag into place</p><div id="chord-palettes"></div><section id="library-content" hidden aria-labelledby="library-title"><h2 id="library-title">Find a chord</h2><p class="section-intro">34 chord types in every root. Click to add; ⌘-click to hear.</p><div class="library-controls"><label class="control-label" for="chord-search">Search chords<input id="chord-search" type="search" placeholder="Try Am7, sus4, minor ninth, or ♭VII" autocomplete="off" spellcheck="false"></label><label class="control-label" for="library-root">Root<select id="library-root"></select></label><label class="control-label" for="library-group">Chord family<select id="library-group"></select></label></div><div class="library-meta"><label><input id="library-in-key" type="checkbox"> Only chords entirely in this key</label><button class="action" id="reset-search">Reset search</button><span id="library-count" role="status" aria-live="polite"></span></div><div class="library-results"><div class="palette" id="library-results"></div></div><button class="action" id="library-more" hidden>Show more chords</button><p class="library-result-note">“Outside key” means at least one chord tone is outside the selected major or natural-minor scale. It can still be a useful borrowed or dominant chord. Roman labels show the root’s relationship to your arranger key.</p></section></aside>
  <section class="composition-pane" aria-labelledby="sequence-title"><div class="sequence-top"><h2 id="sequence-title">Your sequence</h2><div class="sequence-tools"><button class="action" id="undo-progression" disabled>Undo</button><button class="action" id="clear-progression">Clear</button><button class="action" id="export-progression">Copy chart</button><button class="action" id="show-midi" aria-expanded="false">MIDI…</button></div></div>
  <div class="studio-transport"><label class="loop-toggle"><input id="synth-loop" type="checkbox"> Loop</label><button class="action primary" id="studio-play">▶ Play</button><button class="action" id="studio-stop" disabled>■ Stop</button><button class="action" id="show-synth">Wavetable…</button><span id="studio-status" role="status">Ready when you are.</span></div>
- <div class="midi-box" id="midi-box" hidden><label for="midi-mode">Export as<select id="midi-mode"><option value="performance">Current performance</option><option value="chords">Held chords</option></select></label><div class="arranger-toolbar"><button class="action" id="copy-midi">Copy MIDI</button><button class="action" id="save-midi">Save MIDI…</button></div><p>Copies a MIDI file for DAWs that accept file paste. Otherwise, save and import the .mid file. Includes notes, velocity, tempo and one pass of the sequence; the synth sound is not embedded.</p><p id="midi-status" role="status" aria-live="polite"></p></div><details class="starting-ideas"><summary>Start with an idea</summary><div class="arranger-toolbar"><label class="sr-only" for="starter">Starting progression</label><select id="starter"></select><button class="action" id="load-starter">Use idea</button></div><p class="roman-note" id="starter-note"></p><p class="roman-note">Replaces your sequence; Undo restores it.</p></details>
+<div class="progression-tools" id="progression-tools">
+<div class="progression-tool-bar" role="group" aria-label="Progression tools">
+<button type="button" id="tool-voicing" aria-expanded="false" aria-controls="voicing-panel"><strong>Voicing</strong><span id="tool-voicing-summary">Original</span></button>
+<button type="button" id="tool-practice" aria-expanded="false" aria-controls="practice-panel"><strong>Practice</strong><span id="tool-practice-summary">Off</span></button>
+<button type="button" id="tool-collection" aria-expanded="false" aria-controls="collection-panel"><strong>Saved progressions</strong><span id="tool-collection-summary">Your library</span></button>
+</div>
+<section class="progression-tool-panel" id="voicing-panel" aria-labelledby="voicing-panel-title" hidden>
+<div class="tool-panel-header"><div><h3 id="voicing-panel-title">Chord voicing</h3><p>Shape how your chords sound together.</p></div><button class="action" id="close-voicing-panel" type="button" aria-label="Close chord voicing">Done</button></div>
+<div class="tool-panel-body"><div class="feature-grid">
+<label>Voice movement<select id="voicing-mode"><option value="original">Original · low root + formula</option><option value="smooth">Smooth transitions</option><option value="root">Root position</option><option value="first">First inversion</option><option value="second">Second inversion</option></select></label>
+<label>Spacing<select id="voicing-spacing"><option value="close">Close</option><option value="open">Open</option></select></label>
+<label>Register<select id="voicing-octave"><option value="-1">One octave lower</option><option value="0">Middle</option><option value="1">One octave higher</option></select></label>
+</div><p class="feature-hint">Voicing changes apply to progression playback, card previews, and MIDI. Exact chord-finder and guitar-shape previews keep their selected notes. Original uses its existing spacing.</p></div></section>
+<section class="progression-tool-panel" id="practice-panel" aria-labelledby="practice-panel-title" hidden>
+<div class="tool-panel-header"><div><h3 id="practice-panel-title">Practice loop</h3><p>Set your pace and build fluency.</p></div><button class="action" id="close-practice-panel" type="button" aria-label="Close practice loop">Done</button></div>
+<div class="tool-panel-body"><div class="feature-grid">
+<label><input type="checkbox" id="practice-enabled"> Practice loop</label><label><input type="checkbox" id="practice-metronome"> Metronome</label>
+<label>Starting tempo · BPM<input id="practice-tempo" type="number" min="40" max="220" step="1"></label>
+<label>Count-in<select id="practice-countIn"><option value="0">None</option><option value="1">1 bar</option><option value="2">2 bars</option></select></label>
+<label>Time per chord<select id="practice-bars"><option value="0">Use each card’s beats</option><option value="1">1 bar</option><option value="2">2 bars</option><option value="4">4 bars</option></select></label>
+<label>Increase each loop<select id="practice-step"><option value="0">Keep the same tempo</option><option value="2">+2 BPM</option><option value="5">+5 BPM</option><option value="10">+10 BPM</option></select></label>
+<label>Tempo ceiling · BPM<input id="practice-target" type="number" min="40" max="220" step="1"></label>
+</div><p class="feature-hint" id="practice-hint">Practice uses 4/4. Changes to practice settings stop playback so you can begin with a fresh count-in.</p>
+</div></section>
+<section class="progression-tool-panel" id="collection-panel" aria-labelledby="collection-panel-title" hidden>
+<div class="tool-panel-header"><div><h3 id="collection-panel-title">Saved progressions</h3><p>Keep your songs and practice sets together.</p></div><button class="action" id="close-collection-panel" type="button" aria-label="Close saved progressions">Done</button></div>
+<div class="tool-panel-body">
+<div class="feature-grid"><label>Progression name<input id="song-name" maxlength="60" placeholder="Evening practice"></label><label>Collection<input id="song-collection" maxlength="40" placeholder="My progressions" list="collection-names"><datalist id="collection-names"></datalist></label></div>
+<div class="feature-actions"><button class="action" id="song-save">Save new</button><button class="action" id="song-update" disabled>Update loaded</button></div>
+<div class="feature-grid"><label>Find a progression<input id="song-search" type="search" placeholder="Search names or collections"></label><label>Collection filter<select id="song-filter"><option value="">All collections</option></select></label></div>
+<p class="feature-hint" id="song-status" role="status">Saves chords, key, sound, tempo, voicing, and practice settings on this Mac.</p><div id="song-list" class="saved-list"></div><button class="action" id="song-undo" hidden>Undo library change</button><button class="action" id="song-restore" hidden>Restore previous workspace</button></div></section>
+</div>
+ <div class="midi-box" id="midi-box" hidden><label for="midi-mode">Export as<select id="midi-mode"><option value="performance">Current performance</option><option value="chords">Held chords</option></select></label><div class="arranger-toolbar"><button class="action" id="copy-midi">Copy MIDI</button><button class="action" id="save-midi">Save MIDI…</button></div><p>Copies a MIDI file for DAWs that accept file paste. Otherwise, save and import the .mid file. Includes notes, velocity, starting tempo, voicing and one pass of the sequence. Practice bars per chord apply; count-in, clicks, tempo increases and synth sound are not embedded.</p><p id="midi-status" role="status" aria-live="polite"></p></div><details class="starting-ideas"><summary>Start with an idea</summary><div class="arranger-toolbar"><label class="sr-only" for="starter">Starting progression</label><select id="starter"></select><button class="action" id="load-starter">Use idea</button></div><p class="roman-note" id="starter-note"></p><p class="roman-note">Replaces your sequence; Undo restores it.</p></details>
  <div class="drag-guide"><p class="drag-instructions">Drag a tile to move it · ⌘⇧-drag to copy · ⌘-click to hear.<br>Space: play / stop · Escape: stop or cancel drag.<br>Open “Edit” for chord type and duration.</p><button class="action" id="ui-sound" aria-pressed="true" title="Toggle wood-block feedback when dragging">Knock sounds: on</button></div><div class="sequence" id="sequence"></div><p id="drag-status" class="sr-only" role="status" aria-live="polite"></p><p class="sequence-summary" id="sequence-summary" role="status"></p><div class="export-box" id="export-box" hidden><label class="control-label" for="export-text">Your progression — select and copy, or print from the app</label><textarea class="export-text" id="export-text" readonly></textarea></div>
  <details class="studio-notes"><summary>How key changes and chord labels work</summary><p>Changing the key root transposes your sequence. Changing major/minor starts fresh; Undo restores it. The chooser’s color setting affects new chords only. Every “Inside the key” choice is checked against the selected scale; a simpler chord fills in when an extension does not fit.</p><p>Labels are practical interpretations of the chord’s notes and the following one or two chords. “Possible” means the resolution is not confirmed. They update when you edit or reorder. With Loop on, the last chord also considers the start of the sequence. A melody or different voicing can suggest another interpretation.</p></details>
  </section></div><section class="synth-panel" hidden aria-labelledby="synth-heading"><div class="synth-heading"><div><h3 id="synth-heading">Listen · Polyphonic wavetable</h3><p>Hear every chord tone together, with a low root underneath.</p></div><svg class="wave-preview" viewBox="0 0 320 70" role="img" aria-label="Preview of the selected wavetable shape"><path d="M0 35H320"/><polyline id="wave-line" points=""/></svg></div><div class="synth-controls"><label for="synth-preset">Sound<select id="synth-preset"><option value="keys">Warm keys</option><option value="pad">Velvet pad</option><option value="glass">Glass</option><option value="pluck">Soft pluck</option></select></label><label for="synth-tempo">Tempo · BPM<input type="number" id="synth-tempo" min="40" max="220" step="1" value="100"></label><label for="synth-morph">Wave blend <span id="morph-value">35%</span><input type="range" id="synth-morph" min="0" max="100" value="35"><small>Mellow ↔ bright</small></label><label for="synth-volume">Volume <span id="volume-value">35%</span><input type="range" id="synth-volume" min="0" max="100" value="35"></label></div><div class="synth-transport"><button class="action primary" id="synth-play">▶ Play progression</button><button class="action" id="synth-stop" disabled>■ Stop</button><span id="playback-status" role="status" aria-live="polite">Ready when you are.</span></div><p class="synth-help">A synthesized voicing, not a guitar recording or fingering. Includes every formula tone; extended chords may sound dense. Wave blend, sound and volume adjust live. New envelopes and tempo apply from the next chord. Edit your sequence while it plays: the current chord finishes, then playback follows your changes. Clearing every chord stops playback.</p></section>
   <details><summary>Borrowing, substitutions &amp; reading the symbols</summary><div class="help-grid"><div><h4>One key is the reference</h4><p>All root degrees use the major scale on the key root as a reference, even in minor: ♭III, ♭VI and ♭VII make the lowered roots explicit. Roman uppercase means a major triad; lowercase means minor; ° means diminished; ø7 means half-diminished. A plain 7 means a minor seventh above that chord’s root; maj7 means a major seventh. Number mode spells out m, dim and m7♭5 instead of using letter case.</p><h4>A temporary destination</h4><p>V7/ii means “the dominant seventh of ii.” The slash points to a target chord; it is not a bass-note instruction. In C major, A7 → Dm briefly pulls toward ii without requiring a new home key. These suggested destinations are options, not rules.</p></div><div><h4>Parallel is not relative</h4><p>Parallel keys share a tonic (C major and C minor). Relative keys share a key signature (C major and A minor). Borrowing a chord from the parallel key adds color without necessarily changing the home key. In minor, V7 and vii°7 use the raised seventh from harmonic minor and appear under “Pull toward home.”</p><h4>Dominant alternatives</h4><p>A tritone substitute replaces V7 with a dominant seventh whose root is a half step above the destination: D♭7 → C can replace G7 → C. Their thirds and sevenths share the same two pitches, spelled differently. vii°7 is another leading-tone approach. Try smooth half-step moves between voices and check the melody against any borrowed notes.</p></div></div><p class="sources">Optional theory reading: <a href="https://viva.pressbooks.pub/openmusictheory/chapter/substitutions/" target="_blank" rel="noopener noreferrer">Open Music Theory: substitutions</a> and <a href="https://viva.pressbooks.pub/openmusictheory/chapter/modal-mixture/" target="_blank" rel="noopener noreferrer">modal mixture</a>. All explanations and arranging tools work offline.</p></details>
  </section>
 
+<section id="ear-training" hidden aria-labelledby="ear-heading" class="ear-page">
+<div class="studio-heading"><div><h2 id="ear-heading">Train your ear</h2><p class="feature-hint">Listen, make a choice, then explore the notes.</p></div><span class="ear-score" id="ear-score">0 correct · 0 answered</span></div>
+<div class="feature-grid"><label>Game<select id="ear-game"><option value="interval">Intervals</option><option value="chord">Chord qualities</option></select></label><label>Level<select id="ear-level"><option value="starter">Starter</option><option value="extended">Extended</option></select></label><label id="ear-direction-label">Interval playback<select id="ear-direction"><option value="up">Ascending</option><option value="down">Descending</option><option value="together">Together</option></select></label></div>
+<p id="ear-description" class="feature-hint"></p><div class="ear-stage"><span class="control-label" id="ear-round">Ready to listen</span><h3 id="ear-prompt">Start a round when you’re ready.</h3><div class="feature-actions"><button class="action primary" id="ear-next">Start round</button><button class="action" id="ear-replay" disabled>▶ Hear again</button><button class="action" id="ear-stop">■ Stop</button><button class="action" id="ear-reveal" disabled>Reveal answer</button></div><p id="ear-feedback" role="status" aria-live="polite">You can replay before answering. Only your first answer counts.</p><div class="ear-answers" id="ear-answers"></div></div>
+<section id="ear-explanation" hidden><h3 id="ear-answer-title"></h3><p id="ear-note-list"></p><div class="board-scroll" tabindex="0" role="region" aria-label="Answer notes on the fretboard"><table class="fretboard ear-board" id="ear-board"></table></div><p class="feature-hint">Matching note names across the neck, in standard tuning. Repeated positions show the same pitch class in different octaves.</p></section>
+<div class="feature-actions"><button class="action" id="ear-reset">Reset score for this game &amp; level</button></div><p class="feature-hint">Scores save locally. Reveal counts as an unanswered attempt; starting another round skips an unfinished one. Uses a consistent warm-key sound so changing synth presets won’t change the exercise.</p>
+</section>
  <footer><span>Standard tuning · 1 fret = 1 half step</span><span>Follow a root. Trace a shape. Make it music.</span></footer>
  <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
 </main>
@@ -723,11 +799,11 @@ let preferences={chordView:'shapes',uiSound:true,notations:{scales:'numbers',cho
 let progression={root:'C',mode:'major',size:'triads',items:[]},history=[],arrangerVisible=false;
 function activeTab(){return arrangerVisible?'progressions':state.mode;}
 function degreeLabel(d,notation=preferences.notations[activeTab()]){return notation==='roman'?pretty(d.replace(/\d+/,n=>ROMAN[Number(n)]||n)):pretty(d);}
-function showPage(arranging){arrangerVisible=arranging;$('map-content').hidden=arranging;$('arranger').hidden=!arranging;$('mode-progressions').setAttribute('aria-pressed',String(arranging));if(arranging){$('mode-scales').setAttribute('aria-pressed','false');$('mode-chords').setAttribute('aria-pressed','false');} $('notation').value=preferences.notations[activeTab()];$('notation-label').textContent='Degree labels · '+({scales:'Scales',chords:'Chords',progressions:'Progressions'}[activeTab()]);$('notation-note').hidden=preferences.notations[state.mode]!=='roman'||state.mode==='chords'&&preferences.chordView==='finder';$('root-legend').textContent='Root · '+degreeLabel('1');}
-function saveWorkspace(){try{localStorage.setItem('guitar-companion-v12',JSON.stringify({preferences,progression,synth:synthOptions,paletteSeed}));}catch{$('sequence-summary').textContent+=' Local saving is unavailable; use Copy / save text to keep your work.';}}
+function showPage(arranging){earVisible=false;$('ear-training').hidden=true;$('mode-ear').setAttribute('aria-pressed','false');arrangerVisible=arranging;$('map-content').hidden=arranging;$('arranger').hidden=!arranging;$('mode-progressions').setAttribute('aria-pressed',String(arranging));if(arranging){$('mode-scales').setAttribute('aria-pressed','false');$('mode-chords').setAttribute('aria-pressed','false');} $('notation').value=preferences.notations[activeTab()];$('notation-label').textContent='Degree labels · '+({scales:'Scales',chords:'Chords',progressions:'Progressions'}[activeTab()]);$('notation-note').hidden=preferences.notations[state.mode]!=='roman'||state.mode==='chords'&&preferences.chordView==='finder';$('root-legend').textContent='Root · '+degreeLabel('1');}
+function saveWorkspace(){try{localStorage.setItem('guitar-companion-v12',JSON.stringify({preferences,progression,synth:synthOptions,paletteSeed,practice,voicing:voicingOptions}));}catch{$('sequence-summary').textContent+=' Local saving is unavailable; use Copy / save text to keep your work.';}}
 function setAppTheme(theme){if(['classic','classic-coast','classic-harbor','teal','ocean','plum','forest','midnight','retro','pixel','fantasy','orbital','neon','letterpress','blueprint'].includes(theme)){preferences.theme=theme;applyPreferences();}}
 function setAppNotation(notation,tab=activeTab()){if(['scales','chords','progressions'].includes(tab)&&['numbers','roman'].includes(notation)){preferences.notations[tab]=notation;applyPreferences();}}
-function applyPreferences(){try{window.webkit?.messageHandlers?.appearance?.postMessage({theme:preferences.theme,...preferences.notations});}catch{}document.documentElement.setAttribute('data-theme',preferences.theme);$('theme').value=preferences.theme;const was=arrangerVisible;render();renderArranger();showPage(was);saveWorkspace();}
+function applyPreferences(){try{window.webkit?.messageHandlers?.appearance?.postMessage({theme:preferences.theme,...preferences.notations});}catch{}document.documentElement.setAttribute('data-theme',preferences.theme);$('theme').value=preferences.theme;const was=arrangerVisible,wasEar=earVisible;render();renderArranger();showPage(was);if(wasEar)showEarPage();saveWorkspace();}
 function qualitySymbol(id){return CHORDS.find(c=>c.id===id).symbol;}
 function chordName(c){return pretty(spell(progression.root,c.degree)+qualitySymbol(c.quality));}
 function numeral(c,notation=preferences.notations.progressions){
@@ -763,10 +839,11 @@ function renderArranger(){
  $('key-context').textContent=`${pretty(progression.root)} ${progression.mode} · Parallel: ${pretty(progression.root)} ${progression.mode==='major'?'minor':'major'} · Relative: ${pretty(relative)} ${progression.mode==='major'?'minor':'major'}`;
  $('chord-palettes').innerHTML='<label class="palette-quality" for="palette-size">In-key palette<select id="palette-size"><option value="triads">Triads</option><option value="sevenths">Sevenths</option><option value="sixths">Sixths</option><option value="ninths">Ninths</option><option value="add9">Add 9</option><option value="sixnine">6/9 warmth</option><option value="suspended">Suspended / open</option><option value="mixed">Mixed colors</option><option value="random">Random · surprise me</option></select></label>'+(progression.size==='random'?'<button class="action" data-reshuffle="true">↻ New colors</button>':'')+'<p class="palette-explainer">'+esc(PALETTE_MODES[progression.size])+'</p>'+palettes().map((g,index)=>`<details class="suggestion-group" data-suggestion="${index}" ${openSuggestionGroups.has(index)?'open':''}><summary>${esc(g.title)}</summary><p>${esc(g.text)}</p><div class="palette">${g.chords.map(c=>`<button class="palette-chord" draggable="true" data-add="${c.id}" aria-label="Add ${esc(chordName(c))}, ${esc(functionLabel(c))}. Command-click to preview."><strong>${esc(chordName(c))} ＋</strong><span>${esc(functionLabel(c))}</span><small>${esc(c.hint)}</small></button>`).join('')}</div></details>`).join('');
  $('palette-size').value=progression.size;
- $('sequence').innerHTML=progression.items.length?progression.items.map((c,i)=>{const context=sequenceAnalysis(i);return `<article class="chord-slot" draggable="true" data-position="${i}" title="Command-click to preview ${esc(chordName(c))}"><div class="slot-head"><span class="slot-number">Chord ${i+1}</span><span class="role-badge" title="${esc(context.detail)}">${esc(context.label)}</span></div><div class="chord-identity"><div><h4>${esc(chordName(c))}</h4><div class="analysis" title="${esc(context.detail)}">${esc(context.analysis)}</div></div><button class="action preview-chord" data-act="preview" data-slot="${i}" aria-label="Preview chord ${i+1}">▶</button></div><div class="card-bottom"><span>${c.beats} beats</span><button class="action" data-act="left" data-slot="${i}" aria-label="Move chord ${i+1} left" ${i===0?'disabled':''}>←</button><button class="action" data-act="right" data-slot="${i}" aria-label="Move chord ${i+1} right" ${i===progression.items.length-1?'disabled':''}>→</button><button class="action" data-act="remove" data-slot="${i}" aria-label="Remove chord ${i+1}">×</button></div><details class="slot-edit"><summary>Edit</summary><p class="context-detail">${esc(context.detail)}</p><label class="slot-type">Chord type<select data-quality="${i}" aria-label="Type for chord ${i+1}">${chordOptions(c.quality)}</select></label><label class="beats">Beats<select data-beats="${i}" aria-label="Beats for chord ${i+1}">${[1,2,3,4,6,8].map(n=>`<option value="${n}" ${c.beats===n?'selected':''}>${n}</option>`).join('')}</select></label><div class="slot-actions"><button class="action" data-act="duplicate" data-slot="${i}">Duplicate</button><button class="action" data-act="map" data-slot="${i}">See on fretboard</button></div></details></article>`;}).join(''):'<div class="sequence-empty">Choose a chord on the left to begin,<br>or open “Start with an idea.”</div>';
+ const voiced=voicedProgression(progression.items);
+ $('sequence').innerHTML=progression.items.length?progression.items.map((c,i)=>{const context=sequenceAnalysis(i);return `<article class="chord-slot" draggable="true" data-position="${i}" title="Command-click to preview ${esc(chordName(c))}"><div class="slot-head"><span class="slot-number">Chord ${i+1}</span><span class="role-badge" title="${esc(context.detail)}">${esc(context.label)}</span></div><div class="chord-identity"><div><h4>${esc(chordName(c))}</h4><div class="analysis" title="${esc(context.detail)}">${esc(context.analysis)}</div></div><button class="action preview-chord" data-act="preview" data-slot="${i}" aria-label="Preview chord ${i+1}">▶</button></div><p class="voicing-notes">${voiced[i].voicing.map(n=>esc(finderNote(n))+String(Math.floor(n/12)-1)).join(" · ")}</p><div class="card-bottom"><span>${practice.enabled&&practice.bars?practice.bars*4:c.beats} beats</span><button class="action" data-act="left" data-slot="${i}" aria-label="Move chord ${i+1} left" ${i===0?'disabled':''}>←</button><button class="action" data-act="right" data-slot="${i}" aria-label="Move chord ${i+1} right" ${i===progression.items.length-1?'disabled':''}>→</button><button class="action" data-act="remove" data-slot="${i}" aria-label="Remove chord ${i+1}">×</button></div><details class="slot-edit"><summary>Edit</summary><p class="context-detail">${esc(context.detail)}</p><label class="slot-type">Chord type<select data-quality="${i}" aria-label="Type for chord ${i+1}">${chordOptions(c.quality)}</select></label><label class="beats">Beats<select data-beats="${i}" aria-label="Beats for chord ${i+1}">${[1,2,3,4,6,8].map(n=>`<option value="${n}" ${c.beats===n?'selected':''}>${n}</option>`).join('')}</select></label><div class="slot-actions"><button class="action" data-act="duplicate" data-slot="${i}">Duplicate</button><button class="action" data-act="map" data-slot="${i}">See on fretboard</button></div></details></article>`;}).join(''):'<div class="sequence-empty">Choose a chord on the left to begin,<br>or open “Start with an idea.”</div>';
  $('sequence').innerHTML+='<div class="drop-tail">Drop here to add at the end</div>';
  renderLibrary();
- const beats=progression.items.reduce((sum,c)=>sum+c.beats,0);
+ const beats=effectivePracticeItems(progression.items).reduce((sum,c)=>sum+c.beats,0);
  $('sequence-summary').textContent=progression.items.length?`${progression.items.length} chords · ${beats} beats · ${beats/4} bars at 4/4. Your sequence is saved on this device when local storage is available.`:'Your arranger key is independent of the Scales and Chords tabs.';
  $('ui-sound').setAttribute('aria-pressed',String(preferences.uiSound));$('ui-sound').textContent='Knock sounds: '+(preferences.uiSound?'on':'off');$('undo-progression').disabled=!history.length;$('clear-progression').disabled=!progression.items.length;$('export-progression').disabled=!progression.items.length;$('copy-midi').disabled=!progression.items.length;$('save-midi').disabled=!progression.items.length;updateSynthUI();if(synthSession&&synthSession.marked>=0)markPlayingCard(synthSession.marked);
 }
@@ -784,7 +861,7 @@ function editSlot(action,i){if(!Number.isInteger(i)||!progression.items[i])retur
  changeProgression(()=>{const list=progression.items;if(action==='remove')list.splice(i,1);if(action==='duplicate')list.splice(i+1,0,{...list[i],uid:newItemId()});if(action==='left')[list[i-1],list[i]]=[list[i],list[i-1]];if(action==='right')[list[i+1],list[i]]=[list[i],list[i+1]];});
 }
 function exportProgression(){return `${pretty(progression.root)} ${progression.mode}\n`+progression.items.map((c,i)=>`${i+1}. ${chordName(c)} | ${sequenceAnalysis(i).analysis} | ${c.beats} beats | ${sequenceAnalysis(i).label}`).join('\n')+'\n\n'+progression.items.map(chordName).join(' → ');}
-function restoreWorkspace(){try{const stored=JSON.parse(localStorage.getItem('guitar-companion-v12'));if(stored){for(const tab of ['scales','chords','progressions']){if(['numbers','roman'].includes(stored.preferences?.notations?.[tab]))preferences.notations[tab]=stored.preferences.notations[tab];}if(['classic','classic-coast','classic-harbor','teal','ocean','plum','forest','midnight','retro','pixel','fantasy','orbital','neon','letterpress','blueprint'].includes(stored.preferences?.theme))preferences.theme=stored.preferences.theme;restoreSynthOptions(stored.synth);if(['fretboard','shapes','finder'].includes(stored.preferences?.chordView))preferences.chordView=stored.preferences.chordView;if(Number.isInteger(stored.paletteSeed)&&stored.paletteSeed>=0&&stored.paletteSeed<1000000)paletteSeed=stored.paletteSeed;if(typeof stored.preferences?.uiSound==='boolean')preferences.uiSound=stored.preferences.uiSound;const p=stored.progression;if(p&&ROOTS.includes(p.root)&&['major','minor'].includes(p.mode)&&Object.hasOwn(PALETTE_MODES,p.size)&&Array.isArray(p.items)&&p.items.length<=500&&p.items.every(c=>/^[b#]{0,3}[1-7]$/.test(c.degree)&&CHORDS.some(q=>q.id===c.quality)&&[1,2,3,4,6,8].includes(c.beats)&&typeof c.origin==='string'&&(!c.target||/^[b#]{0,3}[1-7]$/.test(c.target)&&['major','minor'].includes(c.targetQuality))))progression=p;}}catch{}applyPreferences();}
+function restoreWorkspace(){try{const stored=JSON.parse(localStorage.getItem('guitar-companion-v12'));if(stored){for(const tab of ['scales','chords','progressions']){if(['numbers','roman'].includes(stored.preferences?.notations?.[tab]))preferences.notations[tab]=stored.preferences.notations[tab];}if(['classic','classic-coast','classic-harbor','teal','ocean','plum','forest','midnight','retro','pixel','fantasy','orbital','neon','letterpress','blueprint'].includes(stored.preferences?.theme))preferences.theme=stored.preferences.theme;restoreSynthOptions(stored.synth);practice=validatedOptions(stored.practice,PRACTICE_DEFAULTS,validPractice);voicingOptions=validatedOptions(stored.voicing,VOICING_DEFAULTS,validVoicing);if(['fretboard','shapes','finder'].includes(stored.preferences?.chordView))preferences.chordView=stored.preferences.chordView;if(Number.isInteger(stored.paletteSeed)&&stored.paletteSeed>=0&&stored.paletteSeed<1000000)paletteSeed=stored.paletteSeed;if(typeof stored.preferences?.uiSound==='boolean')preferences.uiSound=stored.preferences.uiSound;const p=stored.progression;if(validProgression(p))progression=p;}}catch{}applyPreferences();}
 $('key-root').innerHTML=ROOTS.map(r=>`<option value="${r}">${pretty(r)}</option>`).join('');
 $('mode-progressions').addEventListener('click',()=>{renderArranger();showPage(true);});
 $('notation').addEventListener('change',e=>setAppNotation(e.target.value));$('theme').addEventListener('change',e=>{preferences.theme=e.target.value;applyPreferences();});
@@ -918,8 +995,9 @@ function synthNotes(chord,keyRoot=progression.root){if(Array.isArray(chord.voici
 function midiFrequency(midi){return 440*2**((midi-69)/12);}
 function playbackPlan(items,tempo){let time=0;return items.map((chord,index)=>{const duration=chord.beats*60/tempo,entry={chord:{...chord},index,offset:time,duration};time+=duration;return entry;});}
 function updateSynthUI(){
+ renderPracticeControls();
  $('synth-preset').innerHTML=Object.entries(SYNTH_PRESETS).map(([id,p])=>`<option value="${id}">${p.name}</option>`).join('');
- $('synth-tempo').value=synthOptions.tempo;$('synth-preset').value=synthOptions.preset;$('synth-morph').value=synthOptions.morph;$('synth-volume').value=synthOptions.volume;$('synth-loop').checked=synthOptions.loop;
+ $('synth-tempo').value=synthOptions.tempo;$('synth-preset').value=synthOptions.preset;$('synth-morph').value=synthOptions.morph;$('synth-volume').value=synthOptions.volume;$('synth-loop').checked=synthOptions.loop||practice.enabled;$('synth-loop').disabled=practice.enabled;
  $('morph-value').textContent=synthOptions.morph+'%';$('volume-value').textContent=synthOptions.volume+'%';$('wave-line').setAttribute('points',waveformPoints());
  $('synth-play').disabled=!progression.items.length||synthPending||!!synthSession;$('synth-stop').disabled=!synthPending&&!synthSession;
  $('synth-play').textContent=synthPending?'Starting…':synthSession?'Playing':'▶ Play progression';syncTransport();
@@ -943,14 +1021,19 @@ async function playProgression(previewIndex=null,externalChord=null){
  stopPlayback('Preparing sound…');const generation=++synthGeneration;synthPending=true;updateSynthUI();
  try{const ctx=await ensureSynth();if(generation!==synthGeneration)return;
  ensureItemIds();if(!progression.items.length&&!externalChord){stopPlayback('Sequence is empty. Add a chord, then press Play.');return;}
- const preview=previewIndex!==null||!!externalChord,items=externalChord?[externalChord]:preview?[progression.items[previewIndex]]:progression.items,plan=playbackPlan(items,synthOptions.tempo);if(preview){plan[0].index=externalChord?-1:previewIndex;plan[0].duration=Math.min(plan[0].duration,2);}
- const bus=ctx.createGain();bus.gain.value=1;bus.connect(ctx.outputBus);synthSession={bus,voices:new Set(),voiceInfo:new Map(),notes:new Set(),effects:createSynthEffects(ctx,bus,synthOptions),settings:{...synthOptions},keyRoot:progression.root,plan,preview,nextIndex:0,nextTime:ctx.currentTime+.08,lastEnd:0,finishedScheduling:false,queue:[],marked:-2,timer:null};synthPending=false;synthSession.timer=setInterval(tickSynth,25);updateSynthUI();tickSynth();
- }catch(error){if(generation===synthGeneration)stopPlayback('Could not start audio. '+error.message);}
+ const preview=previewIndex!==null||!!externalChord,voiced=voicedProgression(progression.items),items=externalChord?[externalChord]:preview?[voiced[previewIndex]]:effectivePracticeItems(voiced),plan=playbackPlan(items,synthOptions.tempo);if(preview){plan[0].index=externalChord?-1:previewIndex;plan[0].duration=externalChord?.lessonPicks?1.6:externalChord?.soundPreview?Math.max(2,synthOptions.attack+synthOptions.decay+.6):Math.min(plan[0].duration,2);}
+ const bus=ctx.createGain();bus.gain.value=1;bus.connect(ctx.outputBus);synthSession={bus,voices:new Set(),voiceInfo:new Map(),notes:new Set(),effects:createSynthEffects(ctx,bus,synthOptions),settings:{...synthOptions},keyRoot:progression.root,plan,preview,nextIndex:0,nextTime:ctx.currentTime+.08,lastEnd:0,finishedScheduling:false,queue:[],marked:-2,timer:null};synthPending=false;synthSession.lap=1;synthSession.practice=!preview&&practice.enabled;synthSession.beat=0;
+ if(externalChord?.soundPreview)Object.assign(synthSession.settings,{style:'chords',humanize:0,swing:0});
+ if(externalChord?.lessonPicks){synthSession.lesson=true;synthSession.settings={...synthOptions,preset:'keys',...SYNTH_PRESETS.keys,tempo:100,style:'chords',humanize:0,swing:0};updateSynthEffects(ctx,synthSession.effects,soundSettings(synthSession.settings));}
+ if(synthSession.practice&&practice.countIn){const start=synthSession.nextTime,beat=60/synthOptions.tempo;for(let i=0;i<practice.countIn*4;i++)scheduleClick(synthSession,start+i*beat,i%4===0);synthSession.countInStart=start;synthSession.nextTime+=practice.countIn*4*beat;synthSession.countInEnd=synthSession.nextTime;}
+ synthSession.timer=setInterval(tickSynth,25);updateSynthUI();tickSynth();
+ }catch(error){if(generation===synthGeneration){stopPlayback('Could not start audio. '+error.message);if(externalChord?.lessonPicks)$('ear-feedback').textContent='Could not start audio. Press Hear again to retry. '+error.message;}}
 }
 function setSynthOption(key,value){
  if(!validSynthOption(key,value)){updateSynthUI();return;}
+ if(key==='tempo'&&practice.enabled&&(synthSession||synthPending))stopPlayback('Starting tempo changed. Press Play for a fresh start.');
  if(key==='preset')applySoundPreset(value);else synthOptions[key]=value;
- if(synthSession){Object.assign(synthSession.settings,synthOptions);if(key==='preset'||Object.hasOwn(SOUND_RANGES,key))refreshLiveTimbre(key);if((key==='tempo'||key==='loop')&&!synthSession.preview)reconcilePlayback(progression.items);}
+ if(synthSession){Object.assign(synthSession.settings,synthOptions,synthSession.practice?{tempo:practiceTempo(synthSession.lap||1)}:{});if(key==='preset'||Object.hasOwn(SOUND_RANGES,key))refreshLiveTimbre(key);if((key==='tempo'||key==='loop')&&!synthSession.preview)reconcilePlayback(progression.items);}
  if(key==='volume'&&synthMaster)smoothParam(synthMaster.gain,value/100*.7,synthContext.currentTime);
  updateSynthUI();if(key==='loop')renderArranger();saveWorkspace();
 }
@@ -971,7 +1054,7 @@ function dominantSeventh(c){const o=CHORDS.find(q=>q.id===c.quality).offsets;ret
 function dominantCandidate(c){const o=CHORDS.find(q=>q.id===c.quality).offsets;return dominantSeventh(c)||(chordCore(c)==='major'&&!o.includes(11));}
 function relativePitch(c){return degreePitch(c.degree);}
 function destinationNumeral(c,notation=preferences.notations.progressions){return numeral({degree:c.degree,quality:chordCore(c)==='minor'?'minor':'major'},notation);}
-function sequenceNeighbor(index,steps){const n=progression.items.length;if(!n)return null;const target=index+steps;return target<n?progression.items[target]:synthOptions.loop&&n>steps?progression.items[target%n]:null;}
+function sequenceNeighbor(index,steps){const n=progression.items.length;if(!n)return null;const target=index+steps;return target<n?progression.items[target]:(synthOptions.loop||practice.enabled)&&n>steps?progression.items[target%n]:null;}
 function analyzeChord(c,index){
  const next=Number.isInteger(index)?sequenceNeighbor(index,1):null,after=Number.isInteger(index)?sequenceNeighbor(index,2):null,pc=relativePitch(c),base=numeral(c),core=chordCore(c);
  const result=(label,detail,analysis=base)=>({label,detail,analysis});
@@ -1002,7 +1085,7 @@ function analyzeChord(c,index){
 function sequenceAnalysis(index){return analyzeChord(progression.items[index],index);}
 function openSynthWindow(){try{window.webkit.messageHandlers.openSynth.postMessage({});}catch{}}
 let lastSynthState='';
-function publishSynthState(force=false){try{const data={options:{...synthOptions},theme:preferences.theme,playing:!!synthSession,pending:synthPending,canPlay:progression.items.length>0,status:$('playback-status').textContent||'Ready',wave:waveformPoints(),presets:Object.entries(SYNTH_PRESETS).map(([id,p])=>({id,name:p.name,family:p.family,description:p.description})),modified:Object.keys(SOUND_RANGES).some(key=>synthOptions[key]!==SYNTH_PRESETS[synthOptions.preset][key])},serialized=JSON.stringify(data);if(force||serialized!==lastSynthState){window.webkit?.messageHandlers?.synthState?.postMessage(data);lastSynthState=serialized;}}catch{}}
+function publishSynthState(force=false){try{const data={savedSounds:personalLibrary.sounds.map(({id,name,favorite})=>({id,name,favorite})),activeSoundId,libraryMessage,canUndoLibrary:!!libraryUndo,options:{...synthOptions},theme:preferences.theme,playing:!!synthSession,pending:synthPending,canPlay:progression.items.length>0,status:$('playback-status').textContent||'Ready',wave:waveformPoints(),presets:Object.entries(SYNTH_PRESETS).map(([id,p])=>({id,name:p.name,family:p.family,description:p.description})),modified:Object.keys(SOUND_RANGES).some(key=>synthOptions[key]!==SYNTH_PRESETS[synthOptions.preset][key])},serialized=JSON.stringify(data);if(force||serialized!==lastSynthState){window.webkit?.messageHandlers?.synthState?.postMessage(data);lastSynthState=serialized;}}catch{}}
 function syncTransport(){const active=!!synthSession||synthPending;$('studio-play').disabled=!progression.items.length||active;$('studio-stop').disabled=!active;$('studio-status').textContent=$('playback-status').textContent;publishSynthState();}
 let discoveryView='suggested';
 const openSuggestionGroups=new Set([0]);
@@ -1200,15 +1283,16 @@ function reconcilePlayback(oldItems=[]){
   // Removing the sounding card continues with its former successor, or the nearest remaining slot.
   nextIndex=successor?progression.items.findIndex(c=>c.uid===successor.uid):Math.min(Math.max(oldIndex,0),progression.items.length);
  }
- session.plan=playbackPlan(progression.items,synthOptions.tempo);session.keyRoot=progression.root;session.settings={...synthOptions};
- session.nextIndex=nextIndex;session.nextTime=Math.max(now+.025,current?.end||session.nextTime||now+.04);
+ if(session.practice){session.lap=current?.lap||1;if(nextIndex>=progression.items.length)session.lap++;session.beat=current?(current.startBeat||0)+current.chord.beats:0;}
+ const tempo=session.practice?practiceTempo(session.lap||1):synthOptions.tempo;session.plan=progressionPlan(tempo);session.keyRoot=progression.root;session.settings={...synthOptions,tempo};
+ session.nextIndex=nextIndex;session.nextTime=Math.max(now+.025,current?.end||session.nextTime||now+.04,session.countInEnd||0);
  session.finishedScheduling=nextIndex>=session.plan.length;
- if(session.finishedScheduling&&session.settings.loop){session.nextIndex=0;session.finishedScheduling=false;}
+ if(session.finishedScheduling&&(session.settings.loop||session.practice)){session.nextIndex=0;session.finishedScheduling=false;}
  session.lastEnd=Math.max(now,...session.queue.map(e=>e.releaseEnd));session.marked=-2;
  tickSynth();
 }
 function refreshLiveTimbre(key){
- const session=synthSession;if(!session)return;const ctx=synthContext,now=ctx.currentTime,s=soundSettings(synthOptions);
+ const session=synthSession;if(!session||session.lesson)return;const ctx=synthContext,now=ctx.currentTime,s=soundSettings(synthOptions);
  updateSynthEffects(ctx,session.effects,s);
  for(const note of session.notes){
   if(note.end<=now)continue;const t=Math.max(now,note.onset);
@@ -1230,8 +1314,9 @@ function tickSynth(){
  while(!session.finishedScheduling&&session.nextTime<now+.16){
   const entry=session.plan[session.nextIndex];if(!entry){session.finishedScheduling=true;break;}
   session.lastEnd=Math.max(session.lastEnd,scheduleSynthChord(session,entry,session.nextTime));session.nextTime+=entry.duration;session.nextIndex++;
-  if(session.nextIndex===session.plan.length){if(session.settings.loop&&!session.preview)session.nextIndex=0;else session.finishedScheduling=true;}
+  if(session.nextIndex===session.plan.length){if((session.settings.loop||session.practice)&&!session.preview){session.nextIndex=0;if(session.practice){session.lap++;session.settings.tempo=practiceTempo(session.lap);session.plan=progressionPlan(session.settings.tempo);}}else session.finishedScheduling=true;}
  }
+ if(session.countInEnd&&now<session.countInEnd){$('playback-status').textContent='Count-in · '+Math.max(1,Math.min(practice.countIn*4,Math.floor((now-session.countInStart)/(60/synthOptions.tempo))+1))+' / '+practice.countIn*4;}
  const audible=session.queue.find(e=>now>=e.start&&now<e.end);
  if(audible){
   const index=audible.uid?progression.items.findIndex(c=>c.uid===audible.uid):audible.index;
@@ -1239,7 +1324,7 @@ function tickSynth(){
   if(session.marked!==index||session.markedEvent!==audible){
    session.marked=index;session.markedEvent=audible;markPlayingCard(index);
    const name=pretty(spell(audible.keyRoot,audible.chord.degree)+qualitySymbol(audible.chord.quality));
-   $('playback-status').textContent=`${session.preview?'Preview':index<0?'Finishing removed chord':`Playing ${index+1}`}: ${name}${session.settings.loop&&!session.preview?' · loop on':''}`;
+   $('playback-status').textContent=session.lesson?'Ear training · listen…':`${session.preview?'Preview':index<0?'Finishing removed chord':`Playing ${index+1}`}: ${name}${session.practice?' · practice loop '+audible.lap+' · '+audible.tempo+' BPM':session.settings.loop&&!session.preview?' · loop on':''}`;
   }
  }
  // Keep the final event through its release so edits at the end can extend the sequence.
@@ -1343,7 +1428,7 @@ function performanceEvents(chord,settings,duration,keyRoot=progression.root,inde
  if(style==='chords'){notes.forEach((midi,i)=>add(midi,0,duration*.92,i===0?.8:1));}
  else if(style==='strum'){notes.forEach((midi,i)=>{const start=i*Math.min(.017,duration/(notes.length*6));add(midi,start,duration*.9-start,i===0?.86:1);});}
  else{
-  const upper=notes.length>1?notes.slice(1):notes,path=style==='down'?[...upper].reverse():style==='updown'?[...upper,...upper.slice(1,-1).reverse()]:upper;
+  const upper=notes.length>1&&(!chord.smartVoicing||style==='fingerpick')?notes.slice(1):notes,path=style==='down'?[...upper].reverse():style==='updown'?[...upper,...upper.slice(1,-1).reverse()]:upper;
   for(let k=0;k*step<duration-.025;k++){
    const start=k*step+(k%2?step*swing:0);if(start>=duration-.025)continue;
    if(style==='fingerpick'){
@@ -1370,8 +1455,8 @@ function replaceVoiceBank(session,note,s,time){
  }
 }
 function scheduleSynthChord(session,entry,time){
- const ctx=synthContext,s=soundSettings(session.settings),picks=performanceEvents(entry.chord,s,entry.duration,session.keyRoot,entry.index),group=ctx.createGain();group.connect(session.effects.input);
- const event={uid:entry.chord.uid,chord:{...entry.chord},keyRoot:session.keyRoot,index:entry.index,start:time,end:time+entry.duration,releaseEnd:time,group,oscillators:new Set()};
+ const ctx=synthContext,s=soundSettings(session.settings),picks=entry.chord.lessonPicks||performanceEvents(entry.chord,s,entry.duration,session.keyRoot,entry.index),group=ctx.createGain();group.connect(session.effects.input);
+ const event={uid:entry.chord.uid,chord:{...entry.chord},keyRoot:session.keyRoot,index:entry.index,startBeat:session.beat||0,lap:session.lap||1,tempo:s.tempo,start:time,end:time+entry.duration,releaseEnd:time,group,oscillators:new Set()};
  const together=['chords','strum'].includes(s.style||'chords');
  picks.forEach(pick=>{
   const onset=time+pick.start,gate=pick.duration,end=onset+gate+s.release,amp=ctx.createGain(),filter=ctx.createBiquadFilter(),compensation=ctx.createGain();
@@ -1384,13 +1469,13 @@ function scheduleSynthChord(session,entry,time){
   if(gateEnd<=attackEnd)amp.gain.linearRampToValueAtTime(peak*gate/s.attack,gateEnd);
   else{amp.gain.linearRampToValueAtTime(peak,attackEnd);if(gateEnd<decayEnd){const level=peak+(sustain-peak)*(gateEnd-attackEnd)/s.decay;amp.gain.linearRampToValueAtTime(level,gateEnd);}else{amp.gain.linearRampToValueAtTime(sustain,decayEnd);amp.gain.setValueAtTime(sustain,gateEnd);}}
   amp.gain.linearRampToValueAtTime(0,end);replaceVoiceBank(session,note,s,onset);
- });session.queue.push(event);return event.releaseEnd;
+ });if(session.practice&&practice.metronome){for(let i=0;i<entry.chord.beats;i++){scheduleClick(session,time+i*60/s.tempo,session.beat%4===0,event);session.beat++;}}else if(session.practice)session.beat+=entry.chord.beats;session.queue.push(event);return event.releaseEnd;
 }
 function midiVLQ(value){if(!Number.isSafeInteger(value)||value<0||value>0x0fffffff)throw new Error('MIDI timing is out of range.');const bytes=[value&127];while(value>>=7)bytes.unshift((value&127)|128);return bytes;}
 function midiBytes(mode='performance'){
  if(!progression.items.length)throw new Error('Add a chord before exporting MIDI.');
  const ppq=480,settings={...synthOptions,...(mode==='chords'?{style:'chords',humanize:0,swing:0}:{})},tempo=Math.round(60000000/settings.tempo),events=[];let offset=0;
- progression.items.forEach((chord,index)=>{const duration=chord.beats*60/settings.tempo;
+ voicedProgression(effectivePracticeItems(progression.items)).forEach((chord,index)=>{const duration=chord.beats*60/settings.tempo;
   for(const pick of performanceEvents(chord,settings,duration,progression.root,index)){
    const start=offset+Math.round(pick.start*settings.tempo/60*ppq),end=Math.min(offset+chord.beats*ppq,Math.max(start+1,offset+Math.round((pick.start+pick.duration)*settings.tempo/60*ppq))),velocity=Math.max(1,Math.min(127,Math.round(88*pick.velocity)));
    events.push({tick:start,bytes:[0x90,pick.midi,velocity],priority:1},{tick:end,bytes:[0x80,pick.midi,0],priority:0});
@@ -1416,6 +1501,7 @@ function shortcutTypingTarget(target){if(['studio-play','studio-stop'].includes(
 function appKeyboardShortcut(e){
  if(e.defaultPrevented||e.repeat)return;
  if(e.key==='Escape'){if(pointerDrag){finishTileDrag(null,true);e.preventDefault();}else if(synthSession||synthPending){stopPlayback();e.preventDefault();}return;}
+ if(earVisible){if(e.code==='Space'&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&!shortcutTypingTarget(e.target)){e.preventDefault();hearEarQuestion();}return;}
  if(e.metaKey&&!e.altKey&&e.key.toLowerCase()==='f'){
   e.preventDefault();if(arrangerVisible){showDiscovery('search');$('chord-search').focus();$('chord-search').select();}else{if(state.mode==='chords'&&preferences.chordView==='finder')setChordView('shapes');$('map-search').focus();$('map-search').select();}return;
  }
@@ -1548,8 +1634,159 @@ function dragLiftPose(d,now){
 }
 function paintDragGhost(d,now){const pose=dragLiftPose(d,now);dragGhost.style.transform=`translate3d(${pose.x-54}px,${pose.y-24}px,0) rotate(${reducedMotion()?0:d.angle}deg) scale(${pose.scale})`;}
 
+// Personal libraries are separate from the rolling workspace so older saves migrate safely.
+const PRACTICE_DEFAULTS={enabled:false,metronome:true,countIn:1,bars:0,step:0,target:140};
+const VOICING_DEFAULTS={mode:'original',spacing:'close',octave:0};
+let practice={...PRACTICE_DEFAULTS},voicingOptions={...VOICING_DEFAULTS};
+let personalLibrary={sounds:[],songs:[],scores:{}},activeSoundId='',activeSongId='',libraryUndo=null,workspaceBeforeLoad=null,libraryMessage='';
+let earVisible=false,earQuestion=null,earRound=0;
+const copyData=value=>JSON.parse(JSON.stringify(value));
+const cleanName=(value,max=60)=>typeof value==='string'?value.trim().slice(0,max):'';
+function validPractice(key,value){return ['enabled','metronome'].includes(key)?typeof value==='boolean':key==='countIn'?[0,1,2].includes(value):key==='bars'?[0,1,2,4].includes(value):key==='step'?[0,2,5,10].includes(value):key==='target'&&Number.isInteger(value)&&value>=40&&value<=220;}
+function validVoicing(key,value){return key==='mode'?['original','smooth','root','first','second'].includes(value):key==='spacing'?['close','open'].includes(value):key==='octave'&&[-1,0,1].includes(value);}
+function validatedOptions(value,defaults,validator){const result={...defaults};for(const key of Object.keys(defaults))if(validator(key,value?.[key]))result[key]=value[key];return result;}
+function validProgression(p){return p&&ROOTS.includes(p.root)&&['major','minor'].includes(p.mode)&&Object.hasOwn(PALETTE_MODES,p.size)&&Array.isArray(p.items)&&p.items.length<=500&&p.items.every(c=>c&&/^[b#]{0,3}[1-7]$/.test(c.degree)&&CHORDS.some(q=>q.id===c.quality)&&[1,2,3,4,6,8].includes(c.beats)&&typeof c.origin==='string'&&(!c.target||/^[b#]{0,3}[1-7]$/.test(c.target)&&['major','minor'].includes(c.targetQuality))&&(!c.voicing||Array.isArray(c.voicing)&&c.voicing.length>0&&c.voicing.length<=16&&c.voicing.every(n=>Number.isInteger(n)&&n>=0&&n<=127)));}
+function soundSnapshot(){return Object.fromEntries(['preset',...Object.keys(SOUND_RANGES)].map(key=>[key,synthOptions[key]]));}
+function validSound(s){return s&&['preset',...Object.keys(SOUND_RANGES)].every(key=>validSynthOption(key,s[key]));}
+function workspaceSnapshot(){return copyData({progression,synth:synthOptions,practice,voicing:voicingOptions});}
+function restorePersonalLibrary(){
+ try{const data=JSON.parse(localStorage.getItem('guitar-companion-library-v1'));if(!data||typeof data!=='object')return;
+ const seen=new Set();const validEntry=x=>x&&typeof x.id==='string'&&x.id.length<100&&!seen.has(x.id)&&cleanName(x.name)&&!!seen.add(x.id);
+ personalLibrary.sounds=Array.isArray(data.sounds)?data.sounds.filter(x=>validEntry(x)&&validSound(x.sound)).slice(0,200).map(x=>({id:x.id,name:cleanName(x.name),favorite:x.favorite===true,sound:copyData(x.sound)})):[];
+ personalLibrary.songs=Array.isArray(data.songs)?data.songs.filter(x=>validEntry(x)&&validProgression(x.workspace?.progression)&&validSound(x.workspace?.synth)).slice(0,200).map(x=>({id:x.id,name:cleanName(x.name),collection:cleanName(x.collection,40)||'My progressions',workspace:copyData(x.workspace)})):[];
+ for(const game of ['interval','chord'])for(const level of ['starter','extended']){const key=game+'-'+level,x=data.scores?.[key];if(x&&Number.isSafeInteger(x.total)&&x.total>=0&&Number.isSafeInteger(x.correct)&&x.correct>=0&&x.correct<=x.total)personalLibrary.scores[key]={total:x.total,correct:x.correct};}
+ }catch{libraryMessage='Could not read the personal library. Your current workspace is still available.';}
+}
+function commitLibrary(next,message){
+ try{localStorage.setItem('guitar-companion-library-v1',JSON.stringify(next));personalLibrary=next;libraryMessage=message;return true;}
+ catch{libraryMessage='Could not save: local storage is unavailable or full. Your library was not changed.';return false;}
+}
+function editLibrary(fn,message){const before=copyData(personalLibrary),next=copyData(personalLibrary);fn(next);if(commitLibrary(next,message))libraryUndo=before;renderPersonalLibrary();publishSynthState(true);}
+function undoLibrary(){if(!libraryUndo)return;const previous=libraryUndo;previous.scores=copyData(personalLibrary.scores);if(commitLibrary(previous,'Library change undone.'))libraryUndo=null;renderPersonalLibrary();renderEarScore();publishSynthState(true);}
+function soundLibraryAction(action,payload={}){
+ const id=typeof payload.id==='string'?payload.id:'',found=personalLibrary.sounds.find(s=>s.id===id),name=cleanName(payload.name);
+ if(action==='preview'){playProgression(null,{degree:'1',quality:'major',beats:4,voicing:[48,52,55],soundPreview:true});return;}
+ if(action==='load'&&found){activeSoundId=id;restoreSynthOptions(found.sound);if(synthSession){Object.assign(synthSession.settings,synthOptions,synthSession.practice?{tempo:practiceTempo(synthSession.lap||1)}:{});refreshLiveTimbre('preset');}saveWorkspace();updateSynthUI();libraryMessage='Loaded “'+found.name+'”.';publishSynthState(true);return;}
+ if(action==='undo'){undoLibrary();return;}
+ if(['save','rename'].includes(action)&&!name){libraryMessage='Give your sound a name first.';publishSynthState(true);return;}
+ if(action==='save'){
+  if(personalLibrary.sounds.length>=200){libraryMessage='Your library holds up to 200 sounds. Update or remove a sound first.';publishSynthState(true);return;}
+  const newId=newItemId();editLibrary(lib=>lib.sounds.push({id:newId,name,favorite:false,sound:soundSnapshot()}),'Saved “'+name+'”.');if(personalLibrary.sounds.some(x=>x.id===newId))activeSoundId=newId;
+ }else if(found&&['update','rename','favorite','delete'].includes(action))editLibrary(lib=>{const entry=lib.sounds.find(s=>s.id===id);if(action==='update')entry.sound=soundSnapshot();if(action==='rename')entry.name=name;if(action==='favorite')entry.favorite=!entry.favorite;if(action==='delete')lib.sounds=lib.sounds.filter(s=>s.id!==id);},action==='delete'?'Sound removed. Undo is available.':'Sound '+(action==='update'?'updated.':action==='rename'?'renamed.':'favorite changed.'));
+ if(!personalLibrary.sounds.some(s=>s.id===activeSoundId))activeSoundId='';publishSynthState(true);
+}
+function saveSong(update=false){
+ if(!progression.items.length){$('song-status').textContent='Add a chord before saving a progression.';return;}
+ const name=cleanName($('song-name').value),collection=cleanName($('song-collection').value,40)||'My progressions';
+ if(!name){$('song-status').textContent='Give your progression a name first.';return;}
+ const existing=personalLibrary.songs.find(s=>s.id===activeSongId);if(update&&!existing)return;
+ if(!update&&personalLibrary.songs.length>=200){$('song-status').textContent='Your library holds up to 200 progressions. Update or remove one first.';return;}
+ const id=update?activeSongId:newItemId(),entry={id,name,collection,workspace:workspaceSnapshot()};
+ editLibrary(lib=>{if(update)lib.songs[lib.songs.findIndex(s=>s.id===id)]=entry;else lib.songs.push(entry);},'Saved “'+name+'” in '+collection+'.');
+ if(personalLibrary.songs.some(s=>s.id===id))activeSongId=id;renderPersonalLibrary();
+}
+function applySavedWorkspace(w){
+ if(!validProgression(w?.progression))return;
+ stopPlayback('Workspace loaded. Press Play when ready.');snapshot();progression=copyData(w.progression);ensureItemIds();restoreSynthOptions(w.synth);
+ practice=validatedOptions(w.practice,PRACTICE_DEFAULTS,validPractice);voicingOptions=validatedOptions(w.voicing,VOICING_DEFAULTS,validVoicing);activeSoundId='';
+ if(synthMaster)smoothParam(synthMaster.gain,synthOptions.volume/100*.7,synthContext.currentTime);
+ renderArranger();renderPracticeControls();saveWorkspace();updateSynthUI();
+}
+function loadSong(id){const song=personalLibrary.songs.find(s=>s.id===id);if(!song)return;workspaceBeforeLoad=workspaceSnapshot();applySavedWorkspace(song.workspace);activeSongId=id;$('song-name').value=song.name;$('song-collection').value=song.collection;libraryMessage='Loaded “'+song.name+'”. Restore previous workspace is available.';renderPersonalLibrary();}
+function renderPersonalLibrary(){
+ $('tool-collection-summary').textContent=personalLibrary.songs.length?personalLibrary.songs.length+' saved':'Save or load';
+ const selected=$('song-filter').value||'',collections=[...new Set(personalLibrary.songs.map(s=>s.collection))].sort();
+ $('song-filter').innerHTML='<option value="">All collections</option>'+collections.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');$('song-filter').value=collections.includes(selected)?selected:'';
+ $('collection-names').innerHTML=collections.map(c=>`<option value="${esc(c)}"></option>`).join('');
+ const query=($('song-search').value||'').toLocaleLowerCase().trim(),filter=$('song-filter').value;
+ const songs=personalLibrary.songs.filter(s=>(!filter||s.collection===filter)&&(!query||(s.name+' '+s.collection).toLocaleLowerCase().includes(query)));
+ $('song-list').innerHTML=songs.length?songs.map(s=>`<article class="saved-item"><div><strong>${esc(s.name)}</strong><small>${esc(s.collection)} · ${esc(pretty(s.workspace.progression.root))} ${s.workspace.progression.mode} · ${s.workspace.progression.items.length} chords · ${s.workspace.synth.tempo} BPM</small></div><div class="feature-actions"><button class="action" data-song-load="${esc(s.id)}">Load</button><button class="action" data-song-delete="${esc(s.id)}" aria-label="Delete ${esc(s.name)}">Delete</button></div></article>`).join(''):'<p class="feature-hint">'+(personalLibrary.songs.length?'No matching progressions.':'Your saved progressions will appear here.')+'</p>';
+ $('song-update').disabled=!personalLibrary.songs.some(s=>s.id===activeSongId);$('song-undo').hidden=!libraryUndo;$('song-restore').hidden=!workspaceBeforeLoad;
+ if(libraryMessage)$('song-status').textContent=libraryMessage;
+}
+$('song-save').addEventListener('click',()=>saveSong());$('song-update').addEventListener('click',()=>saveSong(true));
+$('song-search').addEventListener('input',renderPersonalLibrary);$('song-filter').addEventListener('change',renderPersonalLibrary);$('song-undo').addEventListener('click',undoLibrary);
+$('song-restore').addEventListener('click',()=>{if(!workspaceBeforeLoad)return;const w=workspaceBeforeLoad;workspaceBeforeLoad=null;applySavedWorkspace(w);activeSongId='';libraryMessage='Previous workspace restored.';renderPersonalLibrary();});
+$('song-list').addEventListener('click',e=>{const load=e.target.closest('[data-song-load]'),remove=e.target.closest('[data-song-delete]');if(load)loadSong(load.dataset.songLoad);if(remove)editLibrary(lib=>lib.songs=lib.songs.filter(s=>s.id!==remove.dataset.songDelete),'Progression removed. Undo is available.');});
+
+function voicedProgression(items,keyRoot=progression.root,options=voicingOptions,previous=null){
+ return items.map(chord=>{
+  if(chord.voicing){previous=chord.voicing;return {...chord,voicing:chord.voicing.slice()};}
+  if(options.mode==='original'){const notes=synthNotes(chord,keyRoot).map(n=>n+options.octave*12);previous=notes;return {...chord,voicing:notes};}
+  const pc=mod(rootPitch(keyRoot)+degreePitch(chord.degree)),q=CHORDS.find(c=>c.id===chord.quality),base=[...new Set(q.offsets)].sort((a,b)=>a-b).map(n=>48+pc+n),candidates=[];
+  const inversions=options.mode==='smooth'?base.map((_,i)=>i):[Math.min(base.length-1,{root:0,first:1,second:2}[options.mode]||0)];
+  for(const inversion of inversions){let notes=base.slice(inversion).concat(base.slice(0,inversion).map(n=>n+12));if(options.spacing==='open')notes=notes.map((n,i)=>i%2?n+12:n).sort((a,b)=>a-b);
+   for(const shift of options.mode==='smooth'?[-24,-12,0,12]:[0]){const pitches=notes.map(n=>n+shift);if(pitches[0]>=36&&pitches.at(-1)<=96)candidates.push(pitches);}
+  }
+  function distance(notes){if(!previous)return Math.abs(notes.reduce((a,b)=>a+b,0)/notes.length-60)+Math.abs(notes[0]-48)*.1;
+   const prior=previous.map(n=>n-options.octave*12);let score=0;for(let i=0;i<Math.max(notes.length,prior.length);i++){const t=i/Math.max(1,Math.max(notes.length,prior.length)-1);score+=Math.abs(notes[Math.round(t*(notes.length-1))]-prior[Math.round(t*(prior.length-1))]);}return score;}
+  candidates.sort((a,b)=>distance(a)-distance(b));const notes=(candidates[0]||base).map(n=>n+options.octave*12);previous=notes;return {...chord,voicing:notes,smartVoicing:true};
+ });
+}
+function effectivePracticeItems(items){return practice.enabled&&practice.bars?items.map(c=>({...c,beats:practice.bars*4})):items;}
+function progressionPlan(tempo=synthOptions.tempo){return playbackPlan(voicedProgression(effectivePracticeItems(progression.items)),tempo);}
+// Tool panels are presentation state only; opening them never changes playback.
+let progressionTool=null;
+function setProgressionTool(tool,returnFocus=false){
+ if(tool!==null&&!['voicing','practice','collection'].includes(tool))return;
+ const previous=progressionTool;progressionTool=tool;
+ for(const name of ['voicing','practice','collection']){$(name+'-panel').hidden=name!==tool;$('tool-'+name).setAttribute('aria-expanded',String(name===tool));}
+ if(returnFocus&&previous)$('tool-'+previous).focus();
+}
+for(const name of ['voicing','practice','collection']){
+ $('tool-'+name).addEventListener('click',()=>setProgressionTool(progressionTool===name?null:name));
+ $('close-'+name+'-panel').addEventListener('click',()=>setProgressionTool(null,true));
+}
+function renderPracticeControls(){
+ for(const key of Object.keys(PRACTICE_DEFAULTS)){const el=$('practice-'+key);if(typeof practice[key]==='boolean')el.checked=practice[key];else el.value=practice[key];}
+ $('practice-tempo').value=synthOptions.tempo;for(const key of Object.keys(VOICING_DEFAULTS))$('voicing-'+key).value=voicingOptions[key];
+ $('voicing-spacing').disabled=voicingOptions.mode==='original';$('practice-target').disabled=!practice.step;
+ $('tool-voicing-summary').textContent={original:'Original',smooth:'Smooth transitions',root:'Root position',first:'First inversion',second:'Second inversion'}[voicingOptions.mode];
+ $('tool-practice-summary').textContent=(practice.enabled?'On':'Off')+' · '+synthOptions.tempo+' BPM';$('tool-practice').setAttribute('data-enabled',String(practice.enabled));
+}
+function setPracticeOption(key,value){if(!validPractice(key,value)){renderPracticeControls();return;}if(synthSession||synthPending)stopPlayback('Practice settings changed. Press Play for a fresh start.');practice[key]=value;renderPracticeControls();renderArranger();saveWorkspace();}
+for(const key of Object.keys(PRACTICE_DEFAULTS))$('practice-'+key).addEventListener('change',e=>setPracticeOption(key,['enabled','metronome'].includes(key)?e.target.checked:Number(e.target.value)));
+$('practice-tempo').addEventListener('change',e=>setSynthOption('tempo',Number(e.target.value)));
+for(const key of Object.keys(VOICING_DEFAULTS))$('voicing-'+key).addEventListener('change',e=>{const value=key==='octave'?Number(e.target.value):e.target.value;if(!validVoicing(key,value))return;voicingOptions[key]=value;if(synthSession)reconcilePlayback(progression.items);renderPracticeControls();renderArranger();saveWorkspace();});
+function practiceTempo(lap,base=synthOptions.tempo){return practice.enabled?Math.min(Math.max(base,practice.target),base+Math.max(0,lap-1)*practice.step):base;}
+function scheduleClick(session,time,accent,event=null){
+ const ctx=synthContext,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.value=accent?1200:850;gain.gain.setValueAtTime(0,time);gain.gain.linearRampToValueAtTime(accent?.14:.09,time+.002);gain.gain.exponentialRampToValueAtTime(.0001,time+.045);osc.connect(gain);gain.connect(session.bus);session.voices.add(osc);if(event)event.oscillators.add(osc);
+ osc.onended=()=>{session.voices.delete(osc);if(event){event.oscillators.delete(osc);if(!event.oscillators.size)event.group.disconnect();}osc.disconnect();gain.disconnect();};osc.start(time);osc.stop(time+.05);
+}
+
+const EAR_INTERVALS=[['m2','Minor second',1],['M2','Major second',2],['m3','Minor third',3],['M3','Major third',4],['P4','Perfect fourth',5],['TT','Tritone',6],['P5','Perfect fifth',7],['m6','Minor sixth',8],['M6','Major sixth',9],['m7','Minor seventh',10],['M7','Major seventh',11],['P8','Octave',12]];
+function earChoices(game=$('ear-game').value||'interval',level=$('ear-level').value||'starter'){
+ if(game==='interval')return EAR_INTERVALS.filter(x=>level==='extended'||[2,3,4,5,7,12].includes(x[2])).map(([id,name,semitones])=>({id,name,semitones}));
+ return (level==='extended'?['major','minor','diminished','augmented','sus2','sus4','major7','minor7','dominant7','half-diminished']:['major','minor','diminished','augmented']).map(id=>({id,name:CHORDS.find(c=>c.id===id).name}));
+}
+function makeEarQuestion(game,level,direction,random=Math.random){const choices=earChoices(game,level),answer=choices[Math.min(choices.length-1,Math.floor(random()*choices.length))],root=48+Math.floor(random()*12),notes=game==='interval'?[root,root+answer.semitones]:CHORDS.find(c=>c.id===answer.id).offsets.map(n=>root+n);return {game,level,direction,answer,notes,choices,answered:false,revealed:false};}
+function earScoreKey(){return ($('ear-game').value||'interval')+'-'+($('ear-level').value||'starter');}
+function renderEarScore(){const score=personalLibrary.scores[earScoreKey()]||{correct:0,total:0};$('ear-score').textContent=score.correct+' correct · '+score.total+' answered'+(score.total?' · '+Math.round(score.correct/score.total*100)+'%':'');}
+function recordEarAnswer(correct){if(!earQuestion||earQuestion.answered)return;earQuestion.answered=true;const next=copyData(personalLibrary),key=earQuestion.game+'-'+earQuestion.level,score=next.scores[key]||{correct:0,total:0};score.total++;if(correct)score.correct++;next.scores[key]=score;const stored=commitLibrary(next,libraryMessage);if(!stored)$('ear-feedback').textContent+=' Score could not be saved.';renderEarScore();}
+function showEarPage(){earVisible=true;arrangerVisible=false;$('map-content').hidden=true;$('arranger').hidden=true;$('ear-training').hidden=false;for(const id of ['scales','chords','progressions','ear'])$('mode-'+id).setAttribute('aria-pressed',String(id==='ear'));renderEarScore();}
+function resetEarRound(){if(synthSession||synthPending)stopPlayback();earQuestion=null;$('ear-answers').innerHTML='';$('ear-explanation').hidden=true;$('ear-replay').disabled=true;$('ear-reveal').disabled=true;$('ear-prompt').textContent='Start a round when you’re ready.';$('ear-next').textContent='Start round';$('ear-round').textContent='Ready to listen';$('ear-feedback').textContent='You can replay before answering. Only your first answer counts.';$('ear-direction-label').hidden=$('ear-game').value==='chord';$('ear-description').textContent=($('ear-game').value==='chord'?'Identify a chord played together in root position. ':'Identify the distance between two notes. ')+earChoices().map(c=>c.name).join(' · ');renderEarScore();}
+function earPicks(q){const notes=q.game==='interval'&&q.direction==='down'?[...q.notes].reverse():q.notes;return notes.map((midi,i)=>({midi,start:q.game==='interval'&&q.direction!=='together'?i*.7:0,duration:.6,velocity:.85}));}
+function hearEarQuestion(){if(!earQuestion)return;const picks=earPicks(earQuestion);playProgression(null,{degree:'1',quality:'major',beats:4,voicing:earQuestion.notes,lessonPicks:picks});}
+function startEarRound(){if(earQuestion&&!earQuestion.answered)recordEarAnswer(false);earQuestion=makeEarQuestion($('ear-game').value||'interval',$('ear-level').value||'starter',$('ear-direction').value||'up');earRound++;$('ear-round').textContent='Round '+earRound;$('ear-prompt').textContent=earQuestion.game==='interval'?'Which interval do you hear?':'Which chord quality do you hear?';$('ear-feedback').textContent='Listen as often as you like, then choose an answer.';$('ear-explanation').hidden=true;$('ear-next').textContent='Next round';$('ear-replay').disabled=false;$('ear-reveal').disabled=false;$('ear-answers').innerHTML=earQuestion.choices.map(c=>`<button class="action" data-ear-answer="${c.id}">${esc(c.name)}</button>`).join('');hearEarQuestion();}
+function revealEarAnswer(choice=null){
+ const q=earQuestion;if(!q||q.revealed||choice!==null&&!q.choices.some(c=>c.id===choice))return;
+ const correct=choice===q.answer.id;$('ear-feedback').textContent=choice===null?'Answer revealed.':correct?'Correct — '+q.answer.name+'.':'You chose '+q.choices.find(c=>c.id===choice).name+'. The answer is '+q.answer.name+'.';recordEarAnswer(correct);q.revealed=true;
+ $('ear-reveal').disabled=true;$('ear-explanation').hidden=false;$('ear-answer-title').textContent=q.answer.name+(q.game==='interval'?' · '+q.answer.semitones+' semitones':'');
+ const rootName=ROOTS.find(r=>r.length===1&&rootPitch(r)===q.notes[0]%12)||ROOTS.find(r=>rootPitch(r)===q.notes[0]%12),formula=q.game==='interval'?['1',({1:'b2',2:'2',3:'b3',4:'3',5:'4',6:'#4',7:'5',8:'b6',9:'6',10:'b7',11:'7',12:'8'})[q.answer.semitones]]:CHORDS.find(c=>c.id===q.answer.id).formula;
+ const names=formula.map(d=>pretty(spell(rootName,d)));$('ear-note-list').textContent='Notes: '+names.join(' · ')+' — degrees '+formula.map(pretty).join(' · ')+'.';
+ $('ear-answers').innerHTML=q.choices.map(c=>`<button class="action" disabled ${c.id===q.answer.id?'data-correct="true"':''}>${c.id===q.answer.id?'✓ ':''}${esc(c.name)}</button>`).join('');
+ let table='<thead><tr><th>String</th>'+Array.from({length:13},(_,f)=>'<th>'+f+'</th>').join('')+'</tr></thead><tbody>';
+ OPEN_MIDI.forEach((open,row)=>{table+='<tr><th>'+['e','B','G','D','A','E'][row]+'</th>';for(let f=0;f<=12;f++){const pc=(open+f)%12,index=q.notes.findIndex(n=>n%12===pc);table+='<td>'+(index>=0?'<span class="ear-dot"'+(index===0?' data-root="true"':'')+'>'+esc(names[index])+'</span>':'')+'</td>';}table+='</tr>';});$('ear-board').innerHTML=table+'</tbody>';
+}
+$('mode-ear').addEventListener('click',showEarPage);$('ear-next').addEventListener('click',startEarRound);$('ear-replay').addEventListener('click',hearEarQuestion);$('ear-stop').addEventListener('click',()=>stopPlayback());$('ear-reveal').addEventListener('click',()=>revealEarAnswer());
+$('ear-answers').addEventListener('click',e=>{const b=e.target.closest('[data-ear-answer]');if(b)revealEarAnswer(b.dataset.earAnswer);});
+for(const key of ['game','level','direction'])$('ear-'+key).addEventListener('change',()=>{if(earQuestion&&!earQuestion.answered)recordEarAnswer(false);resetEarRound();});
+$('ear-reset').addEventListener('click',()=>{const next=copyData(personalLibrary);delete next.scores[earScoreKey()];commitLibrary(next,'Ear-training score reset.');renderEarScore();});
+
+restorePersonalLibrary();
 configure('C','major',false);
 restoreWorkspace();
+renderPracticeControls();renderPersonalLibrary();resetEarRound();
 // Optional browser-agent support. Ordinary offline use needs no browser extensions.
 if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'set_fretboard_scale',title:'Choose fretboard scale',description:'Set the same root, scale and visibility controls used by the visible fretboard.',inputSchema:{type:'object',properties:{root:{type:'string',enum:ROOTS},scale:{type:'string',enum:SCALES.map(s=>s.id)},onlyScaleNotes:{type:'boolean'}},required:['root','scale'],additionalProperties:false},execute:input=>{if(!input||typeof input!=='object'||Object.keys(input).some(k=>!['root','scale','onlyScaleNotes'].includes(k)))throw new Error('Invalid scale selection.');return configure(input.root,input.scale,input.onlyScaleNotes??state.only);}})).catch(()=>{});}catch{}}
 </script>

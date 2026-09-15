@@ -5,7 +5,7 @@ Updated: September 14, 2026. Read this before changing the app. This is a workin
 ## Start here
 
 1. Read `AGENTS.md`, this document, and `README.md`.
-2. Inspect `git status`, the current branch, remotes, and actual file contents. Do not assume a clean checkout. The original workstation has a known unfinished local Git initialization; its workspace-level `SESSION_HANDOFF.md` explains it.
+2. Inspect `git status`, the current branch, remotes, and actual file contents. Do not assume a clean checkout. The workspace-level `SESSION_HANDOFF.md`, when present, records local Git and release status.
 3. Use this repository's `mac/` files for new development. An older development tree may also exist outside the repository; it is historical, not a second source to keep editing.
 4. Identify the requested change and preserve existing behavior. Do not start the deferred refactor merely because this document discusses it.
 5. Build/test only as appropriate to the change. Keep verification silent and offscreen.
@@ -13,8 +13,8 @@ Updated: September 14, 2026. Read this before changing the app. This is a workin
 ## Product and ownership
 
 - Public repository: https://github.com/SourdoughDog/fretboard-companion
-- Current native source/local build: **1.23**, bundle build **24**. The last published release remains v1.20 until separately published.
-- Release: https://github.com/SourdoughDog/fretboard-companion/releases/tag/v1.20
+- Current native source/local build: **1.27**, bundle build **28**, including the v1.24–v1.27 features and fixes. Latest published downloadable release remains **v1.23**, at commit `9914985926cab95af36d7ab7c5be2c35aef68bb0`.
+- Release: https://github.com/SourdoughDog/fretboard-companion/releases/tag/v1.23
 - Latest downloadable app: https://github.com/SourdoughDog/fretboard-companion/releases/latest/download/Guitar.Fretboard.for.Mac.zip
 - UI branding: **Fretboard companion**. Native bundle/window name remains **Guitar Fretboard** / `Guitar Fretboard.app`; do not silently rename the bundle or its identifier.
 - Bundle identifier: `local.guitar.fretboardcompanion`.
@@ -96,7 +96,7 @@ Useful JavaScript entry points (search by symbol; line numbers move):
 - Audio: `synthNotes`, `ensureSynth`, `playProgression`, `setSynthOption`, `reconcilePlayback`, `performanceEvents`, `scheduleSynthChord`, `stopPlayback`.
 - Bridge/export: `publishSynthState`, `setSynthOption`, `midiBytes`, `exportMidi`, `midiExportResult`; synth control dispatch lives in Swift's `synthControl` message handler.
 
-State persists via localStorage key **`guitar-companion-v12`** even though the app is now v1.20. Saved payload includes `preferences`, `progression`, `synth`, and `paletteSeed`. Preserve migration/validation. Defaults: Classic theme; numbers in Scales/Chords; Roman numerals in Progressions; shapes view; UI sound enabled. Do not reset a user's saved theme on upgrades.
+State persists via localStorage key **`guitar-companion-v12`** for backward compatibility. Saved payload includes `preferences`, `progression`, `synth`, and `paletteSeed`. Preserve migration/validation. Defaults: Classic theme; numbers in Scales/Chords; Roman numerals in Progressions; shapes view; UI sound enabled. Do not reset a user's saved theme on upgrades.
 
 Tuning arrays use different orientations: `OPEN_MIDI=[64,59,55,50,45,40]` is high e to low E for the horizontal board/finder; shape routines use low-to-high tuning. Mixing them breaks bass identification and audition.
 
@@ -138,6 +138,7 @@ source .venv/bin/activate
 python3 -m pip install -r requirements-build.txt
 python3 scripts/build.py
 node tests/logic.cjs
+node tests/features.cjs
 python3 scripts/check-ui.py
 ```
 
@@ -264,3 +265,124 @@ restoration and preset reset. UI checks passed both tabs in all 15 themes at
 520/680 CSS px; offscreen visual review covered both Classic tabs at 680×820
 and the compact Midnight layout at 520×640. Earlier v1.22 artifacts are backed
 up under build/backups/v1.22/.
+
+
+## v1.24 personal library, practice and ear training
+
+All six requested features are implemented in the existing inline-script
+architecture. No modularization or runtime dependencies were introduced.
+
+- `personalLibrary` uses a separate localStorage key,
+  `guitar-companion-library-v1`, with validated sound/song snapshots and scores.
+  Library writes are transactional: storage failure leaves the in-memory library
+  unchanged and shows a message. Cap: 200 sounds and 200 progressions. Names
+  render through textContent or escaping. One library-edit undo is available;
+  later ear-training scores survive a sound/song undo.
+- `soundLibraryAction` handles save/load/update/rename/favorite/delete/undo and
+  audition. The synth panel sends `sound` messages through the source-checked
+  Swift bridge; payloads are JSON-encoded. Named sounds include the factory
+  preset identifier plus sound controls, preserving tempo/volume/performance on
+  recall. The current sound still autosaves independently of named snapshots.
+- The envelope SVG has four pointer/keyboard handles and existing numeric sliders.
+  Each stage uses its own visual scale, explicitly explained in the UI. Attack,
+  decay and release drag horizontally; sustain vertically. A held-chord audition
+  demonstrates the envelope regardless of the current performance style.
+- `practice` and `voicingOptions` persist in the original workspace payload.
+  Practice repeats in 4/4, with 0/1/2-bar count-in, metronome, card beats or
+  1/2/4 bars per chord, +0/2/5/10 BPM per lap and a tempo ceiling. The starting
+  tempo remains saved; session tempo increases without overwriting it. Practice
+  edits/start-tempo changes stop playback. Preview sessions skip practice.
+  Metronome oscillators belong to their session/event and stop with playback or
+  cancellation. `scheduleClick` disconnects the last event group when necessary.
+- `voicedProgression` computes original/root/first/second/smooth voicings, close
+  or open spacing and ±1 octave. Smooth minimizes nearby voice movement within
+  each pass, not a global/circular optimization or a guitar-fingering solver.
+  Formula pitch classes remain intact. Existing explicit finder/shape voicings
+  are preserved. `smartVoicing` keeps the inversion bass in normal arpeggios;
+  original voicings retain their prior arpeggio behavior. MIDI uses the same
+  voiced notes and practice bar override, with one pass at the starting tempo;
+  count-in, metronome and tempo ramp are not exported.
+- Saved progressions capture key/chords, all synth options, practice and voicing.
+  Load stops playback and retains a complete prior-workspace snapshot for
+  Restore previous workspace. Update loaded also renames/moves the item using
+  the name/collection fields. Search and collection filters are local.
+- Ear training is a fourth primary view (`mode-ear`, Command–5; Command–4 stays
+  the synth). Intervals: six starter or twelve extended distances, played up,
+  down or together. Chords: four starter or ten extended qualities, root-position
+  simultaneous notes. `lessonPicks` uses fixed warm-key settings and the shared
+  output volume. Replay preserves the question. First answer, reveal or skip
+  records one attempt; scores are separate by game and level. Answers show
+  spelled notes/degrees and pitch classes on a static fretboard. Theme changes
+  preserve the ear-training page; Space replays outside typing/control targets.
+
+Validation: full existing Node suite plus `tests/features.cjs` (3,060 voicing
+combinations, library transactions/restore, scoring, practice timing, tempo
+ceiling and cancellation). Hidden UI tests exercise the new main-window flows
+across 15 themes at 540/1100 widths and synth at 520/680. Native bridge tests
+include sound lifecycle, envelope keyboard and simulated pointer paths,
+audition, and persistence. Eighteen real offline audio scenes include a
+metronome/chord mix. Tests use no speakers or desktop capture.
+`tests/check-hidden-webkit.swift` accepts an optional sixth command argument
+for an offscreen PNG; a short paint delay avoids stale glyph positions.
+
+v1.23 release artifacts and source are backed up under `build/backups/v1.23/`.
+v1.24/build25 is packaged in `build/Guitar Fretboard v1.24.zip`; the app signature,
+ZIP contents, metadata, guide, generated theme blocks and frozen legacy HTML
+were verified. The owner's installed app has not been replaced or opened.
+
+
+## v1.25 startup crash fix
+
+The user reported that v1.24 would not open. macOS diagnostic reports confirmed
+SIGTRAP in the appearance branch of `userContentController(_:didReceive:)`.
+Ear Training had accidentally also been added to the degree-label menu loop,
+creating eight notation items for the three-entry `notationTabs` array. The
+initial appearance message indexed past that array and terminated the app.
+
+The notation menu now iterates `notationTabs` directly; the action guard derives
+its valid range from that same list. Ear Training remains in View with Command–5.
+The existing native bridge test previously skipped menu construction and omitted
+appearance registration, so it missed this startup path. It now calls the real
+`installMenus`, validates item/shortcut mappings, registers appearance messages,
+and exercises each notation action/checkmark and theme changes on Ear Training.
+It fails on the backed-up v1.24 source and passes on the corrected source, using
+private offscreen windows. This is a targeted native fix; the six features and
+audio code are unchanged. Broken v1.24 source/ZIP are preserved for regression
+verification under build/backups/v1.24/. Use the corrected v1.25 download.
+
+
+## v1.26 progression organization
+
+The composition pane now has a compact row of Voicing, Practice and Saved
+progressions buttons, each with a current-setting/library summary. The previous
+stacked details elements are sections controlled by `setProgressionTool`.
+Voicing is its own panel, outside Practice. Only one tool panel opens at a time;
+clicking the active button closes it, and Done closes it and restores focus to
+its button. Panels have a fixed maximum body height with internal scrolling.
+
+`progressionTool` is session-only presentation state. Switching panels never
+saves/resets sound or practice options, restarts playback or replaces library
+form fields. Ordinary render/state/theme updates preserve the open panel.
+Existing IDs, control listeners, storage schema, audio and native menu mapping
+are retained. Native Swift changed only in the About version/build string.
+The preserved v1.25 source/ZIP are under build/backups/v1.25/.
+
+Validation: existing feature logic suite, UI checks for all three panels across
+15 themes at 540/1100 widths (including settings/draft retention and focus),
+and native startup/menu/synth bridge checks. Offscreen visual review covered
+Classic collapsed/Voicing, compact Practice, and Midnight Saved progressions.
+The v1.26/build27 archive is verified against the bundled files and metadata.
+
+
+## v1.27 focused preset-label fix
+
+The synth panel skipped every focused control in receiveSynthState. This left
+the preset selector stale (for example Warm keys) while engine state reported
+a different playing preset. The preset is now reconciled independently of
+focus and only assigned if its value differs. Editable numeric/range controls
+retain the previous focus guard; stable preset option nodes are retained.
+The hidden UI test reproduces the focused mismatch on the v1.26 source and
+passes on the fix. Native bridge coverage checks engine-driven and selector-
+driven changes while focused and playing, correct option captions, continued
+session identity and the selection after stopping. No audio engine or menu
+routing changes. v1.26 source/ZIP are backed up in build/backups/v1.26/.

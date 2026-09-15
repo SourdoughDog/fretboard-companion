@@ -85,7 +85,8 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         let labels = NSMenu(title: "Degree Labels")
         labelsRoot.submenu = labels
         file.addItem(labelsRoot)
-        for (tabIndex, tabTitle) in ["Scales", "Chords", "Progressions"].enumerated() {
+        for (tabIndex, tab) in notationTabs.enumerated() {
+            let tabTitle = tab.capitalized
             let tabRoot = NSMenuItem(title: tabTitle, action: nil, keyEquivalent: "")
             let tabMenu = NSMenu(title: tabTitle)
             tabRoot.submenu = tabMenu; labels.addItem(tabRoot)
@@ -107,8 +108,8 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         add("Copy", action: Selector(("copy:")), key: "c", to: edit)
         add("Select All", action: Selector(("selectAll:")), key: "a", to: edit)
         let view = submenu("View")
-        for (index, title) in ["Scales", "Chords", "Progressions"].enumerated() {
-            let item = NSMenuItem(title: title, action: #selector(switchTab(_:)), keyEquivalent: String(index + 1))
+        for (index, title) in ["Scales", "Chords", "Progressions", "Ear Training"].enumerated() {
+            let item = NSMenuItem(title: title, action: #selector(switchTab(_:)), keyEquivalent: String(index == 3 ? 5 : index + 1))
             item.tag = index; item.target = self; view.addItem(item)
         }
         view.addItem(.separator())
@@ -141,6 +142,10 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             if action == "stop" { webView.evaluateJavaScript("stopPlayback()", completionHandler: nil) }
             // The engine validates keys and ranges in validSynthOption. Forward new controls
             // through the same path instead of maintaining a second, stale allowlist.
+            if action == "sound", let command = body["command"] as? String,
+               let data = try? JSONSerialization.data(withJSONObject: [command, body]), let json = String(data: data, encoding: .utf8) {
+                webView.evaluateJavaScript("soundLibraryAction(...\(json))", completionHandler: nil)
+            }
             if action == "set", let key = body["key"] as? String,
                let value = body["value"], let data = try? JSONSerialization.data(withJSONObject: [key, value]), let json = String(data: data, encoding: .utf8) {
                 webView.evaluateJavaScript("setSynthOption(...\(json))", completionHandler: nil)
@@ -157,8 +162,8 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     @objc private func switchTab(_ sender: NSMenuItem) {
-        guard (0...2).contains(sender.tag) else { return }
-        let tab = ["scales", "chords", "progressions"][sender.tag]
+        guard (0...3).contains(sender.tag) else { return }
+        let tab = ["scales", "chords", "progressions", "ear"][sender.tag]
         window.makeKeyAndOrderFront(nil)
         webView.evaluateJavaScript("document.getElementById('mode-\(tab)').click()", completionHandler: nil)
     }
@@ -236,13 +241,13 @@ final class FretboardApp: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         webView.evaluateJavaScript("setAppTheme('\(themes[sender.tag])')", completionHandler: nil)
     }
     @objc private func changeNotation(_ sender: NSMenuItem) {
-        guard (0..<6).contains(sender.tag) else { return }
+        guard (0..<(notationTabs.count * 2)).contains(sender.tag) else { return }
         let notation = sender.tag % 2 == 1 ? "roman" : "numbers"
         webView.evaluateJavaScript("setAppNotation('\(notation)', '\(notationTabs[sender.tag / 2])')", completionHandler: nil)
     }
 
     @objc private func about() {
-        NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Guitar Fretboard", .applicationVersion: "1.23", .version: "24", .credits: NSAttributedString(string: "Your offline guitar scale and chord companion.\n26 scales and modes · 34 chord types · All 12 roots\nPolyphonic wavetable synth · Progression arranger")])
+        NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Guitar Fretboard", .applicationVersion: "1.27", .version: "28", .credits: NSAttributedString(string: "Your offline guitar scale and chord companion.\n26 scales and modes · 34 chord types · All 12 roots\nPolyphonic wavetable synth · Progression arranger")])
     }
     @objc private func zoomIn() { webView.pageZoom = min(2, webView.pageZoom + 0.1) }
     @objc private func zoomOut() { webView.pageZoom = max(0.7, webView.pageZoom - 0.1) }
