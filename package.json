@@ -1,7 +1,7 @@
 {
   "name": "fretboard-companion-windows",
   "productName": "Guitar Fretboard",
-  "version": "1.27.0",
+  "version": "1.27.1",
   "description": "An offline guitar theory companion for Windows",
   "author": "SourdoughDog",
   "private": true,

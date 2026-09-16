@@ -1,5 +1,11 @@
 # Changelog
 
+## Windows edition 1.27.1
+
+- Fixed zoom shortcuts in the main and synth windows: Ctrl+=, Ctrl+Shift+= and numeric-keypad Plus now zoom in; Ctrl+Minus and Ctrl+0 zoom out and reset.
+- Added hidden native-keyboard regression checks for both windows, including keypad keys, one zoom step per press, and ordinary typing/AltGr exclusions.
+- Mac app version remains 1.27; existing settings and personal libraries are preserved.
+
 ## Windows edition 1.27.0
 
 - Added a parallel Windows 10/11 x64 desktop app using the existing v1.27 UI, theory and audio engine.
