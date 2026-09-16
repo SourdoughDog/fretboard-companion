@@ -29,6 +29,33 @@ app.whenReady().then(async()=>{
     assert(host.main.webContents.getLastWebPreferences().sandbox);
     assert(!host.main.isVisible());
   });
+  await check('Zoom shortcuts: Ctrl+=, Ctrl+Shift+=, keypad +, minus and reset in both windows',async()=>{
+    await host.openSynth();
+    for(const win of [host.main,host.synth]){
+      const wc=win.webContents;
+      const press=async(keyCode,modifiers=['control'])=>{
+        wc.sendInputEvent({type:'keyDown',keyCode,modifiers});
+        wc.sendInputEvent({type:'keyUp',keyCode,modifiers});
+        await pause(80);
+      };
+      wc.setZoomLevel(0);
+      for(const [key,mods] of [['=',['control']],['+',['control','shift']],['numadd',['control','isKeypad']]]){
+        await press(key,mods);
+        await until(()=>wc.getZoomLevel()>0,'zoom in with '+key+' '+mods.join('+'));
+        assert.equal(wc.getZoomLevel(),0.5,'Each shortcut zooms exactly once');
+        await press('0');assert.equal(wc.getZoomLevel(),0);
+      }
+      await press('-');assert.equal(wc.getZoomLevel(),-0.5);
+      await press('0');assert.equal(wc.getZoomLevel(),0);
+      await press('numsub',['control','isKeypad']);assert.equal(wc.getZoomLevel(),-0.5);
+      await press('0');assert.equal(wc.getZoomLevel(),0);
+      for(const [key,mods] of [['=',[]],['+',['shift']],['=',['control','alt']]]){
+        await press(key,mods);assert.equal(wc.getZoomLevel(),0,'Ordinary typing and AltGr must not zoom');
+      }
+      assert(!win.isVisible());
+    }
+    host.synth.close();await until(()=>!host.synth,'zoom test synth close');
+  });
   for(const width of [620,1100]){
     host.main.setContentSize(width,1000);
     for(const [name,file] of [['Chord finder (408 formulas, all themes)','check-hidden-finder.js'],['Practice, voicing, collections, ear training and all themes','check-hidden-features.js']]){

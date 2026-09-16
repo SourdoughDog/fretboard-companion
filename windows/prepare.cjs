@@ -37,7 +37,7 @@ for (const [input, filename] of [['app-source.html','index.html'], ['synth-windo
   hashes[filename] = crypto.createHash('sha256').update(html).digest('hex');
 }
 const guide = windowsText(fs.readFileSync(path.join(root, 'docs', 'User Guide.txt'), 'utf8').split('CLASSIC COLLECTION')[1]).replaceAll('Mac fonts','system fonts').replaceAll('Mac clipboard','Windows clipboard').replace(/This release updates the Windows app only\.[\s\S]*$/, 'This Windows edition uses the current v1.27 app features. The original Mac and legacy sources remain preserved in the source repository.\n');
-fs.writeFileSync(path.join(output, 'User Guide.txt'), 'WINDOWS EDITION · 1.27.0\n\nUnzip the complete portable folder and open Guitar Fretboard.exe, or use the Setup installer.\nWindows 10/11, x64. No browser, Node.js or internet connection is needed to run.\nSettings save in %APPDATA%\\Guitar Fretboard. Mac and Windows libraries do not sync automatically.\nCopy MIDI copies a file to the Windows clipboard; use Save MIDI if your DAW does not accept pasted files.\n\nCLASSIC COLLECTION' + guide);
+fs.writeFileSync(path.join(output, 'User Guide.txt'), 'WINDOWS EDITION · 1.27.1\n\nUnzip the complete portable folder and open Guitar Fretboard.exe, or use the Setup installer.\nWindows 10/11, x64. No browser, Node.js or internet connection is needed to run.\nSettings save in %APPDATA%\\Guitar Fretboard. Mac and Windows libraries do not sync automatically.\nCopy MIDI copies a file to the Windows clipboard; use Save MIDI if your DAW does not accept pasted files.\n\nCLASSIC COLLECTION' + guide);
 fs.writeFileSync(path.join(output, 'resources.sha256.json'), JSON.stringify(hashes, null, 2) + '\n');
 
 // Reproduce the existing app icon with a small dependency-free PNG/ICO encoder.

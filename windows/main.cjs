@@ -53,6 +53,19 @@ class WindowsApp {
     const win=new BrowserWindow({...bounds,title,show:false,backgroundColor:'#f7f4ec',icon:path.join(resources,'icon.png'),minWidth:page==='index.html'?620:520,minHeight:page==='index.html'?520:640,
       webPreferences:{preload:path.join(__dirname,'preload.cjs'),nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,backgroundThrottling:false,spellcheck:false,autoplayPolicy:'no-user-gesture-required',offscreen:this.hidden}});
     if(this.hidden)win.webContents.setAudioMuted(true);
+    // Windows keyboards report the + key as '=' without Shift; the native
+    // zoomIn accelerator alone misses it and some numeric-keypad variants.
+    win.webContents.on('before-input-event',(event,input)=>{
+      if(input.type!=='keyDown'||!input.control||input.alt||input.meta||input.isComposing)return;
+      let change;
+      if(['=','+','Add'].includes(input.key)||input.code==='NumpadAdd')change=0.5;
+      else if(['-','Subtract'].includes(input.key)||input.code==='NumpadSubtract')change=-0.5;
+      else if(input.key==='0')change=0;
+      else return;
+      // Also suppress the menu accelerator so a keystroke applies only once.
+      event.preventDefault();
+      win.webContents.setZoomLevel(change===0?0:win.webContents.getZoomLevel()+change);
+    });
     const openExternal=url=>{if(allowedExternal(url)&&!this.hidden)shell.openExternal(url).catch(()=>{});};
     win.webContents.setWindowOpenHandler(({url})=>{openExternal(url);return {action:'deny'};});
     win.webContents.on('will-navigate',(event,url)=>{if(url!==`${ORIGIN}/${page}`){event.preventDefault();openExternal(url);}});
@@ -140,7 +153,7 @@ class WindowsApp {
       {label:'&View',submenu:[...['scales','chords','progressions','ear'].map((tab,index)=>({id:`view-${tab}`,label:tab==='ear'?'Ear Training':tab[0].toUpperCase()+tab.slice(1),accelerator:`Ctrl+${index===3?5:index+1}`,click:perform(()=>{focusMain();return this.js(`document.getElementById('mode-${tab}').click()`);})})),{type:'separator'},{role:'zoomIn'},{role:'zoomOut'},{role:'resetZoom'},{type:'separator'},{role:'togglefullscreen'}]},
       {label:'&Help',submenu:[
         {label:'User Guide',click:perform(()=>shell.openPath(path.join(resources,'User Guide.txt')))},
-        {label:'About Guitar Fretboard',click:()=>dialog.showMessageBox({type:'info',title:'Guitar Fretboard',message:'Fretboard companion · Windows 1.27.0',detail:'26 scales and modes · 34 chord types · Progression arranger\nWavetable synth · Ear training · 15 themes\n\nBuilt by SourdoughDog with coding and design assistance from OpenAI Codex.\n\nEverything works offline. Settings and libraries stay on this PC.'})}
+        {label:'About Guitar Fretboard',click:()=>dialog.showMessageBox({type:'info',title:'Guitar Fretboard',message:'Fretboard companion · Windows 1.27.1',detail:'26 scales and modes · 34 chord types · Progression arranger\nWavetable synth · Ear training · 15 themes\n\nBuilt by SourdoughDog with coding and design assistance from OpenAI Codex.\n\nEverything works offline. Settings and libraries stay on this PC.'})}
       ]}
     ]));
   }

@@ -1,4 +1,4 @@
-# Windows edition · 1.27.0
+# Windows edition · 1.27.1
 
 The Windows desktop shell packages the same v1.27 HTML, music logic, Web Audio engine, synth controller, CSS, and illustrations as the Mac app. The original `mac/` and `legacy/` source files remain unchanged. No refactor or additional music implementation is required.
 
@@ -9,6 +9,8 @@ Windows 10/11, x64. Use the setup installer, or extract the **complete** portabl
 Settings, progression, sounds, collections and scores are stored under `%APPDATA%\Guitar Fretboard`. The installer and portable copy share this data; a second launch activates the existing instance. Uninstalling preserves this folder. Mac data does not migrate or synchronize automatically. Back up the folder while the app is closed before transferring data between Windows PCs.
 
 Ctrl+1/2/3 selects Scales/Chords/Progressions, Ctrl+4 opens Wavetable Synth, Ctrl+5 opens Ear Training, Ctrl+F searches, and Ctrl+P prints. Ctrl-click previews a chord; Ctrl+Shift-drag copies a progression tile. Space/Escape retain the existing playback and typing-field behavior. File contains Theme and independent Degree Labels menus. Closing the synth leaves playback running; closing the main window ends the app.
+
+Zoom in with Ctrl+=, Ctrl+Shift+= (Ctrl+Plus), or Ctrl+keypad Plus. Ctrl+Minus zooms out, and Ctrl+0 resets the size. These shortcuts work in both the main and synth windows; the View menu also provides zoom controls.
 
 Copy MIDI writes a `.mid` file to `MIDI Exports` in the application data folder and places a native Windows file-list entry on the clipboard. DAW paste support varies; Save MIDI is always available. Exports are retained so pasted file references stay valid. Copy MIDI uses Windows PowerShell and Windows Forms, supplied with Windows; systems that restrict PowerShell can still use Save MIDI.
 
