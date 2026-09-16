@@ -1,4 +1,4 @@
-# Windows edition · 1.27.1
+# Windows edition · 1.27.2
 
 The Windows desktop shell packages the same v1.27 HTML, music logic, Web Audio engine, synth controller, CSS, and illustrations as the Mac app. The original `mac/` and `legacy/` source files remain unchanged. No refactor or additional music implementation is required.
 
@@ -32,6 +32,7 @@ The build emits an NSIS setup executable, portable ZIP and unpacked app under `b
 ## Implementation
 
 - `prepare.cjs` regenerates both pages from `mac/`, expands authoritative themes and artwork, adapts Command to Ctrl, hides the web settings panel in favor of native menus, and hashes the inline scripts for CSP. It also reproduces the existing app icon and adapts the guide. Generated files are ignored.
+- `icon.cjs` draws the Windows fretboard icon with supersampled transparent edges and small-size stroke alignment. It emits a 1024px PNG master and an ICO containing 16, 20, 24, 30, 32, 36, 40, 48, 60, 64, 72, 80, 96, 128 and 256px frames. Both windows and the packaged executable/installer use this ICO. No image-generation service or extra build dependency is needed.
 - `main.cjs` supplies native windows, menus, printing, window bounds, MIDI dialogs and file clipboard, and relays the existing synth messages. The main window remains the only audio engine.
 - `preload.cjs` exposes only the page's named message handlers. Renderers have no Node access, use context isolation and sandboxing, and cannot navigate to remote content. IPC validates the originating window and top-level frame. A fixed local `fretboard://app` origin keeps storage stable across upgrades and portable-folder moves.
 - `security.cjs` validates MIDI bytes, safe filenames, sender identity and the original reference-link hosts. MIDI payloads never become executable code. Optional theory links open in the default browser; renderer network traffic is blocked.

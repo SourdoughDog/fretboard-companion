@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const zlib = require('node:zlib');
+const {writeIcons} = require('./icon.cjs');
 const root = path.resolve(__dirname, '..');
 const source = path.join(root, 'mac');
 const output = path.join(__dirname, 'generated');
@@ -37,26 +37,9 @@ for (const [input, filename] of [['app-source.html','index.html'], ['synth-windo
   hashes[filename] = crypto.createHash('sha256').update(html).digest('hex');
 }
 const guide = windowsText(fs.readFileSync(path.join(root, 'docs', 'User Guide.txt'), 'utf8').split('CLASSIC COLLECTION')[1]).replaceAll('Mac fonts','system fonts').replaceAll('Mac clipboard','Windows clipboard').replace(/This release updates the Windows app only\.[\s\S]*$/, 'This Windows edition uses the current v1.27 app features. The original Mac and legacy sources remain preserved in the source repository.\n');
-fs.writeFileSync(path.join(output, 'User Guide.txt'), 'WINDOWS EDITION · 1.27.1\n\nUnzip the complete portable folder and open Guitar Fretboard.exe, or use the Setup installer.\nWindows 10/11, x64. No browser, Node.js or internet connection is needed to run.\nSettings save in %APPDATA%\\Guitar Fretboard. Mac and Windows libraries do not sync automatically.\nCopy MIDI copies a file to the Windows clipboard; use Save MIDI if your DAW does not accept pasted files.\n\nCLASSIC COLLECTION' + guide);
+fs.writeFileSync(path.join(output, 'User Guide.txt'), 'WINDOWS EDITION · 1.27.2\n\nUnzip the complete portable folder and open Guitar Fretboard.exe, or use the Setup installer.\nWindows 10/11, x64. No browser, Node.js or internet connection is needed to run.\nSettings save in %APPDATA%\\Guitar Fretboard. Mac and Windows libraries do not sync automatically.\nCopy MIDI copies a file to the Windows clipboard; use Save MIDI if your DAW does not accept pasted files.\n\nCLASSIC COLLECTION' + guide);
 fs.writeFileSync(path.join(output, 'resources.sha256.json'), JSON.stringify(hashes, null, 2) + '\n');
 
-// Reproduce the existing app icon with a small dependency-free PNG/ICO encoder.
-const size = 256, rows = Buffer.alloc((size * 4 + 1) * size);
-for (let y=0; y<size; y++) for (let x=0; x<size; x++) {
-  const px=x*4, py=y*4, cx=Math.max(254,Math.min(770,px)), cy=Math.max(254,Math.min(770,py));
-  let color=[0,0,0,0];
-  if ((px-cx)**2+(py-cy)**2<=210**2) color=[0,110,117,255];
-  if (py>=182&&py<=844&&[276,512,748].some(v=>Math.abs(px-v)<=7.5)) color=[94,164,169,255];
-  if (px>=180&&px<=844&&[300,442,584,726].some(v=>Math.abs(py-v)<=6)) color=[149,198,202,255];
-  if ((px-512)**2+(py-442)**2<=97**2) color=[255,255,255,255];
-  if ((px-748)**2+(py-726)**2<=84**2) color=[255,214,184,255];
-  rows.set(color,y*(size*4+1)+1+x*4);
-}
-function crc32(bytes) { let crc=0xffffffff; for(const byte of bytes){crc^=byte;for(let bit=0;bit<8;bit++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}return (crc^0xffffffff)>>>0; }
-function chunk(type,data) {const name=Buffer.from(type),out=Buffer.alloc(data.length+12);out.writeUInt32BE(data.length);name.copy(out,4);data.copy(out,8);out.writeUInt32BE(crc32(Buffer.concat([name,data])),out.length-4);return out;}
-const ihdr=Buffer.alloc(13);ihdr.writeUInt32BE(size);ihdr.writeUInt32BE(size,4);ihdr[8]=8;ihdr[9]=6;
-const png=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ihdr),chunk('IDAT',zlib.deflateSync(rows)),chunk('IEND',Buffer.alloc(0))]);
-fs.writeFileSync(path.join(output,'icon.png'),png);
-const ico=Buffer.alloc(22);ico.writeUInt16LE(1,2);ico.writeUInt16LE(1,4);ico.writeUInt16LE(1,10);ico.writeUInt16LE(32,12);ico.writeUInt32LE(png.length,14);ico.writeUInt32LE(22,18);
-fs.writeFileSync(path.join(output,'icon.ico'),Buffer.concat([ico,png]));
-console.log('Prepared Windows UI, synth, guide and icon from the shared Mac sources.');
+// Smooth, size-specific ICO artwork plus a high-resolution PNG master.
+writeIcons(output);
+console.log('Prepared Windows UI, synth, guide and multi-resolution icon.');

@@ -1,6 +1,6 @@
 'use strict';
 // Exercise the production shell in unshown windows with a disposable profile.
-const {app,Menu}=require('electron');
+const {app,Menu,nativeImage}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),output=path.join(root,'build','windows-checks');
 fs.mkdirSync(output,{recursive:true});
@@ -22,6 +22,26 @@ app.whenReady().then(async()=>{
   const makeWindow=host.makeWindow.bind(host);
   host.makeWindow=(...args)=>{const win=makeWindow(...args);win.webContents.on('console-message',event=>{if(event.level==='error')console.error('Renderer: '+event.message);});win.webContents.on('preload-error',(_event,_path,error)=>console.error(error));return win;};
   await host.start();
+  await check('Windows ICO decodes at all 15 display sizes with smooth transparent edges',async()=>{
+    const ico=fs.readFileSync(path.join(__dirname,'generated','icon.ico'));
+    assert.equal(ico.readUInt16LE(2),1);
+    const sizes=[16,20,24,30,32,36,40,48,60,64,72,80,96,128,256];
+    assert.equal(ico.readUInt16LE(4),sizes.length);
+    let end=6+16*sizes.length;
+    for(let i=0;i<sizes.length;i++){
+      const entry=6+16*i,size=sizes[i],length=ico.readUInt32LE(entry+8),offset=ico.readUInt32LE(entry+12);
+      assert.equal(ico[entry]||256,size);assert.equal(ico[entry+1]||256,size);
+      assert.equal(offset,end);end=offset+length;assert(end<=ico.length);
+      const image=nativeImage.createFromBuffer(ico.subarray(offset,end));
+      assert.deepEqual(image.getSize(),{width:size,height:size});
+      const bitmap=image.toBitmap();
+      assert.equal(bitmap[3],0,'Transparent corner');
+      assert(bitmap.some((alpha,index)=>index%4===3&&alpha>0&&alpha<255),'Antialiased contour');
+    }
+    assert.equal(end,ico.length);
+    assert(!nativeImage.createFromPath(path.join(__dirname,'generated','icon.ico')).isEmpty());
+    assert.deepEqual(nativeImage.createFromPath(path.join(__dirname,'generated','icon.png')).getSize(),{width:1024,height:1024});
+  });
   await check('Sandboxed offline startup, complete theory data, narrow IPC and Windows hints',async()=>{
     assert.deepEqual(await host.js('[SCALES.length,CHORDS.length,typeof require,typeof process]'),[26,34,'undefined','undefined']);
     assert(await host.js('!!window.webkit.messageHandlers.openSynth&&!window.webkit.messageHandlers.synthControl'));

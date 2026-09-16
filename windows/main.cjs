@@ -50,7 +50,7 @@ class WindowsApp {
   }
   saveBounds() {if(this.hidden||!this.main)return;try{fs.mkdirSync(this.userData,{recursive:true});fs.writeFileSync(path.join(this.userData,'window.json'),JSON.stringify(this.main.getNormalBounds()));}catch{}}
   makeWindow(page,title,bounds) {
-    const win=new BrowserWindow({...bounds,title,show:false,backgroundColor:'#f7f4ec',icon:path.join(resources,'icon.png'),minWidth:page==='index.html'?620:520,minHeight:page==='index.html'?520:640,
+    const win=new BrowserWindow({...bounds,title,show:false,backgroundColor:'#f7f4ec',icon:path.join(resources,'icon.ico'),minWidth:page==='index.html'?620:520,minHeight:page==='index.html'?520:640,
       webPreferences:{preload:path.join(__dirname,'preload.cjs'),nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true,backgroundThrottling:false,spellcheck:false,autoplayPolicy:'no-user-gesture-required',offscreen:this.hidden}});
     if(this.hidden)win.webContents.setAudioMuted(true);
     // Windows keyboards report the + key as '=' without Shift; the native
@@ -153,7 +153,7 @@ class WindowsApp {
       {label:'&View',submenu:[...['scales','chords','progressions','ear'].map((tab,index)=>({id:`view-${tab}`,label:tab==='ear'?'Ear Training':tab[0].toUpperCase()+tab.slice(1),accelerator:`Ctrl+${index===3?5:index+1}`,click:perform(()=>{focusMain();return this.js(`document.getElementById('mode-${tab}').click()`);})})),{type:'separator'},{role:'zoomIn'},{role:'zoomOut'},{role:'resetZoom'},{type:'separator'},{role:'togglefullscreen'}]},
       {label:'&Help',submenu:[
         {label:'User Guide',click:perform(()=>shell.openPath(path.join(resources,'User Guide.txt')))},
-        {label:'About Guitar Fretboard',click:()=>dialog.showMessageBox({type:'info',title:'Guitar Fretboard',message:'Fretboard companion · Windows 1.27.1',detail:'26 scales and modes · 34 chord types · Progression arranger\nWavetable synth · Ear training · 15 themes\n\nBuilt by SourdoughDog with coding and design assistance from OpenAI Codex.\n\nEverything works offline. Settings and libraries stay on this PC.'})}
+        {label:'About Guitar Fretboard',click:()=>dialog.showMessageBox({type:'info',title:'Guitar Fretboard',message:'Fretboard companion · Windows 1.27.2',detail:'26 scales and modes · 34 chord types · Progression arranger\nWavetable synth · Ear training · 15 themes\n\nBuilt by SourdoughDog with coding and design assistance from OpenAI Codex.\n\nEverything works offline. Settings and libraries stay on this PC.'})}
       ]}
     ]));
   }
