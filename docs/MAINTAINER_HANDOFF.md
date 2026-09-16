@@ -1,6 +1,16 @@
 # Fretboard companion — cold-session handoff
 
-Updated: September 14, 2026. Read this before changing the app. This is a working reference for a new coding session with no conversation history. Verify mutable facts against the files and GitHub before acting.
+Updated: September 16, 2026. Read this before changing the app. This is a working reference for a new coding session with no conversation history. Verify mutable facts against the files and GitHub before acting.
+
+## Parallel Windows edition (September 16, 2026)
+
+The owner requested a parallel Windows app. The `windows/` Electron shell consumes the authoritative `mac/` UI and audio sources without changing them or the frozen legacy file. Windows version is 1.27.0; Mac version/build remain 1.27/28. This supersedes the historical Mac-only scope below for Windows work. It does not authorize the deferred modularization or select a repository license.
+
+Use `npm ci`, `npm test`, `npm run test:windows`, and `npm run build:windows`. See `windows/README.md` for architecture and verification limits. Output is an unsigned x64 NSIS installer and portable ZIP under `build/windows-release/`. Packaging explicitly disables publishing. No GitHub Windows release has been published.
+
+The fixed `fretboard://app` origin and `%APPDATA%\Guitar Fretboard` profile preserve localStorage between Windows upgrades. The Mac storage keys/schema remain unchanged. Windows has Ctrl shortcuts, the same File themes and independent notation controls, a separate controller-only synth window, printing, and MIDI save/copy. MIDI Copy uses a native Windows file-drop clipboard through a hidden PowerShell process; Save MIDI remains the fallback for DAWs or policies that do not support this.
+
+The silent Windows harness uses the actual production shell, disposable profiles, hidden app-only rendering, no desktop capture, and offline audio graphs. It reuses the existing finder (408 formulas), feature, all-theme layout and 18-scene audio suites, and adds real menu/IPC/persistence/export/close checks. Clipboard and save-dialog endpoints are substituted to avoid changing the owner's clipboard or opening dialogs. Manual sound-device, DAW paste, printer and interactive installer checks remain release tasks. Mac code and artifacts are unchanged.
 
 ## Start here
 
