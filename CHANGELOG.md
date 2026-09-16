@@ -1,5 +1,12 @@
 # Changelog
 
+## Windows edition 1.27.2
+
+- Refined the Windows fretboard icon with smooth transparent edges, clearer strings, subtle teal shading and note highlights.
+- Added 15 individually rendered ICO sizes from 16 to 256 pixels for title bars, taskbars, shortcuts and scaled displays, plus a 1024-pixel PNG master.
+- Both app windows now use the multi-resolution ICO. The installer and executable embed the same artwork.
+- Mac artwork and app behavior are unchanged; the Windows 1.27.1 zoom fix is included.
+
 ## Windows edition 1.27.1
 
 - Fixed zoom shortcuts in the main and synth windows: Ctrl+=, Ctrl+Shift+= and numeric-keypad Plus now zoom in; Ctrl+Minus and Ctrl+0 zoom out and reset.

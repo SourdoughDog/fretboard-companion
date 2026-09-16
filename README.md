@@ -12,13 +12,13 @@ Requires **macOS 13 or later on an Apple silicon Mac (M1 or newer)**. The app is
 
 ### Windows
 
-[Download the Windows installer](https://github.com/SourdoughDog/fretboard-companion/releases/download/v1.27/Guitar.Fretboard.Windows.1.27.1.x64.exe), run setup, then open **Guitar Fretboard** from the Start menu or desktop shortcut. Setup does not automatically launch the app.
+[Download the Windows installer](https://github.com/SourdoughDog/fretboard-companion/releases/download/v1.27/Guitar.Fretboard.Windows.1.27.2.x64.exe), run setup, then open **Guitar Fretboard** from the Start menu or desktop shortcut. Setup does not automatically launch the app.
 
-For a portable copy, [download the Windows ZIP](https://github.com/SourdoughDog/fretboard-companion/releases/download/v1.27/Guitar.Fretboard.Windows.1.27.1.x64.zip), extract the **entire folder**, and open **Guitar Fretboard.exe**. Keep the accompanying files together. See [Windows release notes and checksums](https://github.com/SourdoughDog/fretboard-companion/releases/tag/v1.27).
+For a portable copy, [download the Windows ZIP](https://github.com/SourdoughDog/fretboard-companion/releases/download/v1.27/Guitar.Fretboard.Windows.1.27.2.x64.zip), extract the **entire folder**, and open **Guitar Fretboard.exe**. Keep the accompanying files together. See [Windows release notes and checksums](https://github.com/SourdoughDog/fretboard-companion/releases/tag/v1.27).
 
 Requires **Windows 10 or 11, x64 (Intel/AMD)**. The Windows build is **unsigned** and may show an unknown-publisher warning. It includes its Electron runtime; no separate Node.js, .NET, or browser installation is required.
 
-Both editions work offline without Codex, a login, or an internet connection. They share the v1.27 interface, theory data, synth engine, and all 15 themes. Current releases: **Mac 1.27** and **Windows 1.27.1**.
+Both editions work offline without Codex, a login, or an internet connection. They share the v1.27 interface, theory data, synth engine, and all 15 themes. Current releases: **Mac 1.27** and **Windows 1.27.2**.
 
 ## Explore and play
 
@@ -160,7 +160,7 @@ Windows automated tests substitute the save dialog and clipboard endpoints to av
 - `windows/check-windows.cjs`, `windows/run-checks.cjs`, and `windows/security.test.cjs`: hidden Windows integration and validation checks.
 - `package.json` and `package-lock.json`: Windows development commands, pinned dependencies, and installer/portable packaging configuration.
 
-Edit the authoritative UI, CSS, or SVG sources, then run the appropriate platform build to regenerate its resources. The older standalone HTML remains preserved separately. The Windows shell shares the current **v1.27** application features and has its own **1.27.1** release version.
+Edit the authoritative UI, CSS, or SVG sources, then run the appropriate platform build to regenerate its resources. The older standalone HTML remains preserved separately. The Windows shell shares the current **v1.27** application features and has its own **1.27.2** release version.
 
 ## Credits
 
