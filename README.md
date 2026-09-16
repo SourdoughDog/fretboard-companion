@@ -1,6 +1,21 @@
 # Fretboard companion
 
-An offline guitar theory companion for macOS: explore the neck, discover chords, arrange progressions, and hear what you create.
+An offline guitar theory companion for macOS and Windows: explore the neck, discover chords, arrange progressions, and hear what you create.
+
+## Windows edition
+
+The parallel Windows edition uses the current v1.27 interface, theory data and audio engine. It adds Windows menus, Ctrl shortcuts, a separate synth window, printing, and native MIDI save/file-copy support. All 15 themes and local libraries are preserved. It runs offline on Windows 10/11 x64 without installing Node.js or a browser. Windows and Mac keep separate local libraries; automatic cross-device sync is not included.
+
+Build a setup installer and portable ZIP on Windows:
+
+```sh
+npm ci
+npm test
+npm run test:windows
+npm run build:windows
+```
+
+Artifacts appear in `build/windows-release/`. Open the setup `.exe`, or extract the entire portable ZIP and open `Guitar Fretboard.exe`. The Windows build is unsigned. See [Windows build and test notes](windows/README.md) for requirements, storage, architecture, and verification limits. The Mac download below is unchanged; the Windows artifacts have not been published to GitHub.
 
 ## Get the app
 

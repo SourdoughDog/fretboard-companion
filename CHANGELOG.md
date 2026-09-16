@@ -1,5 +1,11 @@
 # Changelog
 
+## Windows edition 1.27.0
+
+- Added a parallel Windows 10/11 x64 desktop app using the existing v1.27 UI, theory and audio engine.
+- Added native Windows menus, Ctrl shortcuts, separate synth controls, local persistence, printing, and MIDI save/file-copy support.
+- Added reproducible installer/portable packaging and silent Windows integration/audio checks. Mac and legacy sources are unchanged.
+
 ## 1.27
 
 - Fixed the synth preset selector showing a stale label, such as Warm keys, while another sound was playing. The confirmed preset now updates even while the dropdown has focus.

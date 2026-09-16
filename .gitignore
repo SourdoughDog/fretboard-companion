@@ -8,6 +8,8 @@
 *.zip
 .env
 .env.*
+/node_modules/
+/windows/generated/
 
 # Machine-specific workspace migration notes
 /SESSION_HANDOFF.md

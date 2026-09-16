@@ -1,0 +1,35 @@
+{
+  "name": "fretboard-companion-windows",
+  "productName": "Guitar Fretboard",
+  "version": "1.27.0",
+  "description": "An offline guitar theory companion for Windows",
+  "author": "SourdoughDog",
+  "private": true,
+  "main": "windows/main.cjs",
+  "scripts": {
+    "prepare:windows": "node windows/prepare.cjs",
+    "start": "npm run prepare:windows && electron .",
+    "test": "node tests/logic.cjs && node tests/features.cjs && node --test windows/security.test.cjs",
+    "test:windows": "npm run prepare:windows && node windows/run-checks.cjs",
+    "build:windows": "npm run prepare:windows && electron-builder --win nsis zip --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "44.4.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "local.guitar.fretboardcompanion.windows",
+    "directories": { "output": "build/windows-release" },
+    "files": ["windows/main.cjs", "windows/preload.cjs", "windows/security.cjs", "windows/generated/**", "package.json"],
+    "asar": true,
+    "win": { "icon": "windows/generated/icon.ico", "target": ["nsis", "zip"], "artifactName": "Guitar.Fretboard.Windows.${version}.${arch}.${ext}" },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": false,
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
